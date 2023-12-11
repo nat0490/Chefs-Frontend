@@ -25,7 +25,7 @@ export default function App() {
             <Text style={styles.label}>Email</Text>
             <TextInput 
             style={styles.input} 
-            placeholder= 'Saisissez votre mail' 
+            placeholder= 'apple votre mail' 
             keyboardType='email-address'   
           />
           </View>
@@ -52,12 +52,33 @@ export default function App() {
         </View>
 
         {/* Icons de connexion */}
+        <View style={styles.iconContainer}>
+          <View> 
+            <Text> S'inscrire avec:</Text>
+          </View>
+          <View style={styles.iconsSign}> 
+            <FontAwesome name='apple' size={22} /> 
+            <FontAwesome name='google' size={22} />
+        <FontAwesome name='facebook' size={22} />
+        </View>
         <View>
+<<<<<<< HEAD
+          <Text>New user?</Text>
+          <TouchableOpacity style={styles.bottomButton}>
+            <Text style={styles.buttonText}> Termes & conditions</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.bottomButton} >
+            <Text style={styles.buttonText}> Créer un compte</Text>
+          </TouchableOpacity>
+        </View>
+=======
         <FontAwesome name='apple1' size={10}  />
         <FontAwesome name='google' size={10}  />
         <FontAwesome name='facebook-with-circle' size={10}  />
+>>>>>>> 019355d3980c764d1ef5c4ff7f4b3655ba5bbc75
 
         </View>
+
     </KeyboardAvoidingView>
   );
 }
@@ -65,43 +86,61 @@ export default function App() {
 
 
 const styles = StyleSheet.create({
+  // général
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-    width: '100%',
-  },
   contentContainer: {
-    backgroundColor: 'red'
+    backgroundColor: 'red',
+    width: '90%'
   },
+
+  // email & mot de passe
+  
   inputContainer : {
     width: '70%',
    backgroundColor :'red',
    }, 
-   containerButton: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
    label: {
     fontSize: 14,
     color: "#615DEC"
   },
-  button: {
-    backgroundColor: 'blue',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
+  
+  // Boutons forgot password + Se connecter
   buttonText: {
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
   },
+  containerButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  button: {
+    backgroundColor: 'blue',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+  },
+  iconsSign: {
+    flexDirection: 'row',
+    backgroundColor:'green',
+    width: '100%'
+  },
+
+   // icon de connexion
+  iconContainer : {
+    marginHorizontal: 30,
+    flexDirection: 'column',
+    width: '90%'
+  },
+  iconStyle: {
+    marginHorizontal: 10,
+  },
+    buttonText: {
+      fontSize: 16,
+      textAlign: 'center',
+    },
 });
