@@ -218,6 +218,14 @@ const styles = StyleSheet.create({
     flexDirection : 'row',
     justifyContent : 'space-around',
   },
+  
+  titre_register: {
+    color: '#9292FE',
+    fontSize: 15,
+  },
+
+  
+  // UIKIT POUR LES BTN 
   btn_sign_in : {
     paddingVertical: 10, // 10 units of padding at the top and bottom
     paddingHorizontal: 25, // A
@@ -240,8 +248,4 @@ const styles = StyleSheet.create({
     fontSize : 15,
     color : '#9292FE'
   },
-  titre_register: {
-    color: '#9292FE',
-    fontSize: 15,
-  }
 });
