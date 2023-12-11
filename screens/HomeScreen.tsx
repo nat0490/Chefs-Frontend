@@ -134,13 +134,13 @@ export default function App() {
       <View style={styles.section_btn_register}>
         <Text style={styles.titre_register}>Do we know each other yet ?</Text>
         <View style={styles.container_btn}>
-          {/*
+          
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in}  onPress={() => navigation.navigate('Sign_in')}>
               <Text style={styles.buttonText_sign_in}>Sign in</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Sign_up')}>
               <Text style={styles.buttonText_sign_up}>Sign up</Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity> 
         </View>
       </View>
      
