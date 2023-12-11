@@ -1,13 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image , TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, logout } from '../reducers/user';
 
-export default function App() {
-
+export default function HomeScreen() {
 
   const navigation = useNavigation();
+  
+  //PARTIE REDUCER: POUR CHANGER L'AFFICHAGE EN FONCTION DE SI L'USER EST CONNECTE OU NON
+  /*const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);*/
+  //SI FALSE: affichage signin/signup, SI TRUE: affichage tab.navigation
+  const [ isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  
 
   return (
     <View style={styles.container}>
@@ -131,6 +140,7 @@ export default function App() {
 
 
        {/* Section avec boutons de connexion */}
+       { isLoggedIn ? null: 
       <View style={styles.section_btn_register}>
         <Text style={styles.titre_register}>Do we know each other yet ?</Text>
         <View style={styles.container_btn}>
@@ -143,6 +153,7 @@ export default function App() {
           </TouchableOpacity> 
         </View>
       </View>
+}
      
       {/* Barre de statut */}
       <StatusBar style="auto" />

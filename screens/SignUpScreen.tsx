@@ -3,7 +3,7 @@ import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert } from 'reac
 import React, { useState } from 'react';
 import DatePicker from 'react-native-datepicker';
 
-export default function App() {
+export default function SignUpScreen() {
 
   //Etats des input 
 

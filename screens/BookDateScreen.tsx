@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
-export default function App() {
+export default function BookDateScreen() {
   return (
     <View style={styles.container}>
       <Text>BOOK DATE SCREEN</Text>
