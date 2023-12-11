@@ -20,7 +20,7 @@ export default function App() {
       {/* Section avec titre et barre en dessous */}
       <View style={styles.section_box}>
         <View style={styles.box_titre}>
-            <FontAwesome name='heart' size='22'  />
+            <FontAwesome name='heart' size={22}  />
             <Text style={styles.txt_h1}>Our trendy recipes</Text>
         </View>
 
@@ -49,7 +49,7 @@ export default function App() {
             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
               <View style={styles.box_description }>
-                <FontAwesome name='bowl-food' size='22'  />
+                <FontAwesome name='bowl-food' size={22}  /> 
                 <Text >Italien</Text>
             </View>
           </TouchableOpacity>
@@ -57,7 +57,7 @@ export default function App() {
             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
               <View style={styles.box_description }>
-                <FontAwesome name='food' size='22'  />
+               <FontAwesome name='food' size={22}  /> 
                 <Text>Italien</Text>
               </View>
           </TouchableOpacity>
@@ -65,7 +65,7 @@ export default function App() {
               <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
                 <View style={styles.box_description }>
-                  <FontAwesome name='bowl-food' size='22'  />
+                  <FontAwesome name='bowl-food' size={22}  /> 
                   <Text >Italien</Text>
                 </View>
           </TouchableOpacity>
@@ -76,7 +76,7 @@ export default function App() {
       {/* Section avec un autre titre et barre en dessous */}      
       <View style={styles.section_box}>
         <View style={styles.box_titre}>
-            <FontAwesome name='heart' size='22'  />
+            <FontAwesome name='heart' size={22}  />
             <Text style={styles.txt_h1}>Our trendy recipes</Text>
         </View>
 
@@ -106,7 +106,7 @@ export default function App() {
             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
               <View style={styles.box_description }>
-                <FontAwesome name='bowl-food' size='22'  />
+                <FontAwesome name='bowl-food' size={22}  /> 
                 <Text >Italien</Text>
             </View>
           </TouchableOpacity>
@@ -114,15 +114,15 @@ export default function App() {
             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
               <View style={styles.box_description }>
-                <FontAwesome name='food' size='22'  />
-                <Text>Italien</Text>
+                <FontAwesome name='food' size={22}  />
+                  <Text>Italien</Text>
               </View>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={1} style={styles.box}>
               <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
                 <View style={styles.box_description }>
-                  <FontAwesome name='bowl-food' size='22'  />
+                  <FontAwesome name='bowl-food' size={22}  /> 
                   <Text >Italien</Text>
                 </View>
           </TouchableOpacity>
@@ -134,12 +134,13 @@ export default function App() {
       <View style={styles.section_btn_register}>
         <Text style={styles.titre_register}>Do we know each other yet ?</Text>
         <View style={styles.container_btn}>
+          
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in}  onPress={() => navigation.navigate('Sign_in')}>
               <Text style={styles.buttonText_sign_in}>Sign in</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Sign_up')}>
               <Text style={styles.buttonText_sign_up}>Sign up</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> 
         </View>
       </View>
      
