@@ -53,9 +53,9 @@ export default function App() {
 
         {/* Icons de connexion */}
         <View>
-        <FontAwesome name='apple1' size='10'  />
-        <FontAwesome name='google' size='10'  />
-        <FontAwesome name='facebook-with-circle' size='10'  />
+        <FontAwesome name='apple1' size={10}  />
+        <FontAwesome name='google' size={10}  />
+        <FontAwesome name='facebook-with-circle' size={10}  />
 
         </View>
     </KeyboardAvoidingView>
