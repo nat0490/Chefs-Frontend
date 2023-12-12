@@ -10,7 +10,7 @@ import { StyleSheet,
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-export default function App() {
+export default function SignInScreen() {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View> 
@@ -63,16 +63,19 @@ export default function App() {
         </View>
         <View>
           <Text>New user?</Text>
-          <TouchableOpacity style={styles.bottomButton}>
+          <TouchableOpacity /* style={styles.bottomButton} */>
             <Text style={styles.buttonText}> Termes & conditions</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.bottomButton} >
+          <TouchableOpacity /*style={styles.bottomButton}*/ >
             <Text style={styles.buttonText}> Créer un compte</Text>
           </TouchableOpacity>
         </View>
+<<<<<<< HEAD
         <FontAwesome name='apple1' size={10}  />
         <FontAwesome name='google' size={10}  />
         <FontAwesome name='facebook-with-circle' size={10}  />
+=======
+>>>>>>> 171ea6fe7362d9dcf2cb1bfab53a5245ac9b903c
 
         </View>
 
@@ -136,8 +139,10 @@ const styles = StyleSheet.create({
   iconStyle: {
     marginHorizontal: 10,
   },
-    buttonText: {
+    input: {
       fontSize: 16,
-      textAlign: 'center',
     },
+    bottomButton: {
+      fontSize: 16,
+    }
 });

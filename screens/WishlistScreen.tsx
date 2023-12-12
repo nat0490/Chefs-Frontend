@@ -2,10 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
-export default function SearchScreen() {
+export default function App() {
   return (
     <View style={styles.container}>
-      <Text>SEARCH SCREEN</Text>
+      <Text>WISHLIST SCREEN</Text>
       <StatusBar style="auto" />
     </View>
   );
