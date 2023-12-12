@@ -25,32 +25,33 @@ export default function SignInScreen() {
             <Text style={styles.label}>Email</Text>
             <TextInput 
             style={styles.input} 
-            placeholder= 'apple votre mail' 
+            placeholder= 'Entre ton adresse email' 
             keyboardType='email-address'   
           />
           </View>
-
           {/* Saisie mot de passe */}
           <View style={styles.inputContainer}> 
             <Text style={styles.label}>Mot de passe</Text>
             <TextInput 
             style={styles.input} 
-            placeholder= 'Saisissez votre mot de passe' 
+            placeholder= 'Saisis ton mot de passe' 
             keyboardType='visible-password'    
           />
           </View>
 
+
           {/* Boutons forgot password + Se connecter */}
           <View style={styles.containerButton}>
-            <TouchableOpacity style={styles.button} >
-              <Text style={styles.buttonText}> Mot de passe oublié ?</Text>
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in}  >
+              <Text style={styles.buttonText_sign_in}> Mot de passe oublié ?</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} >
-              <Text style={styles.buttonText}> Se connecter</Text>
+            <TouchableOpacity style={styles.btn_sign_up} >
+              <Text style={styles.buttonText_sign_up}> Se connecter</Text>
             </TouchableOpacity>
           </View>
         </View>
 
+{/* partie à revoir pour mise de place des icones */}
         {/* Icons de connexion */}
         <View style={styles.iconContainer}>
           <View> 
@@ -61,14 +62,18 @@ export default function SignInScreen() {
             <FontAwesome name='google' size={22} />
           <FontAwesome name='facebook' size={22} />
         </View>
-        <View>
+
+        
+          {/* connexion already user  */}
+        <View >
           <Text>New user?</Text>
-          <TouchableOpacity /* style={styles.bottomButton} */>
-            <Text style={styles.buttonText}> Termes & conditions</Text>
-          </TouchableOpacity>
-          <TouchableOpacity /*style={styles.bottomButton}*/ >
-            <Text style={styles.buttonText}> Créer un compte</Text>
-          </TouchableOpacity>
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} >
+              <Text style={styles.buttonText_sign_in}>Termes & conditions</Text>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} >
+              <Text style={styles.buttonText_sign_up}>Créer un compte</Text>
+            </TouchableOpacity>
+
         </View>
         <FontAwesome name='apple1' size={10}  />
         <FontAwesome name='google' size={10}  />
@@ -83,6 +88,7 @@ export default function SignInScreen() {
 
 
 const styles = StyleSheet.create({
+
   // général
   container: {
     flex: 1,
@@ -90,37 +96,33 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   contentContainer: {
-    backgroundColor: 'red',
-    width: '90%'
+    width: '100%',
+    padding: 10,
   },
 
   // email & mot de passe
-  
+  input: {
+    height: 40,
+    width: '100%',
+    borderColor: '#9292FE',
+    borderRadius:10,
+    borderWidth: 1,
+    paddingHorizontal: 10,
+  },
   inputContainer : {
     width: '70%',
-   backgroundColor :'red',
    }, 
-   label: {
+  label: {
     fontSize: 14,
     color: "#615DEC"
   },
   
   // Boutons forgot password + Se connecter
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    textAlign: 'center',
-  },
   containerButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  button: {
-    backgroundColor: 'blue',
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
+
   iconsSign: {
     flexDirection: 'row',
     backgroundColor:'green',
@@ -128,18 +130,33 @@ const styles = StyleSheet.create({
   },
 
    // icon de connexion
-  iconContainer : {
-    marginHorizontal: 30,
-    flexDirection: 'column',
-    width: '90%'
-  },
   iconStyle: {
     marginHorizontal: 10,
   },
-    input: {
-      fontSize: 16,
+
+    // boutons 
+    btn_sign_in : {
+      paddingVertical: 10, // 10 units of padding at the top and bottom
+      paddingHorizontal: 25, // A
+      borderRadius: 5,
+      backgroundColor: '#9292FE',
     },
-    bottomButton: {
-      fontSize: 16,
+    btn_sign_up : {
+      paddingVertical: 10, // 10 units of padding at the top and bottom
+      paddingHorizontal: 25, // A
+      borderRadius: 5,
+      borderWidth: 2,
+      borderColor: '#9292FE',
+      backgroundColor: '#fff',
+    },
+    buttonText_sign_in :  {
+      fontSize : 15,
+      color : '#fff'
+    },
+    buttonText_sign_up: {
+      fontSize : 15,
+      color : '#9292FE'
     }
+
+   
 });
