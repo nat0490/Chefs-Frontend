@@ -6,50 +6,11 @@ import { StyleSheet,
   TextInput,
   Touchable,
   TouchableOpacity,
-  Platform,
-  Alert,
  } from 'react-native';
- import React, { useState } from 'react';
+import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useDispatch } from 'react-redux';
-// importer reducer 
-import { login } from '../reducers/user';
-
-// Grabbed from emailregex.com
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
 
 export default function SignInScreen() {
-
-    // Etats des input
-  const dispatch = useDispatch();
-  const [emailInput, setEmailInput] = useState('');
-  const [passwordInput, setPasswordInput] = useState('');
-
-
-  // création signin connexion 
-  const handleConnection = () => {
-    if (EMAIL_REGEX.test(emailInput)) {
-      fetch('http://localhost:3000/users/signin', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: emailInput, password: passwordInput }),
-    }).then(response => response.json())
-    .then(data => {
-      if (data.result) {
-        dispatch(login({username: , token: data.token} ));
-        setEmailInput('');
-        setPasswordInput('');
-      }
-    })
-    } else {
-      Alert.alert(
-        'Erreur',
-        'Votre email n\'est pas validde'
-      )
-    }
-  }
-
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View> 
@@ -66,8 +27,6 @@ export default function SignInScreen() {
             style={styles.input} 
             placeholder= 'Entre ton adresse email' 
             keyboardType='email-address'   
-            value={emailInput}
-            onChangeText={(value) => setEmailInput(value)}
           />
           </View>
           {/* Saisie mot de passe */}
@@ -76,10 +35,7 @@ export default function SignInScreen() {
             <TextInput 
             style={styles.input} 
             placeholder= 'Saisis ton mot de passe' 
-            keyboardType='visible-password'  
-            value={passwordInput}  
-            onChangeText={(value) => setPasswordInput(value)}
-        
+            keyboardType='visible-password'    
           />
           </View>
 
@@ -89,9 +45,7 @@ export default function SignInScreen() {
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in}  >
               <Text style={styles.buttonText_sign_in}> Mot de passe oublié ?</Text>
             </TouchableOpacity>
-            <TouchableOpacity 
-            onPress={handleConnection} 
-            style={styles.btn_sign_up} >
+            <TouchableOpacity style={styles.btn_sign_up} >
               <Text style={styles.buttonText_sign_up}> Se connecter</Text>
             </TouchableOpacity>
           </View>
@@ -99,30 +53,30 @@ export default function SignInScreen() {
 
 {/* partie à revoir pour mise de place des icones */}
         {/* Icons de connexion */}
-        <View>
-          <View>  
-            <Text style={styles.iconContainer}> S'inscrire avec:</Text>
+        <View style={styles.iconContainer}>
+          <View> 
+            <Text> S'inscrire avec:</Text>
           </View>
           <View style={styles.iconsSign}> 
-            <FontAwesome name='apple' size={30} /> 
-            <FontAwesome name='google' size={30} />
-        <FontAwesome name='facebook' size={30} />
+            <FontAwesome name='apple' size={22} /> 
+            <FontAwesome name='google' size={22} />
+        <FontAwesome name='facebook' size={22} />
         </View>
 
         
           {/* connexion already user  */}
-        <View>
-          <Text >New user?</Text>
-          <View style={styles.buttonContainer}> 
+        <View >
+          <Text>New user?</Text>
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} >
               <Text style={styles.buttonText_sign_in}>Termes & conditions</Text>
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} >
               <Text style={styles.buttonText_sign_up}>Créer un compte</Text>
             </TouchableOpacity>
-            </View>
+
         </View>
-      </View>
+
+        </View>
 
     </KeyboardAvoidingView>
   );
@@ -153,7 +107,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   inputContainer : {
-
+    width: '70%',
    }, 
   label: {
     fontSize: 14,
@@ -166,25 +120,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 
-  // Icons de connexion 
-  iconContainer: {
-    width: '100%',
-    backgroundColor:'green',
-    
-  },
   iconsSign: {
-    width: '85%',
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: 'blue',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-
-
+    backgroundColor:'green',
+    width: '100%'
   },
 
+   // icon de connexion
+  iconStyle: {
+    marginHorizontal: 10,
+  },
 
     // boutons 
     btn_sign_in : {
