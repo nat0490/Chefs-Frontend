@@ -5,7 +5,7 @@ import React from 'react';
 export default function ProfilScreen() {
   return (
     <View style={styles.container}>
-      <Text>PROFIL SCREEN</Text>
+      <Text>EDITPROFIL SCREEN</Text>
       <StatusBar style="auto" />
     </View>
   );
