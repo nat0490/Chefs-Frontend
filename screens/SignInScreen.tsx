@@ -13,13 +13,20 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 export default function SignInScreen() {
   return (
     <KeyboardAvoidingView style={styles.container}>
+
+      <View style={styles.nav_bar_color}></View>
+      {/* Fleche revenir sur la page précédente  */}
+      <View style={styles.containeur_fleche}>
+        <FontAwesome name='arrow-left' size={22}  />
+      </View>
+
       <View> 
         {/* Saisie titre */}
         <Text>Salut toi ! Prêt a passer a la casserole ?</Text>
         <StatusBar style="auto" />
       </View>
 
-      <View style={styles.contentContainer}> 
+      <View> 
           {/* Saisie email */}
           <View style={styles.inputContainer}> 
             <Text style={styles.label}>Email</Text>
@@ -88,13 +95,21 @@ const styles = StyleSheet.create({
 
   // général
   container: {
-    flex: 1,
+    flex: 0,
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  contentContainer: {
+  
+  // fleche de retour en arrière 
+  nav_bar_color: {
+    backgroundColor : '#9292FE',
     width: '100%',
-    padding: 10,
+    height: 65,
+  },
+
+  containeur_fleche: {
+    width: "80%",
+    marginTop: 20,
+    marginBottom: 10,
   },
 
   // email & mot de passe
