@@ -59,7 +59,7 @@ export default function SignInScreen() {
           <View style={styles.iconsSign}> 
             <FontAwesome name='apple' size={22} /> 
             <FontAwesome name='google' size={22} />
-        <FontAwesome name='facebook' size={22} />
+          <FontAwesome name='facebook' size={22} />
         </View>
         <View>
           <Text>New user?</Text>
@@ -70,12 +70,9 @@ export default function SignInScreen() {
             <Text style={styles.buttonText}> Créer un compte</Text>
           </TouchableOpacity>
         </View>
-<<<<<<< HEAD
         <FontAwesome name='apple1' size={10}  />
         <FontAwesome name='google' size={10}  />
         <FontAwesome name='facebook-with-circle' size={10}  />
-=======
->>>>>>> 171ea6fe7362d9dcf2cb1bfab53a5245ac9b903c
 
         </View>
 
