@@ -53,7 +53,7 @@ export default function SignInScreen() {
 
 {/* partie à revoir pour mise de place des icones */}
         {/* Icons de connexion */}
-        <View style={styles.iconContainer}>
+        <View>
           <View> 
             <Text> S'inscrire avec:</Text>
           </View>

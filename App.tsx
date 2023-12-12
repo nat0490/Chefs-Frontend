@@ -17,12 +17,12 @@ import HomeScreen from './screens/HomeScreen';
 import SearchScreen from './screens/SearchScreen';
 import WishlistScreen from './screens/WishlistScreen';
 //For Profil
-import EditProfilScreen from '../frontend/screens/Profil/EditProfilScreen';
-import SupportScreen from '../frontend/screens/Profil/SupportScreen';
-import NotificationScreen from '../frontend/screens/Profil/NotificationScreen';
-import PastOrderScreen from '../frontend/screens/Profil/PastOrderScreen';
-import ReportProblemScreen from '../frontend/screens/Profil/ReportProblemScreen';
-import SecurityScreen from '../frontend/screens/Profil/SecurityScreen';
+import EditProfilScreen from './screens/Profil/EditProfilScreen';
+import SupportScreen from './screens/Profil/SupportScreen';
+import NotificationScreen from './screens/Profil/NotificationScreen';
+import PastOrderScreen from './screens/Profil/PastOrderScreen';
+import ReportProblemScreen from './screens/Profil/ReportProblemScreen';
+import SecurityScreen from './screens/Profil/SecurityScreen';
 //A TRIER
 import BookDateScreen from './screens/BookDateScreen';
 import ConfigureOrderScreen from './screens/ConfigureOrderScreen';
