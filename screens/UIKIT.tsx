@@ -5,8 +5,20 @@ import React from 'react';
 export default function App() {
   return (
     <View>
-        
-        
+    {/* Pour le bloc mauves au dessus */}
+      <View style={styles.nav_bar_color}></View>
+
+      {/* La div qui permet d'avoir des pages de 80% a mettre sur toutes les pages*/}
+        <View style={styles.container}>
+          <View style={styles.container_box_width}>
+                {/* Il faut ecrire tous sont code ici la couleur rouge seras a enlever*/}
+          </View>
+        </View>
+
+
+  {/* Permet d'avoir un régulariter de 20 margin au top -> Il faut ajouter deux style si vous en avez*/}
+    <View style={[styles.QuetuChoisisPourTonStyle, styles.marginTop]}></View>
+
     {/* Style Input */}
     <View style={styles.inputContainer}>
         <Text style={styles.label}>Mot de passe</Text>
@@ -57,6 +69,30 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  //-----------------Bar couleur mauve top------------------
+  nav_bar_color: {
+    backgroundColor : '#9292FE',
+    width: '100%',
+    height: 65,
+  },
+
+
+  //-----------------Pour la margin du Top------------------
+  marginTop:{
+    margin : 20,
+  }
+
+  //-----------------Styles de notre containeur box------------------
+  container_box_width:{
+    width: "80%",
+    flex:1,
+    backgroundColor:'red',
+  }
+
+
+
+
+
       // ------------  Les input  ----------------
 
   input: {

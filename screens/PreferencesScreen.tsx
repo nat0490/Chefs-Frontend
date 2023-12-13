@@ -5,8 +5,10 @@ import React from 'react';
 export default function OrderScreen() {
   return (
     <View style={styles.container}>
-      <Text>Preference SCREEN</Text>
-      <StatusBar style="auto" />
+      <View style={styles.nav_bar_color}></View>
+      <View style={styles.container_box_width}>
+      
+     </View>
     </View>
   );
 }
@@ -18,6 +20,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
   },
+
+
+  //---------------Import uiKit----------------------
+  nav_bar_color: {
+    backgroundColor : '#9292FE',
+    width: '100%',
+    height: 65,
+  },
+  container_box_width:{
+    width: "80%",
+    flex:1,
+    backgroundColor:'red',
+  }
 });
