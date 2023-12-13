@@ -69,6 +69,7 @@ const HomeTabs = () => (
     tabBarInactiveTintColor: '#b2b2b2',
     headerShown: false,
   })}>
+    
     <Tab.Screen name="Main" component={MainScreen} />
    
     <Tab.Screen name="Search" component={SearchScreen} />
@@ -118,13 +119,15 @@ export default function App() {
             </>
           ) : (
             <>
+              <Stack.Screen name="EditProfil" component={EditProfilScreen} />
               <Stack.Screen name="Home" component={HomeScreen} />
               <Stack.Screen name="Sign_in" component={SignInScreen} />
               <Stack.Screen name="Sign_up" component={SignUpScreen} />
               <Stack.Screen name="Preference" component={PreferencesScreen} />
+              
             </>
           )}
-          <Stack.Screen name="EditProfil" component={EditProfilScreen} />
+          {/*<Stack.Screen name="EditProfil" component={EditProfilScreen} /> */}
           <Stack.Screen name="Notification" component={NotificationScreen} />
           <Stack.Screen name="Security" component={SecurityScreen} />
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />

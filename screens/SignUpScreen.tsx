@@ -8,6 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { login, logout} from '../reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
 
+
 export default function SignUpScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -78,8 +79,9 @@ export default function SignUpScreen() {
 // Quand j'appuie sur mon onPresse je déclanche mon handleSubmitRegister qui fait appel au deux fonction de regex 
 
 const handleSubmitRegister = () => {
-  if (verifierEmail() && verifierMotDePasse()) {
-      fetch('http://172.20.10.5:3000/users/signup', {
+  if (verifierEmail() /*&& verifierMotDePasse()*/) {
+      //fetch('http://172.20.10.5:3000/users/signup', {
+      fetch('http://192.168.1.106:3000/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -96,7 +98,7 @@ const handleSubmitRegister = () => {
       })
         .then(response => response.json())
         .then(data => {
-          console.log(data)
+          console.log(data);
           if (data.result) {
             setPasswordInput('');
             setEmailInput('');
@@ -107,8 +109,16 @@ const handleSubmitRegister = () => {
             setDateOfBirthInput('');
             setPostalInput('');
             setCityInput('');
+            //REDUCER
+            const forReducer = {
+              token: data.savedUserConnexion.token, 
+              email: data.savedUserConnexion.email,
+              userProfile: data.savedUserConnexion.userProfile 
+            };
+            dispatch(login(forReducer));
             Alert.alert('Vous êtes connecté');
-            navigation.navigate('Preference');
+            //navigation.navigate('Preference');
+             navigation.navigate('EditProfil');
           }
         })
         .catch(error => {

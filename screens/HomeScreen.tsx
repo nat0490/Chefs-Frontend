@@ -3,10 +3,12 @@ import { StyleSheet, Text, View, Image , TouchableOpacity} from 'react-native';
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import {login, logout} from '../reducers/user';
 
 export default function App() {
 
-
+  const dispatch=useDispatch();
   const navigation = useNavigation();
 
   return (
@@ -140,13 +142,17 @@ export default function App() {
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Sign_up')}>
               <Text style={styles.buttonText_sign_up}>Sign up</Text>
           </TouchableOpacity>
-          ``
+          
 
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Preference')}>
               <Text style={styles.buttonText_sign_up}>navigation</Text>
           </TouchableOpacity>
         </View>
       </View>
+
+      <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> dispatch(logout())}>
+        <Text style={styles.buttonText_sign_in}>LOGOUT: Vider reducer</Text>
+      </TouchableOpacity>
      
       {/* Barre de statut */}
       <StatusBar style="auto" />
@@ -166,7 +172,7 @@ const styles = StyleSheet.create({
     width: 300,
     justifyContent: 'space-around'
   },
-  txt_h1 : {
+  txt_h1: {
     color: '#5959F0',
     fontSize: 30,
   },

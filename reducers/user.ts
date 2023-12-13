@@ -1,11 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  value: { 
-    token: null, 
-    eamil: null,
-    id: null },
+
+interface UserState {
+    value: {
+      token: string | null;
+      email: string | null;
+      userProfile: string | null;
+    };
 };
+
+const initialState: UserState = {
+    value: { 
+    token: null, 
+    email: null,
+    userProfile: null },
+};
+
 
 export const userSlice = createSlice({
   name: 'user',
@@ -14,12 +24,12 @@ export const userSlice = createSlice({
     login: (state, action) => {
       state.value.token = action.payload.token;
       state.value.email = action.payload.email;
-      state.value.profilId = action.payload.id;
+      state.value.userProfile = action.payload.userProfile;
     },
     logout: (state) => {
       state.value.token = null;
       state.value.email = null;
-      state.value.profilId = null;
+      state.value.userProfile = null;
     },
   },
 });
