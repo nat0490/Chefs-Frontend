@@ -21,6 +21,8 @@ interface Adresse {
   ville: string;
   codePostal: string;
 }
+
+//A MODIFIER POUR ENLEVER LES MSG ERREUR
 interface UserProfil {
   id: string,
   nom: string;
@@ -32,11 +34,6 @@ interface UserProfil {
   userConnexion: string,
   orders: string[],
   userPreference: string[],
-}
-interface UserConnexion {
-  token: string,
-  email: string,
-  userProfile: ObjectId,
 }
 
 interface UserState {
@@ -53,8 +50,8 @@ interface UserState {
 export default function EditProfilScreen() {
 
 //HOOK DETAT
-  const [ userProfil, setUserProfil ] =useState<UserProfil | null>(null);
-  const [ userConnexion, setUserConnexion ] = useState<UserConnexion | null>(null);
+  const [ user, setUser ] =useState<UserProfil | null>(null);
+  //const [ userConnexion, setUserConnexion ] = useState<boolean | null>(true);
   const [ modifCoordonne, setModifCoordonne ] = useState<boolean>(false);
   const [ modifEmailPw, setModifEmailPw ] = useState<boolean>(false);
   const [ newRue, setNewRue ] = useState<string | null >("");
@@ -68,72 +65,23 @@ export default function EditProfilScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
+//REDUCER RECUPERER EST POUSSER DANS LE HOOK DETAT USER
   const reducerUser = useSelector((state: UserState) => state.user.value);
+  console.log(reducerUser);
+  useEffect(() => {
+    setUser(reducerUser);
+  },[]); 
+  console.log(user);
 
-
-  //récuperer les infos du reducer
-  const recupConnexionUser = () => {
-    //console.log(reducerUser);
-    setUserConnexion(reducerUser);
-  };
-  
-//recuperer les info user de le BDD
-
-  const recupInfoUser = () => {
-    userConnexion ? 
-    fetch(`http://192.168.1.106:3000/users/profil/${userConnexion.userProfile}`)
-    //fetch(`http://192.168.1.106:3000/users/profil/6579c585c03077192e6dea33`)
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        setUserProfil(data.data);
-      }) :"";
-  };
-
-//recuperer les info user de le BDD V2
-  /*const recupInfoUser = async () => {
-    try {
-      if (userConnexion) {
-        const response = await fetch(`http://192.168.1.106:3000/users/profil/${userConnexion.userProfile}`);
-        const data = await response.json();
-        console.log(data);
-        setUserProfil(data.data);
-      }
-    } catch (error) {
-      console.error('Erreur lors de la récupération des infos utilisateur :', error);
-    }
-  };*/
-
-  
-
-//A FAIRE AU CHARGEMENT DE LA PAGE
-  useEffect(()=> {
-    const fetchData = async () => {
-      await recupConnexionUser
-      await userConnexion ? 
-      fetch(`http://192.168.1.106:3000/users/profil/${userConnexion.userProfile}`)
-      //fetch(`http://192.168.1.106:3000/users/profil/6579c585c03077192e6dea33`)
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-          setUserProfil(data.data);
-        }): null;
-      console.log(reducerUser);
-    };
-    fetchData();
-  },[]);
-
-  //console.log(userProfil);
- // console.log(userConnexion);
   
 //Changer de numéro + vérif données renseignés
   const changeTel = () => {
-    const newValueTel : string | null = newTel ? newTel: userProfil? userProfil.tel : null;
+    const newValueTel : string | null = newTel ? newTel: user? user.tel : null;
     //const pattern = /^\+(?:[0-9] ?){6,14}[0-9]$/;
     const TEL_REGEX = /^0[0-9]{9}$/;
     if (newValueTel !== null && TEL_REGEX.test(newValueTel)) {
       setModifCoordonne(!modifCoordonne);
-      if(userConnexion) {
+      if(user) {
         //fetch(`http://192.168.1.106:3000/users/profil/${userConnexion.userProfile}/update-tel`, {
         fetch(`http://192.168.1.106:3000/users/profil/579c585c03077192e6dea33/update-tel`, {
           method: 'PUT',
@@ -168,14 +116,13 @@ export default function EditProfilScreen() {
 //Changer adresse
   const changeAdresse = () => {
     setModifCoordonne(!modifCoordonne);
-    const userId = userProfil? userProfil.id : null;
     const newAdresse = {
-      rue: newRue? newRue : userProfil? userProfil.adresse.rue : null,
-      ville: newVille? newVille : userProfil? userProfil.adresse.ville: null,
-      codePostal: newCodePostal? newCodePostal : userProfil? userProfil.adresse.codePostal: null,
+      rue: newRue? newRue : user? user.adresse.rue : null,
+      ville: newVille? newVille : user? user.adresse.ville: null,
+      codePostal: newCodePostal? newCodePostal : user? user.adresse.codePostal: null,
     };
     //fetch(`http://192.168.1.106:3000/users/profil/${userId}/update-adresse`,
-    if (userConnexion) {
+    if (user) {
       //fetch(`http://192.168.1.106:3000/users/profil/${userConnexion.userProfile}/update-adresse`, {
       fetch(`http://192.168.1.106:3000/users/profil/579c585c03077192e6dea33/update-adresse`, {
         method: 'PUT',
@@ -206,10 +153,10 @@ export default function EditProfilScreen() {
 
 //Changer Email => PAS TESTE!! ATTENTE DU REDUCER EN PLACE!!
   const changeEmail = () => {
-    const newValueEmail : string | null = newEmail ? newEmail: userConnexion? userConnexion.email : null;
+    const newValueEmail : string | null = newEmail ? newEmail: user? user.email : null;
     const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (newValueEmail !== null && EMAIL_REGEX.test(newValueEmail)) {
-      if(userConnexion) {
+      if(user) {
         //fetch(`http://192.168.1.106:3000/users/${userConnexion.token}/update-email`, {
         fetch(`http://192.168.1.106:3000/users/${userConnexion.token}/update-email`, {
           method: 'PUT',
@@ -246,9 +193,9 @@ export default function EditProfilScreen() {
     const newValuePW : string | null = newPw ? newPw: null;
     const PW_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     if (newValuePW !== null && PW_REGEX.test(newValuePW)) {
-      if(userConnexion) {
+      if(user) {
         //fetch(`http://192.168.1.106:3000/users/${userConnexion.token}/update-password`, {
-        fetch(`http://192.168.1.106:3000/users/${userConnexion.token}/update-password`, {
+        fetch(`http://192.168.1.106:3000/users/${user.token}/update-password`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify({newPassword: newValuePW}),
@@ -282,24 +229,27 @@ export default function EditProfilScreen() {
 
   };
 
+  
+  
+
 
 //INFOS DU USER
-  const afficherLesInfos = userProfil && userConnexion ? (
+  const afficherLesInfos = user ? (
       <>
         <View style={styles.blocProfil}> 
-          <Text style={styles.inputText}>Nom: {userProfil.nom}</Text>
-          <Text style={styles.inputText}>Prenom: {userProfil.prenom}</Text>
+          <Text style={styles.inputText}>Nom: {user.userProfile.nom}</Text>
+          <Text style={styles.inputText}>Prenom: {user.userProfile.prenom}</Text>
         {/*} <Text style={styles.inputText}>Date de naissance:  { userProfil.dateOfBirth? userProfil.dateOfBirth.toLocaleDateString() : "../../...." }</Text> */}
-          <Text style={styles.inputText}>Email: {userConnexion.email}</Text>
+          <Text style={styles.inputText}>Email: {user.email}</Text>
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setModifEmailPw(!modifEmailPw)}>
             <Text style={styles.buttonText_sign_in}>Modifier mon Mots de passe et/ou Email</Text>
           </TouchableOpacity>
         </View> 
         <View style={styles.blocProfil}> 
-          <Text style={styles.inputText}>Adresse: {userProfil.adresse.rue}</Text>
-          <Text style={styles.inputText}>Ville: {userProfil.adresse.ville}</Text>
-          <Text style={styles.inputText}>Code postal: {userProfil.adresse.codePostal}</Text>
-          <Text style={styles.inputText}>Téléphone: {userProfil.tel}</Text>
+          <Text style={styles.inputText}>Adresse: {user.userProfile.adresse.rue}</Text>
+          <Text style={styles.inputText}>Ville: {user.userProfile.adresse.ville}</Text>
+          <Text style={styles.inputText}>Code postal: {user.userProfile.adresse.codePostal}</Text>
+          <Text style={styles.inputText}>Téléphone: {user.userProfile.tel}</Text>
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setModifCoordonne(!modifCoordonne)}>
             <Text style={styles.buttonText_sign_in}>Modifier mes coordonnées</Text>
           </TouchableOpacity>
@@ -309,7 +259,7 @@ export default function EditProfilScreen() {
 
 
 //PROFIL USER POUVANT MODIFIER CES INFOS => NAVIGATION ENTRE INFOPROFIL, MODIFIER ADRESSE et MODIFIER EMAIL/PW 
-  const profil = userProfil && userConnexion ? (
+  const profil = user ? (
     <View style={styles.container}> 
         <View style={styles.container_box_width}>
           {modifEmailPw ? 
@@ -318,7 +268,7 @@ export default function EditProfilScreen() {
               <View >
                 <TextInput 
                   style={styles.input} 
-                  placeholder={userConnexion.email}
+                  placeholder={user.email}
                   onChangeText={(value) => setNewEmail(value)} 
                   value={newEmail || "" }/>
               </View> 
@@ -343,17 +293,17 @@ export default function EditProfilScreen() {
               <> 
                 <TextInput 
                   style={styles.input} 
-                  placeholder={userProfil.adresse.rue}
+                  placeholder={user.userProfile.adresse.rue}
                   onChangeText={(value) => setNewRue(value)} 
                   value={newRue || "" }/>
                 <TextInput 
                   style={styles.input} 
-                  placeholder={userProfil.adresse.ville}
+                  placeholder={user.userProfile.adresse.ville}
                   onChangeText={(value) => setNewVille(value)} 
                   value={newVille || "" }/>
                 <TextInput 
                   style={styles.input} 
-                  placeholder={userProfil.adresse.codePostal}
+                  placeholder={user.userProfile.adresse.codePostal}
                   onChangeText={(value) => setNewCodePostal(value)} 
                   value={newCodePostal || "" }/>
                 <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> changeAdresse()} >
@@ -361,7 +311,7 @@ export default function EditProfilScreen() {
                 </TouchableOpacity>
                 <TextInput 
                   style={styles.input} 
-                  placeholder={userProfil.tel}
+                  placeholder={user.userProfile.tel}
                   onChangeText={(value) => setNewTel(value)} 
                   value={newTel || "" }/>
                   { showErrorTel ? <Text style={styles.errorMsg}>* Mauvais format</Text> : null }
@@ -383,7 +333,7 @@ export default function EditProfilScreen() {
           <Text style={styles.buttonText_sign_in}>LOGOUT: Vider reducer</Text>
         </TouchableOpacity>
         <Text style={styles.txt_h1}>Profil</Text>
-        { userProfil && userConnexion ? profil : (
+        { user ? profil : (
           <View style={styles.container}>
             <Text>Oops... Il y a eu un petit problème on dirais</Text>
           </View>

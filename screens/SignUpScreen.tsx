@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function SignUpScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const reducerUser = useSelector((state) => state.user.value);
   //Etats des input 
   const [nameInput, setNameInput] = useState('');
   const [prenomInput, setPrenomInput] = useState('');
@@ -79,6 +80,8 @@ export default function SignUpScreen() {
 // Quand j'appuie sur mon onPresse je déclanche mon handleSubmitRegister qui fait appel au deux fonction de regex 
 
 const handleSubmitRegister = () => {
+  //AJOUTER REDUCER LA!!
+  
   if (verifierEmail() /*&& verifierMotDePasse()*/) {
       //fetch('http://172.20.10.5:3000/users/signup', {
       fetch('http://192.168.1.106:3000/users/signup', {
@@ -99,7 +102,27 @@ const handleSubmitRegister = () => {
         .then(response => response.json())
         .then(data => {
           console.log(data);
+          
           if (data.result) {
+            //REDUCER
+            const userInfo = {
+              email : data.savedUserConnexion.email,
+              token : data.savedUserConnexion.token,
+              userProfile : {
+                nom : data.savedUserProfil.nom,
+                prenom : data.savedUserProfil.prenom,
+                dateOfBirth : data.savedUserProfil.dateOfBirth,
+                adresse : {
+                  rue : data.savedUserProfil.adresse.rue,
+                  ville : data.savedUserProfil.adresse.ville,
+                  codePostal : data.savedUserProfil.adresse.codePostal,
+                },
+                tel : data.savedUserProfil.tel,
+                chef : data.savedUserProfil.chef,
+                }
+              };
+              dispatch(login(userInfo));
+              //console.log(userInfo);
             setPasswordInput('');
             setEmailInput('');
             setNameInput('');
@@ -109,17 +132,10 @@ const handleSubmitRegister = () => {
             setDateOfBirthInput('');
             setPostalInput('');
             setCityInput('');
-            //REDUCER
-            const forReducer = {
-              token: data.savedUserConnexion.token, 
-              email: data.savedUserConnexion.email,
-              userProfile: data.savedUserConnexion.userProfile 
-            };
-            dispatch(login(forReducer));
             Alert.alert('Vous êtes connecté');
             //navigation.navigate('Preference');
-             navigation.navigate('EditProfil');
-          }
+             //navigation.navigate('EditProfil');
+          } 
         })
         .catch(error => {
           console.error('Erreur réseau :', error);

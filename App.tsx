@@ -105,11 +105,7 @@ function MyDrawer() {
 //dispatch(login({ username: signInUsername, token: data.token, id: data.id })); sur la page signin/signup
 export default function App() {
   // Récupérer l'état d'authentification du store Redux
-  useEffect(()=> {
-    //const userToken = useSelector((state : UserState) => state.user.value || null);
-   // console.log(userToken); 
-    
-  },[]);
+ 
   
   //const userToken = false;
 

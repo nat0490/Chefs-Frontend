@@ -12,7 +12,7 @@ import { StyleSheet,
  import { useNavigation } from '@react-navigation/native';
  import React, { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // importer reducer 
 import { login } from '../reducers/user';
 
@@ -22,6 +22,7 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 
 export default function SignInScreen() {
   const navigation = useNavigation();
+  const reducerUser = useSelector((state) => state.user.value);
 
     // Etats des input
   const dispatch = useDispatch();
@@ -38,20 +39,30 @@ export default function SignInScreen() {
       body: JSON.stringify({ email: emailInput, password: passwordInput }),
     }).then(response => response.json())
     .then(data => {
+      //console.log(data.savedUserConnexion);
       if (data.result) {
-        //dispatch(login({username: emailInput  , token: data.token} ));
-        //setEmailInput('');
-        //setPasswordInput('');
-        const forReducer = {
-          token: data.dataUserConnexion.token, 
-          email: data.dataUserConnexion.email,
-          userProfile: data.dataUserConnexion.userProfile 
-        };
-        console.log(forReducer)
-        dispatch(login(forReducer));
-        navigation.navigate('EditProfil');
-        
-      }
+        setEmailInput('');
+        setPasswordInput('');
+        const userInfo = {
+          email : data.dataUserConnexion.email,
+          token : data.dataUserConnexion.token,
+          userProfile : {
+            nom : data.dataUserConnexion.userProfile.nom,
+            prenom : data.dataUserConnexion.userProfile.prenom,
+            dateOfBirth : data.dataUserConnexion.userProfile.dateOfBirth,
+            adresse : {
+              rue : data.dataUserConnexion.userProfile.adresse.rue,
+              ville : data.dataUserConnexion.userProfile.adresse.ville,
+              codePostal : data.dataUserConnexion.userProfile.adresse.codePostal,
+            },
+            tel : data.dataUserConnexion.userProfile.tel,
+            chef : data.dataUserConnexion.userProfile.chef,
+            }
+          };
+        //console.log(userInfo)
+        dispatch(login(userInfo));
+        //navigation.navigate('EditProfil');
+      } 
     })
     } else {
       Alert.alert(
@@ -60,6 +71,7 @@ export default function SignInScreen() {
       )
     }
   }
+  //console.log(reducerUser);
 
   return (
     <KeyboardAvoidingView style={styles.container}>
