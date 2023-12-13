@@ -42,13 +42,13 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 //const navigation = useNavigation();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 //const Drawer = createDrawerNavigator();
 //const dispatch = useDispatch();
-
 
 
 
@@ -105,25 +105,31 @@ function MyDrawer() {
 //dispatch(login({ username: signInUsername, token: data.token, id: data.id })); sur la page signin/signup
 export default function App() {
   // Récupérer l'état d'authentification du store Redux
-  //const userToken = useSelector((state) => state.user.value.token|| null);
-  const userToken = false;
+  useEffect(()=> {
+    //const userToken = useSelector((state : UserState) => state.user.value || null);
+   // console.log(userToken); 
+    
+  },[]);
+  
+  //const userToken = false;
 
   return (
     <Provider store={store}> 
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {userToken ? (
+          {false ? (
             <>
               <Stack.Screen name="HomeTabs" component={HomeTabs} />
 
             </>
           ) : (
             <>
-              <Stack.Screen name="EditProfil" component={EditProfilScreen} />
+              
               <Stack.Screen name="Home" component={HomeScreen} />
               <Stack.Screen name="Sign_in" component={SignInScreen} />
               <Stack.Screen name="Sign_up" component={SignUpScreen} />
               <Stack.Screen name="Preference" component={PreferencesScreen} />
+              <Stack.Screen name="EditProfil" component={EditProfilScreen} />
               
             </>
           )}

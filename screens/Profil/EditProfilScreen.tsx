@@ -69,29 +69,62 @@ export default function EditProfilScreen() {
   const navigation = useNavigation();
 
   const reducerUser = useSelector((state: UserState) => state.user.value);
+
+
+  //récuperer les infos du reducer
+  const recupConnexionUser = () => {
+    //console.log(reducerUser);
+    setUserConnexion(reducerUser);
+  };
   
 //recuperer les info user de le BDD
+
   const recupInfoUser = () => {
     userConnexion ? 
-    //fetch(`http://192.168.1.106:3000/users/profil/${userConnexion.userProfile}`)
-    fetch(`http://192.168.1.106:3000/users/profil/6579c585c03077192e6dea33`)
+    fetch(`http://192.168.1.106:3000/users/profil/${userConnexion.userProfile}`)
+    //fetch(`http://192.168.1.106:3000/users/profil/6579c585c03077192e6dea33`)
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         setUserProfil(data.data);
       }) :"";
   };
-  //récuperer les infos du reducer
-  const recupConnexionUser = () => {
-    setUserConnexion(reducerUser);
-  };
+
+//recuperer les info user de le BDD V2
+  /*const recupInfoUser = async () => {
+    try {
+      if (userConnexion) {
+        const response = await fetch(`http://192.168.1.106:3000/users/profil/${userConnexion.userProfile}`);
+        const data = await response.json();
+        console.log(data);
+        setUserProfil(data.data);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la récupération des infos utilisateur :', error);
+    }
+  };*/
+
+  
 
 //A FAIRE AU CHARGEMENT DE LA PAGE
   useEffect(()=> {
-    recupConnexionUser();
-    recupInfoUser();
-    console.log(reducerUser);
+    const fetchData = async () => {
+      await recupConnexionUser
+      await userConnexion ? 
+      fetch(`http://192.168.1.106:3000/users/profil/${userConnexion.userProfile}`)
+      //fetch(`http://192.168.1.106:3000/users/profil/6579c585c03077192e6dea33`)
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          setUserProfil(data.data);
+        }): null;
+      console.log(reducerUser);
+    };
+    fetchData();
   },[]);
 
+  //console.log(userProfil);
+ // console.log(userConnexion);
   
 //Changer de numéro + vérif données renseignés
   const changeTel = () => {
@@ -419,7 +452,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     color: '#9292FE',
     textAlignVertical: 'center',
-    marginTom: 10,
+    marginTop: 10,
     
   },
   errorMsg: {

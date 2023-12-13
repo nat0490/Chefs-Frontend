@@ -32,16 +32,25 @@ export default function SignInScreen() {
   // création signin connexion 
   const handleConnection = () => {
     if(EMAIL_REGEX.test(emailInput)) {
-      fetch('http://localhost:3000/users/signin', {
+      fetch('http://192.168.1.106:3000/users/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: emailInput, password: passwordInput }),
     }).then(response => response.json())
     .then(data => {
       if (data.result) {
-        dispatch(login({username: emailInput  , token: data.token} ));
-        setEmailInput('');
-        setPasswordInput('');
+        //dispatch(login({username: emailInput  , token: data.token} ));
+        //setEmailInput('');
+        //setPasswordInput('');
+        const forReducer = {
+          token: data.dataUserConnexion.token, 
+          email: data.dataUserConnexion.email,
+          userProfile: data.dataUserConnexion.userProfile 
+        };
+        console.log(forReducer)
+        dispatch(login(forReducer));
+        navigation.navigate('EditProfil');
+        
       }
     })
     } else {
@@ -92,14 +101,11 @@ export default function SignInScreen() {
               <Text style={styles.buttonText_sign_in}> Mot de passe oublié ?</Text>
             </TouchableOpacity>
             <TouchableOpacity 
-            onPress={() => {
-              handleConnection();
-              navigation.navigate('Preference');
-            }}
-            style={styles.btn_sign_up}
-            >
-              <Text style={styles.buttonText_sign_up}
-              > Se connecter</Text>
+              onPress={() => {handleConnection();
+              //navigation.navigate('Preference');
+              }}
+              style={styles.btn_sign_up}>
+              <Text style={styles.buttonText_sign_up}> Se connecter</Text>
             </TouchableOpacity>
           </View>
         </View>
