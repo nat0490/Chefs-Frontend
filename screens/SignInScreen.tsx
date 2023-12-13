@@ -31,7 +31,7 @@ export default function SignInScreen() {
 
   // création signin connexion 
   const handleConnection = () => {
-    if (EMAIL_REGEX.test(emailInput)) {
+    if(EMAIL_REGEX.test(emailInput)) {
       fetch('http://localhost:3000/users/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -59,12 +59,6 @@ export default function SignInScreen() {
         <Text>Salut toi ! Prêt a passer a la casserole ?</Text>
         <StatusBar style="auto" />
       </View>
-
-
-      <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} >
-          <Text style={styles.buttonText_sign_up}>Créer un compte</Text>
-      </TouchableOpacity>
-
 
       <View style={styles.contentContainer}> 
           {/* Saisie email */}
@@ -98,9 +92,14 @@ export default function SignInScreen() {
               <Text style={styles.buttonText_sign_in}> Mot de passe oublié ?</Text>
             </TouchableOpacity>
             <TouchableOpacity 
-            onPress={handleConnection} 
-            style={styles.btn_sign_up} >
-              <Text style={styles.buttonText_sign_up}> Se connecter</Text>
+            onPress={() => {
+              handleConnection();
+              navigation.navigate('Preference');
+            }}
+            style={styles.btn_sign_up}
+            >
+              <Text style={styles.buttonText_sign_up}
+              > Se connecter</Text>
             </TouchableOpacity>
           </View>
         </View>
