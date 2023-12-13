@@ -12,17 +12,18 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import LoginScreen from './screens/LoginScreen';
+import PreferencesScreen from './screens/PreferencesScreen'
 //For Home
 import HomeScreen from './screens/HomeScreen';
 import SearchScreen from './screens/SearchScreen';
 import WishlistScreen from './screens/WishlistScreen';
 //For Profil
-import EditProfilScreen from '../frontend/screens/Profil/EditProfilScreen';
-import SupportScreen from '../frontend/screens/Profil/SupportScreen';
-import NotificationScreen from '../frontend/screens/Profil/NotificationScreen';
-import PastOrderScreen from '../frontend/screens/Profil/PastOrderScreen';
-import ReportProblemScreen from '../frontend/screens/Profil/ReportProblemScreen';
-import SecurityScreen from '../frontend/screens/Profil/SecurityScreen';
+import EditProfilScreen from './screens/Profil/EditProfilScreen';
+import SupportScreen from './screens/Profil/SupportScreen';
+import NotificationScreen from './screens/Profil/NotificationScreen';
+import PastOrderScreen from './screens/Profil/PastOrderScreen';
+import ReportProblemScreen from './screens/Profil/ReportProblemScreen';
+import SecurityScreen from './screens/Profil/SecurityScreen';
 //A TRIER
 import BookDateScreen from './screens/BookDateScreen';
 import ConfigureOrderScreen from './screens/ConfigureOrderScreen';
@@ -96,6 +97,7 @@ export default function App() {
               <Stack.Screen name="Home" component={HomeScreen} />
               <Stack.Screen name="Sign_in" component={SignInScreen} />
               <Stack.Screen name="Sign_up" component={SignUpScreen} />
+              <Stack.Screen name="Preference" component={PreferencesScreen} />
             </>
           )}
           <Stack.Screen name="EditProfil" component={EditProfilScreen} />

@@ -9,6 +9,7 @@ import { StyleSheet,
   Platform,
   Alert,
  } from 'react-native';
+ import { useNavigation } from '@react-navigation/native';
  import React, { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux';
@@ -20,6 +21,7 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 
 
 export default function SignInScreen() {
+  const navigation = useNavigation();
 
     // Etats des input
   const dispatch = useDispatch();
@@ -37,7 +39,7 @@ export default function SignInScreen() {
     }).then(response => response.json())
     .then(data => {
       if (data.result) {
-        dispatch(login({username: , token: data.token} ));
+        dispatch(login({username: emailInput  , token: data.token} ));
         setEmailInput('');
         setPasswordInput('');
       }
@@ -57,6 +59,12 @@ export default function SignInScreen() {
         <Text>Salut toi ! Prêt a passer a la casserole ?</Text>
         <StatusBar style="auto" />
       </View>
+
+
+      <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} >
+          <Text style={styles.buttonText_sign_up}>Créer un compte</Text>
+      </TouchableOpacity>
+
 
       <View style={styles.contentContainer}> 
           {/* Saisie email */}
