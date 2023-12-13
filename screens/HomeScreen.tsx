@@ -20,7 +20,7 @@ export default function App() {
       {/* Section avec titre et barre en dessous */}
       <View style={styles.section_box}>
         <View style={styles.box_titre}>
-            <FontAwesome name='heart' size={22}   />
+            <FontAwesome name='heart' size={22}/>
             <Text style={styles.txt_h1}>Our trendy recipes</Text>
         </View>
 
@@ -76,7 +76,7 @@ export default function App() {
       {/* Section avec un autre titre et barre en dessous */}      
       <View style={styles.section_box}>
         <View style={styles.box_titre}>
-            <FontAwesome name='heart' size='22'  />
+            <FontAwesome name='heart' size={22} />
             <Text style={styles.txt_h1}>Our trendy recipes</Text>
         </View>
 
@@ -106,7 +106,7 @@ export default function App() {
             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
               <View style={styles.box_description }>
-                <FontAwesome name='bowl-food' size='22'  />
+                <FontAwesome name='bowl-food' size={22}  />
                 <Text >Italien</Text>
             </View>
           </TouchableOpacity>
@@ -114,7 +114,7 @@ export default function App() {
             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
               <View style={styles.box_description }>
-                <FontAwesome name='food' size='22'  />
+                <FontAwesome name='food' size={22}   />
                 <Text>Italien</Text>
               </View>
           </TouchableOpacity>
@@ -122,7 +122,7 @@ export default function App() {
               <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
                 <View style={styles.box_description }>
-                  <FontAwesome name='bowl-food' size='22'  />
+                  <FontAwesome name='bowl-food' size={22}   />
                   <Text >Italien</Text>
                 </View>
           </TouchableOpacity>

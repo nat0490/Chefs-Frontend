@@ -12,6 +12,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import LoginScreen from './screens/LoginScreen';
+import PreferencesScreen from './screens/PreferencesScreen'
 //For Home
 import HomeScreen from './screens/HomeScreen';
 import SearchScreen from './screens/SearchScreen';
@@ -96,6 +97,7 @@ export default function App() {
               <Stack.Screen name="Home" component={HomeScreen} />
               <Stack.Screen name="Sign_in" component={SignInScreen} />
               <Stack.Screen name="Sign_up" component={SignUpScreen} />
+              <Stack.Screen name="Preference" component={PreferencesScreen} />
             </>
           )}
           <Stack.Screen name="EditProfil" component={EditProfilScreen} />
