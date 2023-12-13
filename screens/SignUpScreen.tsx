@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 import { CheckBox } from 'react-native-elements';
 import DateTimePikers from "@react-native-community/datetimepicker"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import user from '../reducers/user';
-
+import { login, logout} from '../reducers/user';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function SignUpScreen() {
+  const dispatch = useDispatch();
 
   //Etats des input 
   const [nameInput, setNameInput] = useState('');
@@ -16,7 +17,7 @@ export default function SignUpScreen() {
   const [passwordInput, setPasswordInput] = useState('');
   const [streetInput , setStreetInput] = useState('');
   const [phoneInput, setPhoneInput] = useState('');
-  const [anniversaireInput , setAnniversaireInput] = useState('');
+  const [dateOfBirthInput , setDateOfBirtheInput] = useState('');
   const [postalInput, setPostalInput] = useState('');
   const [cityInput, setCityInput] = useState('');
   const [accepteConditions, setAccepteConditions] = useState(false);
@@ -30,7 +31,7 @@ export default function SignUpScreen() {
   }
 
   const confirmeIosDate = () => {
-    setAnniversaireInput(date.toDateString())
+    setDateOfBirtheInput(date.toDateString())
     toogleDataPiker();
   }
   const onChange = ({type}, selectedDate) => {
@@ -40,7 +41,7 @@ export default function SignUpScreen() {
         setDate(currentDate);
         if(Platform.OS === 'android'){
           toogleDataPiker()
-          setAnniversaireInput(currentDate.toDateString());
+          setDateOfBirtheInput(currentDate.toDateString());
         }
       }else{
         toogleDataPiker()
@@ -77,8 +78,33 @@ export default function SignUpScreen() {
 
     const handleSubmitRegister = () => {
       if (verifierEmail() && verifierMotDePasse()) {
+        if(voirPikerData !== true){
+          Alert.alert,
+          'Erreur',
+          'Vous devez accepter nos conditions d\'utilsateur'
+        }else {
+          fetch('http://localhost:3000/users/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: passwordInput , email:  emailInput, nom : nameInput, prenom : prenomInput, dateOfBirth : dateOfBirthInput , rue : streetInput, ville: cityInput, codePostal :  postalInput, tel : phoneInput, }),
+          }).then(response => response.json())
+            .then(data => {
+              if (data.result) {
+                dispatch(login({ email: emailInput, token: data.token }));
+                setPasswordInput('')
+                setEmailInput('')
+                setNameInput('')
+                setPrenomInput('')
+                setStreetInput('')
+                setPhoneInput('')
+                setDateOfBirtheInput('')
+                setPostalInput('')
+                setCityInput('')
+              }
+            });
+            }
+        }
         
-      }
     };
 
 
@@ -172,8 +198,8 @@ export default function SignUpScreen() {
                   <TextInput
                     style={[styles.input_double, { marginLeft: 16}]}
                     placeholder="lundi 10 Aout 2024"
-                    value={anniversaireInput}
-                    onChangeText={setAnniversaireInput}
+                    value={dateOfBirthInput}
+                    onChangeText={setDateOfBirtheInput}
                     editable={false}
                     onPressIn={toogleDataPiker}
                   />
