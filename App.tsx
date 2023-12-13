@@ -1,11 +1,14 @@
+//import 'react-native-gesture-handler';
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+   
 
 //Navigation
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+//import { createDrawerNavigator } from '@react-navigation/drawer';
 
 //IMPÖRT DES SCREENS
 //For LOG
@@ -67,14 +70,34 @@ const HomeTabs = () => (
     headerShown: false,
   })}>
     <Tab.Screen name="Main" component={MainScreen} />
+   
     <Tab.Screen name="Search" component={SearchScreen} />
-    <Tab.Screen name="Wishlist" component={WishlistScreen} />
+    <Tab.Screen name="Wishlist" component={WishlistScreen} /> 
+{/*
+    <Tab.Screen name="EditProfil" component={EditProfilScreen} />
+    <Tab.Screen name="PastOrder" component={PastOrderScreen} />
+    */}
   </Tab.Navigator>
 );
 
 const store = configureStore({
   reducer: { user },
 })
+
+/*
+function MyDrawer() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="EditProfil" component={EditProfilScreen} />
+      <Drawer.Screen name="Notification" component={NotificationScreen} />
+      <Drawer.Screen name="Security" component={SecurityScreen} />
+      <Drawer.Screen name="PastOrder" component={PastOrderScreen} />
+      <Drawer.Screen name="HelpSupport" component={SupportScreen} />
+      <Drawer.Screen name="Problem" component={ReportProblemScreen} />
+    </Drawer.Navigator>
+  );
+}
+*/
 
 
 //BESOIN:
@@ -105,8 +128,10 @@ export default function App() {
           <Stack.Screen name="Security" component={SecurityScreen} />
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />
           <Stack.Screen name="HelpSupport" component={SupportScreen} />
-          <Stack.Screen name="Problem" component={ReportProblemScreen} />
+          <Stack.Screen name="Problem" component={ReportProblemScreen} /> 
         </Stack.Navigator>
+        
+
       </NavigationContainer>
     </Provider>
   );

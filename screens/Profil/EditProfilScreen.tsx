@@ -25,60 +25,102 @@ interface UserProfil {
 export default function EditProfilScreen() {
 
   const [ userProfil, setUserProfil ] =useState<UserProfil | null>(null);
-  //A RECUPERER DANS UN REDUCER
-  const [ userIdConnexion, setUserIdConnexion ] = useState<String | null>(null);
+  //A RECUPERER DANS UN REDUCER + RAJOUTER HOOK DEFFET AU DEMARRAGE DE LA PAGE
+  const [ userConnexion, setUserConnexion ] = useState<String | null>(null);
   const [ modifCoordonne, setModifCoordonne ] = useState<boolean>(false);
   const [ newRue, setNewRue ] = useState<string | null >("");
   const [ newVille, setNewVille ] = useState<string | null>("");
   const [ newCodePostal, setNewCodePostal ] = useState<string | null>("");
   const [ newTel, setNewTel ] = useState<string | null>("");
-  const [ showAdresseMsg, setShowAdresseMsg] = useState<boolean>(false);
+  //const [ showAdresseMsg, setShowAdresseMsg] = useState<boolean>(false);
+  const [ showErrorTel, setShowErrorTel ] = useState<boolean> (false);
 
   
-//recuperer les info de le BDD
+
+  
+//recuperer les info user de le BDD
   const recupInfoUser = () => {
-    fetch(`http://localhost:3000/users/profil/${userIdConnexion}`)
+    //fetch(`http://192.168.1.106:3000/users/profil/${userIdConnexion}`)
+    fetch(`http://192.168.1.106:3000/users/profil/6576fae61101e0d05ba3d1f7`)
       .then(res => res.json())
       .then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         setUserProfil(data.data);
       })
   }
-//recupère les info de le BDD au chargement de la page
+  //EN ATTENTE DU REDUCER
+  const recupConnexionUser = () => {
+    const reducerUser = useSelector((state) => state.user.value);
+    setUserConnexion(reducerUser);
+  }
+
+//A FAIRE AU CHARGEMENT DE LA PAGE
   useEffect(()=> {
     recupInfoUser();
+   // recupConnexionUser();
   },[]);
 
+  //let errorTel ="";
   const changeTel = () => {
-    fetch('http://localhost:3000/users')
+    const userId = userProfil? userProfil.id : null;
+    const newValueTel = newTel ? newTel: userProfil? userProfil.tel : null;
+    //const pattern = /^\+(?:[0-9] ?){6,14}[0-9]$/;
+    const pattern = /^0[0-9]{9}$/;
+    if (pattern.test(newValueTel)) {
+      setModifCoordonne(!modifCoordonne);
+      //setShowErrorTel(false);
+      //fetch(`http://192.168.1.106:3000/users/profil/${userId}/update-tel`,
+    fetch(`http://192.168.1.106:3000/users/profil/6576fae61101e0d05ba3d1f7/update-tel`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({newTel: newValueTel}),
+    })
+      .then(res => res.json())
+      .then(data => {
+        //console.log(data);
+        if(data.result) {
+          //récupère les infos à jour de BDD pour les afficher
+          //setShowAdresseMsg(false);
+          setShowErrorTel(false);
+        } else { 
+          setShowErrorTel(true);
+        } 
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la requête POST :', error);
+      });
+    } else {
+      console.log("mauvais format");
+      setShowErrorTel(true);
+    }
   };
 
-
-
-  let errorAdress = "";
   const changeAdresse = () => {
     setModifCoordonne(!modifCoordonne);
-    const userId = userProfil.id ;
+    const userId = userProfil? userProfil.id : null;
     const newAdresse = {
-      rue: newRue || userProfil.adresse.rue,
-      ville: newVille || userProfil.adresse.ville,
-      codePostal: newCodePostal || userProfil.adresse.codePostal
+      rue: newRue? newRue : userProfil? userProfil.adresse.rue : null,
+      ville: newVille? newVille : userProfil? userProfil.adresse.ville: null,
+      codePostal: newCodePostal? newCodePostal : userProfil? userProfil.adresse.codePostal: null,
     };
-    fetch(`http://localhost:3000/users/${userId}/update-adresse`, {
-      method: 'POST',
+    //fetch(`http://192.168.1.106:3000/users/profil/${userId}/update-adresse`,
+    fetch(`http://192.168.1.106:3000/users/profil/6576fae61101e0d05ba3d1f7/update-adresse`, {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify(newAdresse),
     })
       .then(res => res.json())
       .then(data => {
+        //console.log(data);
         if(data.result) {
           //récupère les infos à jour de BDD pour les afficher
-          setShowAdresseMsg(false);
+          //setShowAdresseMsg(false);
           recupInfoUser();
         } else { 
-          setShowAdresseMsg(true);
-          errorAdress = data.message;
-        }
+          //setShowAdresseMsg(true);
+          //let errorAdress = data.message;
+          console.log('erreur de données');
+        } 
       })
       .catch((error) => {
         console.error('Erreur lors de la requête POST :', error);
@@ -86,18 +128,15 @@ export default function EditProfilScreen() {
   };
 
   //InfoUser
+  //EMAIL A RECUPERER, COMMENT??
   const userDetails = userProfil? (
     <View> 
       <View>
-        <Text>Identité</Text>
         <View> 
-          <Text>{userProfil.nom}</Text>
-          <Text>{userProfil.prenom}</Text>
-          <Text>{userProfil.dateOfBirth.toDateString()}</Text>
+          <Text style={styles.inputText}>Nom: {userProfil.nom}</Text>
+          <Text style={styles.inputText}>Prenom: {userProfil.prenom}</Text>
+          <Text style={styles.inputText}>Date de naissance:  { userProfil.dateOfBirth? userProfil.dateOfBirth.toLocaleDateString() : "../../...." }</Text>
         </View>
-        <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} >
-          <Text style={styles.buttonText_sign_in}>Edit</Text>
-        </TouchableOpacity>
       </View>
 
       <View>
@@ -121,7 +160,7 @@ export default function EditProfilScreen() {
                 placeholder={userProfil.adresse.codePostal}
                 onChangeText={(value) => setNewCodePostal(value)} 
                 value={newCodePostal || "" }/>
-                <Text style={styles.errorMsg}>* {errorAdress}</Text>
+                
               <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> changeAdresse()} >
                 <Text style={styles.buttonText_sign_up}>Changer l'adresse</Text>
               </TouchableOpacity>
@@ -131,17 +170,23 @@ export default function EditProfilScreen() {
                 placeholder={userProfil.tel}
                 onChangeText={(value) => setNewTel(value)} 
                 value={newTel || "" }/>
+                { showErrorTel ? <Text style={styles.errorMsg}>* Mauvais format</Text> : null }
               <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> changeTel()} >
                 <Text style={styles.buttonText_sign_up}>Changer le numéro</Text>
               </TouchableOpacity>
             </View> :
-
+            <> 
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> setModifCoordonne(!modifCoordonne)}>
-              <Text style={styles.buttonText_sign_up}>{userProfil.adresse.rue}</Text>
-              <Text style={styles.buttonText_sign_up}>{userProfil.adresse.ville}</Text>
-              <Text style={styles.buttonText_sign_up}>{userProfil.adresse.codePostal}</Text>
-              <Text style={styles.buttonText_sign_up}>{userProfil.tel}</Text>
+              <Text style={styles.inputText}>Adresse: {userProfil.adresse.rue}</Text>
+              <Text style={styles.inputText}>Ville: {userProfil.adresse.ville}</Text>
+              <Text style={styles.inputText}>Code postal: {userProfil.adresse.codePostal}</Text>
+              <Text style={styles.inputText}>Téléphone: {userProfil.tel}</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} >
+              <Text style={styles.buttonText_sign_in}>Edit</Text>
+            </TouchableOpacity>
+            </>
           }
             
           
@@ -205,6 +250,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 10,
   },
+  inputText: {
+    height: 40,
+    width: '100%',
+    borderColor: '#9292FE',
+    borderRadius:10,
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    color: '#9292FE',
+    textAlignVertical: 'center',
+    
+  },
+
   errorMsg: {
     color: 'red',
     fontSize: 10,
