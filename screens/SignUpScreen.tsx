@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert , Pressable ,Platform} from 'react-native';
 import React, { useState } from 'react';
 import { CheckBox } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
 import DateTimePikers from "@react-native-community/datetimepicker"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { login, logout} from '../reducers/user';
@@ -9,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export default function SignUpScreen() {
   const dispatch = useDispatch();
-
+  const navigation = useNavigation();
   //Etats des input 
   const [nameInput, setNameInput] = useState('');
   const [prenomInput, setPrenomInput] = useState('');
@@ -17,7 +18,7 @@ export default function SignUpScreen() {
   const [passwordInput, setPasswordInput] = useState('');
   const [streetInput , setStreetInput] = useState('');
   const [phoneInput, setPhoneInput] = useState('');
-  const [dateOfBirthInput , setDateOfBirtheInput] = useState('');
+  const [dateOfBirthInput , setDateOfBirthInput] = useState('');
   const [postalInput, setPostalInput] = useState('');
   const [cityInput, setCityInput] = useState('');
   const [accepteConditions, setAccepteConditions] = useState(false);
@@ -31,7 +32,7 @@ export default function SignUpScreen() {
   }
 
   const confirmeIosDate = () => {
-    setDateOfBirtheInput(date.toDateString())
+    setDateOfBirthInput(date.toDateString())
     toogleDataPiker();
   }
   const onChange = ({type}, selectedDate) => {
@@ -41,7 +42,7 @@ export default function SignUpScreen() {
         setDate(currentDate);
         if(Platform.OS === 'android'){
           toogleDataPiker()
-          setDateOfBirtheInput(currentDate.toDateString());
+          setDateOfBirthInput(currentDate.toDateString());
         }
       }else{
         toogleDataPiker()
@@ -76,37 +77,48 @@ export default function SignUpScreen() {
 
 // Quand j'appuie sur mon onPresse je déclanche mon handleSubmitRegister qui fait appel au deux fonction de regex 
 
-    const handleSubmitRegister = () => {
-      if (verifierEmail() && verifierMotDePasse()) {
-        if(voirPikerData !== true){
-          Alert.alert,
-          'Erreur',
-          'Vous devez accepter nos conditions d\'utilsateur'
-        }else {
-          fetch('http://localhost:3000/users/signup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password: passwordInput , email:  emailInput, nom : nameInput, prenom : prenomInput, dateOfBirth : dateOfBirthInput , rue : streetInput, ville: cityInput, codePostal :  postalInput, tel : phoneInput, }),
-          }).then(response => response.json())
-            .then(data => {
-              if (data.result) {
-                dispatch(login({ email: emailInput, token: data.token }));
-                setPasswordInput('')
-                setEmailInput('')
-                setNameInput('')
-                setPrenomInput('')
-                setStreetInput('')
-                setPhoneInput('')
-                setDateOfBirtheInput('')
-                setPostalInput('')
-                setCityInput('')
-              }
-            });
-            }
-        }
-        
-    };
-
+const handleSubmitRegister = () => {
+  if (verifierEmail() && verifierMotDePasse()) {
+      fetch('http://172.20.10.5:3000/users/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          password: passwordInput,
+          email: emailInput,
+          nom: nameInput,
+          prenom: prenomInput,
+          dateOfBirth: dateOfBirthInput,
+          rue: streetInput,
+          ville: cityInput,
+          codePostal: postalInput,
+          tel: phoneInput,
+        }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          if (data.result) {
+            setPasswordInput('');
+            setEmailInput('');
+            setNameInput('');
+            setPrenomInput('');
+            setStreetInput('');
+            setPhoneInput('');
+            setDateOfBirthInput('');
+            setPostalInput('');
+            setCityInput('');
+            Alert.alert('Vous êtes connecté');
+            navigation.navigate('Preference');
+          }
+        })
+        .catch(error => {
+          console.error('Erreur réseau :', error);
+          // Gérez l'erreur ici, par exemple, en affichant un message à l'utilisateur
+          Alert.alert('Une erreur est survenue. Veuillez réessayer plus tard.');
+        });
+    
+      }
+};
 
 
   return (
@@ -199,7 +211,7 @@ export default function SignUpScreen() {
                     style={[styles.input_double, { marginLeft: 16}]}
                     placeholder="lundi 10 Aout 2024"
                     value={dateOfBirthInput}
-                    onChangeText={setDateOfBirtheInput}
+                    onChangeText={setDateOfBirthInput}
                     editable={false}
                     onPressIn={toogleDataPiker}
                   />
