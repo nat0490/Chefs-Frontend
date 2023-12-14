@@ -104,25 +104,6 @@ const handleSubmitRegister = () => {
           console.log(data);
           
           if (data.result) {
-            //REDUCER
-            const userInfo = {
-              email : data.savedUserConnexion.email,
-              token : data.savedUserConnexion.token,
-              userProfile : {
-                nom : data.savedUserProfil.nom,
-                prenom : data.savedUserProfil.prenom,
-                dateOfBirth : data.savedUserProfil.dateOfBirth,
-                adresse : {
-                  rue : data.savedUserProfil.adresse.rue,
-                  ville : data.savedUserProfil.adresse.ville,
-                  codePostal : data.savedUserProfil.adresse.codePostal,
-                },
-                tel : data.savedUserProfil.tel,
-                chef : data.savedUserProfil.chef,
-                }
-              };
-              dispatch(login(userInfo));
-              //console.log(userInfo);
             setPasswordInput('');
             setEmailInput('');
             setNameInput('');
@@ -150,6 +131,8 @@ const handleSubmitRegister = () => {
   return (
     <View style={styles.container}>
       <View style={styles.nav_bar_color}></View>
+
+      
       {/* Fleche revenir sur la page précédente  */}
       <View style={styles.containeur_fleche}>
         <FontAwesome name='arrow-left' size={22}  />
@@ -352,13 +335,7 @@ const styles = StyleSheet.create({
       marginBottom: 10,
     },
   
-    // Navigation View Styles
-    containeur_navigation_view: {
-      width: "80%",
-      marginTop: 20,
-      marginBottom: 20,
-    },
-  
+    
     // Input Styles
     input: {
       height: 40,
@@ -419,6 +396,15 @@ const styles = StyleSheet.create({
       marginTop: -10,
       
     },
+
+    
+     // Navigation View Styles
+    containeur_navigation_view: {
+      width: "80%",
+      marginTop: 20,
+      marginBottom: 20,
+    },
+  
   
     // Detail Container Styles
     detailContainer: {
