@@ -109,7 +109,10 @@ export default function SignInScreen() {
 
           {/* Boutons forgot password + Se connecter */}
           <View style={styles.containerButton}>
-            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in}  >
+            <TouchableOpacity activeOpacity={1}
+            style={styles.btn_sign_in}
+            // ajouter onPress redirection page
+            >
               <Text style={styles.buttonText_sign_in}> Mot de passe oublié ?</Text>
             </TouchableOpacity>
             <TouchableOpacity 
@@ -139,10 +142,16 @@ export default function SignInScreen() {
         <View>
           <Text >New user?</Text>
           <View style={styles.buttonContainer}> 
-            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} >
+            <TouchableOpacity
+            activeOpacity={1}
+            style={styles.btn_sign_in}
+            // ajouter onPress redirection page
+            >
               <Text style={styles.buttonText_sign_in}>Termes & conditions</Text>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} >
+            <TouchableOpacity
+            activeOpacity={1}
+            style={styles.btn_sign_up} >
               <Text style={styles.buttonText_sign_up}>Créer un compte</Text>
             </TouchableOpacity>
 
