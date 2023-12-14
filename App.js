@@ -32,12 +32,9 @@ import ConfigureOrderScreen from './screens/ConfigureOrderScreen';
 import DishScreen from './screens/DishScreen';
 import MainScreen from './screens/MainScreen';
 import OrderScreen from './screens/OrderScreen';
+//import ProfilScreen from './screens/Profil/ProfilScreen';
 
-//FONT AWESOME
-//import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { FontAwesome } from '@expo/vector-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBowlFood } from '@fortawesome/free-solid-svg-icons'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 //REDUX
 import { Provider } from 'react-redux';
@@ -95,12 +92,24 @@ export default function App() {
           <Stack.Screen name="HomeTabs" component={HomeTabs} />
           <Stack.Screen name="Setting" component={SettingScreen} />
 
-          
-          <Stack.Screen name="Sign_in" component={SignInScreen} />
-          <Stack.Screen name="Sign_up" component={SignUpScreen} />
-          <Stack.Screen name="Preference" component={PreferencesScreen} />
-          <Stack.Screen name="Terms" component={TermsScreen}/>
-          
+            </>
+          ) : (
+            <>
+              
+              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="Sign_in" component={SignInScreen} />
+              <Stack.Screen name="Sign_up" component={SignUpScreen} />
+              <Stack.Screen name="Preference" component={PreferencesScreen} />
+              <Stack.Screen name="EditProfil" component={EditProfilScreen} />
+              
+              <Stack.Screen name="Preference" component={PreferencesScreen}/>
+              <Stack.Screen name="Terms" component={TermsScreen}/>
+              
+            </>
+          )}
+          {/*<Stack.Screen name="EditProfil" component={EditProfilScreen} /> */}
+          <Stack.Screen name="Notification" component={NotificationScreen} />
+          <Stack.Screen name="Security" component={SecurityScreen} />
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />
          
         </Stack.Navigator>
