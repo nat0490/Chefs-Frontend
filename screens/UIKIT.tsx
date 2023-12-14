@@ -80,14 +80,15 @@ const styles = StyleSheet.create({
   //-----------------Pour la margin du Top------------------
   marginTop:{
     margin : 20,
-  }
+  },
 
   //-----------------Styles de notre containeur box------------------
   container_box_width:{
     width: "80%",
     flex:1,
     backgroundColor:'red',
-  }
+    alignItems: 'center',
+  },
 
 
 

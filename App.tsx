@@ -16,6 +16,7 @@ import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import LoginScreen from './screens/LoginScreen';
 import PreferencesScreen from './screens/PreferencesScreen'
+import TermsScreen from './screens/TermsScreen'
 //For Home
 import HomeScreen from './screens/HomeScreen';
 import SearchScreen from './screens/SearchScreen';
@@ -102,6 +103,12 @@ export default function App() {
            
          
           {/*Menu edit profil, à enlever d'ici ensuite */}
+              <Stack.Screen name="Preference" component={PreferencesScreen}/>
+              <Stack.Screen name="Terms" component={TermsScreen}/>
+              
+            
+          
+          {/*<Stack.Screen name="EditProfil" component={EditProfilScreen} /> */}
           <Stack.Screen name="Notification" component={NotificationScreen} />
           <Stack.Screen name="Security" component={SecurityScreen} />
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />
