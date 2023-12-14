@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export interface UserState {
-  
+interface UserState {
     value: {
       email: String | null,
       token: String | null,
@@ -20,7 +19,6 @@ export interface UserState {
         //userPreference: [{type: mongoose.Schema.Types.ObjectId, ref: 'userPreference'}]
       }
     };
-  
 };
 
 const initialState: UserState = {

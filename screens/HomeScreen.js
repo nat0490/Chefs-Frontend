@@ -1,9 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image , TouchableOpacity} from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {login, logout} from '../reducers/user';
 
 export default function App() {
@@ -11,19 +11,7 @@ export default function App() {
   const dispatch=useDispatch();
   const navigation = useNavigation();
 
-  const [ userLog, setUserLog ] = useState<String | null>(null);
-
-//REDUCER: Si token, alors envoyer sur page Main
-  const reducerUserToken = useSelector((state) => state.user.value.token);
-  //console.log(reducerUserToken);
-  useEffect(() => {
-    setUserLog(reducerUserToken);
-  },[]); 
-  //console.log(userLog);
-
   return (
-
-    userLog ? navigation.navigate('HomeTabs', { screen: 'Main' }) : 
     <View style={styles.container}>
           {/* Barre de navigation colorée */}
       <View style={styles.nav_bar_color}></View>
@@ -156,9 +144,7 @@ export default function App() {
           </TouchableOpacity>
           
 
-          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Preference')}>
-            <Text style={styles.buttonText_sign_up}>Preference</Text>
-          </TouchableOpacity>
+  
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Terms')}>
               <Text style={styles.buttonText_sign_up}>navigation</Text>
           </TouchableOpacity>
