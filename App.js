@@ -56,7 +56,7 @@ const Tab = createBottomTabNavigator();
 const HomeTabs = () => (
   <Tab.Navigator screenOptions={({ route }) => ({
     tabBarIcon: ({ color, size }) => {
-      let iconName: string = '';
+      let iconName = '';
       if (route.name === 'Home') {
         iconName = 'house';
       } else if (route.name === 'Search') {
