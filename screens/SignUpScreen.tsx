@@ -8,9 +8,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { login, logout} from '../reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
 
+
 export default function SignUpScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const reducerUser = useSelector((state) => state.user.value);
   //Etats des input 
   const [nameInput, setNameInput] = useState('');
   const [prenomInput, setPrenomInput] = useState('');
@@ -78,8 +80,11 @@ export default function SignUpScreen() {
 // Quand j'appuie sur mon onPresse je déclanche mon handleSubmitRegister qui fait appel au deux fonction de regex 
 
 const handleSubmitRegister = () => {
-  if (verifierEmail() && verifierMotDePasse()) {
-      fetch('http://172.20.10.5:3000/users/signup', {
+  //AJOUTER REDUCER LA!!
+  
+  if (verifierEmail() /*&& verifierMotDePasse()*/) {
+      //fetch('http://172.20.10.5:3000/users/signup', {
+      fetch('http://192.168.1.106:3000/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -96,7 +101,8 @@ const handleSubmitRegister = () => {
       })
         .then(response => response.json())
         .then(data => {
-          console.log(data)
+          console.log(data);
+          
           if (data.result) {
             setPasswordInput('');
             setEmailInput('');
@@ -108,8 +114,9 @@ const handleSubmitRegister = () => {
             setPostalInput('');
             setCityInput('');
             Alert.alert('Vous êtes connecté');
-            navigation.navigate('Preference');
-          }
+            //navigation.navigate('Preference');
+             //navigation.navigate('EditProfil');
+          } 
         })
         .catch(error => {
           console.error('Erreur réseau :', error);
@@ -124,6 +131,8 @@ const handleSubmitRegister = () => {
   return (
     <View style={styles.container}>
       <View style={styles.nav_bar_color}></View>
+
+      
       {/* Fleche revenir sur la page précédente  */}
       <View style={styles.containeur_fleche}>
         <FontAwesome name='arrow-left' size={22}  />
@@ -326,13 +335,7 @@ const styles = StyleSheet.create({
       marginBottom: 10,
     },
   
-    // Navigation View Styles
-    containeur_navigation_view: {
-      width: "80%",
-      marginTop: 20,
-      marginBottom: 20,
-    },
-  
+    
     // Input Styles
     input: {
       height: 40,
@@ -393,6 +396,15 @@ const styles = StyleSheet.create({
       marginTop: -10,
       
     },
+
+    
+     // Navigation View Styles
+    containeur_navigation_view: {
+      width: "80%",
+      marginTop: 20,
+      marginBottom: 20,
+    },
+  
   
     // Detail Container Styles
     detailContainer: {
