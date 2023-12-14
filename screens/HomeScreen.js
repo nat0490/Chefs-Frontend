@@ -1,10 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image , TouchableOpacity} from 'react-native';
 import React from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import {login, logout} from '../reducers/user';
+//FONTAWESOME
+//import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBowlFood } from '@fortawesome/free-solid-svg-icons'
 
 export default function App() {
 
@@ -51,24 +55,22 @@ export default function App() {
             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
               <View style={styles.box_description }>
-                <FontAwesome name='bowl-food' size={22}    />
-                <Text >Italien</Text>
+              <FontAwesomeIcon icon={ faBowlFood }/><Text >   Italien</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={1} style={styles.box}>
             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
               <View style={styles.box_description }>
-                <FontAwesome name='food' size={22}    />
-                <Text>Italien</Text>
+              <FontAwesomeIcon icon={ faBowlFood }/><Text >   Italien</Text>
               </View>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={1} style={styles.box}>
               <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
                 <View style={styles.box_description }>
-                  <FontAwesome name='bowl-food' size={22}  />
-                  <Text >Italien</Text>
+                  {/*<FontAwesome name='bowl-food' size={22}  /> */}
+                  <FontAwesomeIcon icon={ faBowlFood }/><Text >   Italien</Text>
                 </View>
           </TouchableOpacity>
         </View>
@@ -108,24 +110,21 @@ export default function App() {
             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
               <View style={styles.box_description }>
-                <FontAwesome name='bowl-food' size={22}  />
-                <Text >Italien</Text>
+              <FontAwesomeIcon icon={ faBowlFood }/><Text >   Italien</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={1} style={styles.box}>
             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
               <View style={styles.box_description }>
-                <FontAwesome name='food' size={22}   />
-                <Text>Italien</Text>
+              <FontAwesomeIcon icon={ faBowlFood }/><Text >   Italien</Text>
               </View>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={1} style={styles.box}>
               <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
                 <View style={styles.box_description }>
-                  <FontAwesome name='bowl-food' size={22}   />
-                  <Text >Italien</Text>
+                <FontAwesomeIcon icon={ faBowlFood }/><Text >   Italien</Text>
                 </View>
           </TouchableOpacity>
         </View>

@@ -33,7 +33,7 @@ export default function SignInScreen() {
   // création signin connexion 
   const handleConnection = () => {
     if(EMAIL_REGEX.test(emailInput)) {
-      fetch('http://192.168.1.106:3000/users/signin', {
+      fetch('https://chefs-backend-amber.vercel.app/users/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: emailInput, password: passwordInput }),
@@ -43,10 +43,12 @@ export default function SignInScreen() {
       if (data.result) {
         setEmailInput('');
         setPasswordInput('');
+//PARTIE REDUX: VIENS ENVOYER DANS LE REDUCER LES INFO USER
         const userInfo = {
           email : data.dataUserConnexion.email,
           token : data.dataUserConnexion.token,
           userProfile : {
+            id : data.dataUserConnexion.userProfile._id,
             nom : data.dataUserConnexion.userProfile.nom,
             prenom : data.dataUserConnexion.userProfile.prenom,
             dateOfBirth : data.dataUserConnexion.userProfile.dateOfBirth,
@@ -59,8 +61,9 @@ export default function SignInScreen() {
             chef : data.dataUserConnexion.userProfile.chef,
             }
           };
-        //console.log(userInfo)
+        console.log(userInfo)
         dispatch(login(userInfo));
+//ENVOIE ENSUITE LUTILISATEUR SUR LA PAGE MAIN (ACCEUIL)
         navigation.navigate('HomeTabs', { screen: 'Main' }) ;
       } 
     })

@@ -1,63 +1,136 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-//import { DrawerActions } from '@react-navigation/routers';
-import React from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import React, { useEffect, useState } from 'react';
+import { login, logout} from '../../reducers/user';
+//FONTAWESOME
+import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { 
+  faUser, 
+  faBell, 
+  faCreditCard, 
+  faShieldHalved,
+  faLock, 
+  faCircleQuestion,
+  faFlag,
+  faDiamond,
+  faUtensils,
+  faRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons'
+import { useDispatch, useSelector } from 'react-redux';
+
 
 export default function SettingScreen() {
   
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
-   
- 
+    const user = useSelector((state) => state.user.value);
+    const chefStatus = useSelector((state) => state.user.value.userProfile.chef);
+    //console.log(chefStatus);
 
+    const [ chef, setChef ] = useState(false);
+
+  useEffect(()=> {
+    setChef(chefStatus);
+    //console.log(user);
+  },[chefStatus]);
+
+  const changeStatusChef = () => {
+    fetch(`https://chefs-backend-amber.vercel.app/users/profil/${user.userProfile.id}/update-chef`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify(),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        if (data.result) {
+          const userInfo = {
+            email : user.email,
+            token : user.token,
+            userProfile : {
+              id : user.userProfile.id,
+              nom : user.userProfile.nom,
+              prenom : user.userProfile.prenom,
+              dateOfBirth : user.userProfile.dateOfBirth,
+              adresse : {
+                rue : user.userProfile.adresse.rue,
+                ville : user.userProfile.adresse.ville,
+                codePostal : user.userProfile.adresse.codePostal,
+              },
+              tel : user.userProfile.tel,
+              chef : data.newStatus,
+              }
+            };
+          //console.log(userInfo);
+          dispatch(logout());
+          dispatch(login(userInfo));
+          //setModifEmailPw(!modifEmailPw);
+          //setEmail("");
+        }
+      })
+  }
 
   return (
     <View style={styles.container}>
         <View style={styles.nav_bar_color}></View>
             <View style={styles.topPage}> 
                 <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Main' )}>
-                    <Text style={styles.buttonText_sign_up}>←</Text>
+                    <Text style={styles.btnTextBack}>←</Text>
                 </TouchableOpacity>
                 <Text style={styles.txt_h1}>Setting</Text>
             </View>
       
         <View style={styles.container_box_width}>
             <Text style={styles.txt_h2}>Account</Text>
-
+              <View style={styles.bloc}> 
                 <TouchableOpacity onPress={() => navigation.navigate('EditProfil' )}>
-                  <Text><FontAwesome name="user" color="#9292FE" />EditProfil</Text>
+                  <Text style={styles.menuAccount}><FontAwesomeIcon icon={faUser} style={{color: "#5959f0",}} />  Profil</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Text>Securité</Text>
+                    <Text style={styles.menuAccount}><FontAwesomeIcon icon={faShieldHalved} style={{color: "#5959f0",}}/>  Securité</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Text>Notification</Text>
+                    <Text style={styles.menuAccount}><FontAwesomeIcon icon={faBell} style={{color: "#5959f0",}} />  Notification</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Text>Privé</Text>
+                    <Text style={styles.menuAccount}> <FontAwesomeIcon icon={faLock} style={{color: "#5959f0",}} />  Privé</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('PastOrder' )}>
-                    <Text>Commandes passées</Text>
+                    <Text style={styles.menuAccount}><FontAwesomeIcon icon={faCreditCard} style={{color: "#5959f0",}} />  Commandes passées</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Text>Help & Support</Text>
+                    <Text style={styles.menuAccount}> <FontAwesomeIcon icon={faCircleQuestion} style={{color: "#5959f0",}}/>  Help & Support</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Text>Terms & Policies</Text>
+                    <Text style={styles.menuAccount}><FontAwesomeIcon icon={faDiamond} style={{color: "#5959f0",}}/>  Terms & Policies</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Text>Rapporter un problème</Text>
+                    <Text style={styles.menuAccount}><FontAwesomeIcon icon={faFlag} style={{color: "#5959f0",}} />  Rapporter un problème</Text>
                 </TouchableOpacity>
+                </View>
 
             <Text style={styles.txt_h2}>Actions</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('PastOrder' )}>
-                    <Text>Devenir un chef</Text>
+              <View style={styles.bloc}>
+                { chef ? 
+                  <TouchableOpacity onPress={() => navigation.navigate('EditProfilChef')}>
+                    <Text style={styles.menuAction}> <FontAwesomeIcon icon={faUtensils} style={{color: "#5959f0",}} />  Profil Chef</Text>
+                  </TouchableOpacity> :
+                  <TouchableOpacity onPress={() => changeStatusChef()}>
+                    <Text style={styles.menuAction}> <FontAwesomeIcon icon={faUtensils} style={{color: "#5959f0",}} />  Devenir un chef</Text>
+                  </TouchableOpacity>
+                  }
+                
+                  {/*
+                  AJOUTER PLUS TARD LE LOGOUT ICI 
+                dispatch(logout()) ;
+                */}
+                <TouchableOpacity>
+                    <Text style={styles.menuAction}> <FontAwesomeIcon icon={faRightFromBracket} style={{color: "#5959f0",}}/>  Se déconnecter</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('PastOrder' )}>
-                    <Text>LOGOUT</Text>
-                </TouchableOpacity>
+              </View>
 
 
         
@@ -96,7 +169,7 @@ btn_sign_up : {
     borderColor: '#9292FE',
     backgroundColor: '#fff',
   },
-  buttonText_sign_up: {
+  btnTextBack: {
     fontSize : 30,
     fontWeight: 'bold',
     color : '#9292FE'
@@ -107,7 +180,7 @@ btn_sign_up : {
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 20,
-    paddingRight: 150,
+    paddingRight: 100,
   },
   backBtn: {
     paddingBottom: 5, // 10 units of padding at the top and bottom
@@ -116,11 +189,36 @@ btn_sign_up : {
     borderWidth: 2,
     borderColor: '#9292FE',
     backgroundColor: '#fff',
+    marginBottom: 50,
   },
   txt_h2 : {
     color: '#5959F0',
     fontSize: 20,
     marginTop: 20,
 },
+bloc: {
+  backgroundColor: "rgba(89,89,240, 0.3)",
+  margin: 20,
+  paddingVertical: 30,
+  paddingHorizontal: 30,
+  borderRadius: 10,
+  width: "100%",
+  justifyContent: 'space-between',
+  
+},
+menuAccount: {
+  color: '#9292FE',
+  fontWeight: 'bold',
+  fontSize: 18,
+  marginVertical: 10,
+  //alignItems: 'center',
+},
+menuAction: {
+  color: '#9292FE',
+  fontWeight: 'bold',
+  fontSize: 20,
+  marginVertical: 10,
+}
+
 
 });

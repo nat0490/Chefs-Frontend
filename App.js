@@ -25,6 +25,7 @@ import WishlistScreen from './screens/WishlistScreen';
 import EditProfilScreen from './screens/Profil/EditProfilScreen';
 import PastOrderScreen from './screens/Profil/PastOrderScreen';
 import SettingScreen from './screens/Profil/SettingScreen';
+import EditProfilChefScreen from './screens/Profil/EditProfilCheef';
 //A TRIER
 import BookDateScreen from './screens/BookDateScreen';
 import ConfigureOrderScreen from './screens/ConfigureOrderScreen';
@@ -32,8 +33,11 @@ import DishScreen from './screens/DishScreen';
 import MainScreen from './screens/MainScreen';
 import OrderScreen from './screens/OrderScreen';
 
-
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+//FONT AWESOME
+//import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBowlFood } from '@fortawesome/free-solid-svg-icons'
 
 //REDUX
 import { Provider } from 'react-redux';
@@ -45,9 +49,6 @@ import { useEffect } from 'react';
 //const navigation = useNavigation();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-//const Drawer = createDrawerNavigator();
-//const dispatch = useDispatch();
-
 
 
 const HomeTabs = () => (
@@ -55,9 +56,9 @@ const HomeTabs = () => (
     tabBarIcon: ({ color, size }) => {
       let iconName = '';
       if (route.name === 'Home') {
-        iconName = 'house';
+        iconName = 'home';
       } else if (route.name === 'Search') {
-        iconName = 'magnifying-glass';
+        iconName = 'search';
       } else if (route.name === 'Wishlist') {
         iconName = 'heart';
       }
@@ -90,6 +91,7 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           
           <Stack.Screen name="EditProfil" component={EditProfilScreen} />
+          <Stack.Screen name="EditProfilChef" component={EditProfilChefScreen} />
           <Stack.Screen name="HomeTabs" component={HomeTabs} />
           <Stack.Screen name="Setting" component={SettingScreen} />
 
