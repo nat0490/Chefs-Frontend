@@ -105,7 +105,7 @@ function MyDrawer() {
 export default function App() {
   // Récupérer l'état d'authentification du store Redux
   //const userToken = useSelector((state) => state.user.value.token|| null);
-  const userToken = false;
+  const userToken = true;
 
   return (
     <Provider store={store}> 

@@ -108,7 +108,7 @@ const handleSubmitRegister = () => {
             setPostalInput('');
             setCityInput('');
             Alert.alert('Vous êtes connecté');
-            navigation.navigate('Preference');
+            navigation.navigate('Home');
           }
         })
         .catch(error => {
