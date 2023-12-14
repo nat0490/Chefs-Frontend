@@ -1,27 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface UserState {
-    value: {
-      email: String | null,
-      token: String | null,
-      userProfile: {
-        nom: String | null,
-        prenom: String | null,
-        dateOfBirth: Date | null,
-        adresse: {
-          rue: String | null,
-          ville: String | null,
-          codePostal: String | null,
-        },
-        tel: String | null,
-        chef: Boolean | null,
-        //orders: [{type: mongoose.Schema.Types.ObjectId, ref: 'orders'}],
-        //userPreference: [{type: mongoose.Schema.Types.ObjectId, ref: 'userPreference'}]
-      }
-    };
-};
 
-const initialState: UserState = {
+
+const initialState = {
     value: { 
       email: null,
       token: null,
