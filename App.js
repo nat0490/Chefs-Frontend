@@ -54,27 +54,31 @@ const Tab = createBottomTabNavigator();
 
 
 const HomeTabs = () => (
-  <Tab.Navigator
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ color, size }) => {
-        let iconName: string = '';
-        if (route.name === 'Main') {
-          iconName = 'house';
-        } else if (route.name === 'Search') {
-          iconName = 'magnifying-glass';
-        } else if (route.name === 'Wishlist') {
-          iconName = 'heart';
-        }
-        return <FontAwesome name={iconName} size={size} color={color} />;
-      },
-      tabBarActiveTintColor: '#e8be4b',
-      tabBarInactiveTintColor: '#b2b2b2',
-      headerShown: false,
-    })}
-  >
+  <Tab.Navigator screenOptions={({ route }) => ({
+    tabBarIcon: ({ color, size }) => {
+      let iconName = '';
+      if (route.name === 'Home') {
+        iconName = 'house';
+      } else if (route.name === 'Search') {
+        iconName = 'magnifying-glass';
+      } else if (route.name === 'Wishlist') {
+        iconName = 'heart';
+      }
+      return <FontAwesome name={iconName} size={size} color={color} />;
+    },
+    tabBarActiveTintColor: '#e8be4b',
+    tabBarInactiveTintColor: '#b2b2b2',
+    headerShown: false,
+  })}>
+    
     <Tab.Screen name="Main" component={MainScreen} />
+   
     <Tab.Screen name="Search" component={SearchScreen} />
-    <Tab.Screen name="Wishlist" component={WishlistScreen} />
+    <Tab.Screen name="Wishlist" component={WishlistScreen} /> 
+{/*
+    <Tab.Screen name="EditProfil" component={EditProfilScreen} />
+    <Tab.Screen name="PastOrder" component={PastOrderScreen} />
+    */}
   </Tab.Navigator>
 );
 
@@ -82,32 +86,53 @@ const store = configureStore({
   reducer: { user },
 })
 
+/*
+function MyDrawer() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="EditProfil" component={EditProfilScreen} />
+      <Drawer.Screen name="Notification" component={NotificationScreen} />
+      <Drawer.Screen name="Security" component={SecurityScreen} />
+      <Drawer.Screen name="PastOrder" component={PastOrderScreen} />
+      <Drawer.Screen name="HelpSupport" component={SupportScreen} />
+      <Drawer.Screen name="Problem" component={ReportProblemScreen} />
+    </Drawer.Navigator>
+  );
+}
+*/
 
+
+//BESOIN:
+//dispatch(login({ username: signInUsername, token: data.token, id: data.id })); sur la page signin/signup
 export default function App() {
+  // Récupérer l'état d'authentification du store Redux
+ 
+  
+  //const userToken = false;
 
   return (
     <Provider store={store}> 
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-          
-          <Stack.Screen name="EditProfil" component={EditProfilScreen} />
-          <Stack.Screen name="HomeTabs" component={HomeTabs} />
+          {false ? (
+            <>
+              <Stack.Screen name="HomeTabs" component={HomeTabs} />
 
-          
-          <Stack.Screen name="Sign_in" component={SignInScreen} />
-          <Stack.Screen name="Sign_up" component={SignUpScreen} />
-          <Stack.Screen name="Preference" component={PreferencesScreen} />
-             
+            </>
+          ) : (
+            <>
               
-           
-         
-          {/*Menu edit profil, à enlever d'ici ensuite */}
+              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="Sign_in" component={SignInScreen} />
+              <Stack.Screen name="Sign_up" component={SignUpScreen} />
+              <Stack.Screen name="Preference" component={PreferencesScreen} />
+              <Stack.Screen name="EditProfil" component={EditProfilScreen} />
+              
               <Stack.Screen name="Preference" component={PreferencesScreen}/>
               <Stack.Screen name="Terms" component={TermsScreen}/>
               
-            
-          
+            </>
+          )}
           {/*<Stack.Screen name="EditProfil" component={EditProfilScreen} /> */}
           <Stack.Screen name="Notification" component={NotificationScreen} />
           <Stack.Screen name="Security" component={SecurityScreen} />
