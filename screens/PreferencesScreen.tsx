@@ -30,7 +30,7 @@ export default function OrderScreen() {
 
   // Fonction pour soumettre les préférences sélectionnées
   const handleSubmit = () => {
-    fetch(`http://172.20.10.5:3000/users/profil/add-preference/${user}`, {
+    fetch(`http://192.168.154.247:3000/users/profil/add-preference/${user}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userPreference: [...selectedIds] }),
@@ -49,7 +49,7 @@ export default function OrderScreen() {
 
   // Utilisez useEffect pour charger les préférences une seule fois à l'initialisation
   useEffect(() => {
-    fetch('http://172.20.10.5:3000/userPreference/display_preference')
+    fetch('http://192.168.154.247:3000/userPreference/display_preference')
       .then(response => response.json())
       .then(data => {
         setPreferenceData([...data.data]);

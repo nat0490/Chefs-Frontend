@@ -33,7 +33,7 @@ export default function SignInScreen() {
   // création signin connexion 
   const handleConnection = () => {
     if(EMAIL_REGEX.test(emailInput)) {
-      fetch('http://192.168.1.106:3000/users/signin', {
+      fetch('http://192.168.154.247:3000/users/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: emailInput, password: passwordInput }),
