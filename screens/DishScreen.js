@@ -38,7 +38,7 @@ export default function DishScreen({route}) {
 */
 
 //LISTE DES INGREDIENTS
-const allIngredients = ingredients ? ingredients.map((ingredient: { name: string, amount:  number, unit: string }, index: React.Key) => (
+const allIngredients = ingredients ? ingredients.map((data, index) => (
   <View key={index} style={{ 
                       display: 'flex', 
                       flexDirection: 'row', 
@@ -46,8 +46,8 @@ const allIngredients = ingredients ? ingredients.map((ingredient: { name: string
                       marginLeft: 20, 
                       marginRight: 20, 
                       marginTop: 20}}>
-    <Text style={{fontSize: 20}}>{ingredient.name}</Text> 
-    <Text style={{fontSize: 20}}>{(ingredient.amount) * nbPeople} {ingredient.unit}</Text>
+    <Text style={{fontSize: 20}}>{data.ingredient.name}</Text> 
+    <Text style={{fontSize: 20}}>{(data.ingredient.amount) * nbPeople} {data.ingredient.unit}</Text>
   </View>
 )): null;
 
@@ -82,9 +82,9 @@ const platsPrep = () => {
 }
 
 const besoinUstensils = 
-  ustensils ? ustensils.map( (ustensil: { nom: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal; emoji: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal; }) => {
-    <View>
-      <Text>{ustensil.nom} {ustensil.emoji}</Text>
+  ustensils ? ustensils.map((data , i ) => {
+    <View key={i}>
+      <Text>{data.ustensils.nom} {data.ustensils.emoji}</Text>
     </View>
   }) : null;
 

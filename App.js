@@ -23,18 +23,15 @@ import SearchScreen from './screens/SearchScreen';
 import WishlistScreen from './screens/WishlistScreen';
 //For Profil
 import EditProfilScreen from './screens/Profil/EditProfilScreen';
-import SupportScreen from './screens/Profil/SupportScreen';
-import NotificationScreen from './screens/Profil/NotificationScreen';
 import PastOrderScreen from './screens/Profil/PastOrderScreen';
-import ReportProblemScreen from './screens/Profil/ReportProblemScreen';
-import SecurityScreen from './screens/Profil/SecurityScreen';
+import SettingScreen from './screens/Profil/SettingScreen';
 //A TRIER
 import BookDateScreen from './screens/BookDateScreen';
 import ConfigureOrderScreen from './screens/ConfigureOrderScreen';
 import DishScreen from './screens/DishScreen';
 import MainScreen from './screens/MainScreen';
 import OrderScreen from './screens/OrderScreen';
-//import ProfilScreen from './screens/Profil/ProfilScreen';
+
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -54,27 +51,26 @@ const Tab = createBottomTabNavigator();
 
 
 const HomeTabs = () => (
-  <Tab.Navigator
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ color, size }) => {
-        let iconName: string = '';
-        if (route.name === 'Main') {
-          iconName = 'house';
-        } else if (route.name === 'Search') {
-          iconName = 'magnifying-glass';
-        } else if (route.name === 'Wishlist') {
-          iconName = 'heart';
-        }
-        return <FontAwesome name={iconName} size={size} color={color} />;
-      },
-      tabBarActiveTintColor: '#e8be4b',
-      tabBarInactiveTintColor: '#b2b2b2',
-      headerShown: false,
-    })}
-  >
+  <Tab.Navigator screenOptions={({ route }) => ({
+    tabBarIcon: ({ color, size }) => {
+      let iconName = '';
+      if (route.name === 'Home') {
+        iconName = 'house';
+      } else if (route.name === 'Search') {
+        iconName = 'magnifying-glass';
+      } else if (route.name === 'Wishlist') {
+        iconName = 'heart';
+      }
+      return <FontAwesome name={iconName} size={size} color={color} />;
+    },
+    tabBarActiveTintColor: '#e8be4b',
+    tabBarInactiveTintColor: '#b2b2b2',
+    headerShown: false,
+  })}>
+    
     <Tab.Screen name="Main" component={MainScreen} />
     <Tab.Screen name="Search" component={SearchScreen} />
-    <Tab.Screen name="Wishlist" component={WishlistScreen} />
+    <Tab.Screen name="Wishlist" component={WishlistScreen} /> 
   </Tab.Navigator>
 );
 
@@ -83,37 +79,28 @@ const store = configureStore({
 })
 
 
+
 export default function App() {
+
 
   return (
     <Provider store={store}> 
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
           
           <Stack.Screen name="EditProfil" component={EditProfilScreen} />
           <Stack.Screen name="HomeTabs" component={HomeTabs} />
+          <Stack.Screen name="Setting" component={SettingScreen} />
 
           
           <Stack.Screen name="Sign_in" component={SignInScreen} />
           <Stack.Screen name="Sign_up" component={SignUpScreen} />
           <Stack.Screen name="Preference" component={PreferencesScreen} />
-             
-              
-           
-         
-          {/*Menu edit profil, à enlever d'ici ensuite */}
-              <Stack.Screen name="Preference" component={PreferencesScreen}/>
-              <Stack.Screen name="Terms" component={TermsScreen}/>
-              
-            
+          <Stack.Screen name="Terms" component={TermsScreen}/>
           
-          {/*<Stack.Screen name="EditProfil" component={EditProfilScreen} /> */}
-          <Stack.Screen name="Notification" component={NotificationScreen} />
-          <Stack.Screen name="Security" component={SecurityScreen} />
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />
-          <Stack.Screen name="HelpSupport" component={SupportScreen} />
-          <Stack.Screen name="Problem" component={ReportProblemScreen} /> 
+         
         </Stack.Navigator>
         
 

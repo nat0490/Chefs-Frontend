@@ -8,72 +8,14 @@ import {
   View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-//import { ObjectId } from 'mongoose';
 import { useNavigation } from '@react-navigation/native';
 import { login, logout} from '../../reducers/user';
-//import user from '../../reducers/user';
-//import { UserState } from '../../reducers/user';
-
-
-
-//TYPESCRIPT DES ELEMENTS
-interface Adresse {
-  rue: string;
-  ville: string;
-  codePostal: string;
-}
-
-//A MODIFIER POUR ENLEVER LES MSG ERREUR
-interface UserProfil {
-  email: any;
-  token: any;
-  adresse: any;
-  userProfile: any;
-  user: {
-    email: string | null;
-    token: string | null;
-    userProfile: {
-      nom: string | null;
-      prenom: string | null;
-      dateOfBirth: Date | null;
-      adresse: {
-        rue: string | null;
-        ville: string | null;
-        codePostal: string | null;
-      };
-      tel: string | null;
-      chef: boolean | null;
-    };
-  };
-}
-
-interface UserState {
-  user: {
-    value: {
-      email: string | null;
-      token: string | null;
-      userProfile: {
-        nom: string | null;
-        prenom: string | null;
-        dateOfBirth: Date | null;
-        adresse: {
-          rue: string | null;
-          ville: string | null;
-          codePostal: string | null;
-        };
-        tel: string | null;
-        chef: boolean | null;
-      }
-    };
-  };
-}
-
 
 
 export default function EditProfilScreen() {
 
 //HOOK DETAT
-  const [ user, setUser ] =useState<UserProfil| null>(null);
+  const [ user, setUser ] =useState<UserProfil | null>(null);
   //const [ userConnexion, setUserConnexion ] = useState<boolean | null>(true);
   const [ modifCoordonne, setModifCoordonne ] = useState<boolean>(false);
   const [ modifEmailPw, setModifEmailPw ] = useState<boolean>(false);
@@ -89,19 +31,17 @@ export default function EditProfilScreen() {
   const navigation = useNavigation();
 
 //REDUCER RECUPERER EST POUSSER DANS LE HOOK DETAT USER
-  const reducerUser = useSelector((state: UserState) => state.user.value);
-  //console.log(reducerUser);
+  const reducerUser = useSelector((state) => state.user.value);
+  console.log(reducerUser);
   useEffect(() => {
     setUser(reducerUser);
-  },[reducerUser]); 
-  //console.log(user);
+  },[]); 
+  console.log(user);
 
   
 //Changer de numéro + vérif données renseignés
   const changeTel = () => {
-    const newValueTel: string = newTel || (user && user.userProfile.tel) || "";
-    //const newValueTel : string | null = newTel ? newTel: user? user.userProfile.tel : null;
-    
+    const newValueTel = newTel ? newTel: user? user.tel : null;
     //const pattern = /^\+(?:[0-9] ?){6,14}[0-9]$/;
     const TEL_REGEX = /^0[0-9]{9}$/;
     if (newValueTel !== null && TEL_REGEX.test(newValueTel)) {
@@ -138,8 +78,6 @@ export default function EditProfilScreen() {
     }
   };
 
-
-
 //Changer adresse
   const changeAdresse = () => {
     setModifCoordonne(!modifCoordonne);
@@ -150,7 +88,7 @@ export default function EditProfilScreen() {
     };
     //fetch(`http://192.168.1.106:3000/users/profil/${userId}/update-adresse`,
     if (user) {
-      //fetch(`http://192.168.1.106:3000/users/profil/${user.userProfile}/update-adresse`, {
+      //fetch(`http://192.168.1.106:3000/users/profil/${userConnexion.userProfile}/update-adresse`, {
       fetch(`http://192.168.1.106:3000/users/profil/579c585c03077192e6dea33/update-adresse`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json'},
@@ -162,7 +100,7 @@ export default function EditProfilScreen() {
           if(data.result) {
             //récupère les infos à jour de BDD pour les afficher
             //setShowAdresseMsg(false);
-            //recupInfoUser();
+            recupInfoUser();
           } else { 
             //setShowAdresseMsg(true);
             //let errorAdress = data.message;
@@ -180,12 +118,12 @@ export default function EditProfilScreen() {
 
 //Changer Email => PAS TESTE!! ATTENTE DU REDUCER EN PLACE!!
   const changeEmail = () => {
-    const newValueEmail : string | null = newEmail ? newEmail: user? user.email : null;
+    const newValueEmail = newEmail ? newEmail: user? user.email : null;
     const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (newValueEmail !== null && EMAIL_REGEX.test(newValueEmail)) {
       if(user) {
         //fetch(`http://192.168.1.106:3000/users/${userConnexion.token}/update-email`, {
-        fetch(`http://192.168.1.106:3000/users/${user.token}/update-email`, {
+        fetch(`http://192.168.1.106:3000/users/${userConnexion.token}/update-email`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify({newEmail: newValueEmail}),
@@ -217,7 +155,7 @@ export default function EditProfilScreen() {
 
 //Changer PW => PAS TESTE!! ATTENTE DU REDUCER EN PLACE!!
   const changePW = () => {
-    const newValuePW : string | null = newPw ? newPw: null;
+    const newValuePW = newPw ? newPw: null;
     const PW_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     if (newValuePW !== null && PW_REGEX.test(newValuePW)) {
       if(user) {
@@ -255,6 +193,9 @@ export default function EditProfilScreen() {
   const forgetPW = () => {
 
   };
+
+  
+  
 
 
 //INFOS DU USER
@@ -311,8 +252,8 @@ export default function EditProfilScreen() {
                 <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> forgetPW()} >
                   <Text style={styles.buttonText_sign_up}>Mots de passe oublié?</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> setModifEmailPw(!modifEmailPw)} >
-                  <Text style={styles.buttonText_sign_up}>Retour</Text>
+                <TouchableOpacity activeOpacity={1} style={styles.backBtn} onPress={()=> setModifEmailPw(!modifEmailPw)} >
+                  <Text style={styles.buttonText_sign_up}>←</Text>
                 </TouchableOpacity>
               </View>
               </> : modifCoordonne ?
@@ -341,11 +282,12 @@ export default function EditProfilScreen() {
                   placeholder={user.userProfile.tel}
                   onChangeText={(value) => setNewTel(value)} 
                   value={newTel || "" }/>
+                  { showErrorTel ? <Text style={styles.errorMsg}>* Mauvais format</Text> : null }
                 <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> changeTel()} >
                   <Text style={styles.buttonText_sign_in}>Valider le nouveau numéro</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> setModifCoordonne(!modifCoordonne)} >
-                  <Text style={[styles.buttonText_sign_up, styles.backBtn]}>Retour</Text>
+                <TouchableOpacity activeOpacity={1} style={styles.backBtn} onPress={()=> setModifCoordonne(!modifCoordonne)} >
+                  <Text style={styles.buttonText_sign_up}>←</Text>
                 </TouchableOpacity>
               </> :
 /*JUSTE AFFICHER LES INFO*/
@@ -417,7 +359,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#9292FE', 
     borderStyle: 'solid', 
     paddingHorizontal: 10,
-    marginBottom: 10, 
+    marginBottom: 10,
   },
   inputText: {
     height: 40,
@@ -471,7 +413,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
 },
 backBtn: {
-  maxWidth: "50%",
-
+  paddingBottom: 5, // 10 units of padding at the top and bottom
+  paddingHorizontal: 15, // A
+  borderRadius:50,
+  borderWidth: 2,
+  borderColor: '#9292FE',
+  backgroundColor: '#fff',
 }
 });

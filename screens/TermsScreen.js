@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View,TouchableOpacity } from 'react-native'
 import { CheckBox } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React, { useState } from 'react';
@@ -51,6 +51,10 @@ export default function App() {
                 />
               <Text >J'accepte les termes et conditions</Text>
             </View>
+
+            <TouchableOpacity onPress={handleSubmit}style={[styles.button, styles.marginTop]}>
+                      <Text style={{ color:'white'}}>Confirmer</Text>
+            </TouchableOpacity>
           </View>
 
      

@@ -12,13 +12,13 @@ export default function OrderScreen() {
   const [buttonClicked, setButtonClicked] = useState(false);
 
   // État pour stocker les données de préférence
-  const [preferenceData, setPreferenceData] = useState<any[]>([]);
+  const [preferenceData, setPreferenceData] = useState([]);
 
   // État pour suivre les couleurs actives des préférences
-  const [activeColors, setActiveColors] = useState(Array(preferenceData.length).fill(false));
+  const [activeColors, setActiveColors] = useState((preferenceData.length).fill(false));
 
   // État pour stocker les ID sélectionnés
-  const [selectedIds, setSelectedIds] = useState<any[]>([]);
+  const [selectedIds, setSelectedIds] = useState([]);
 
   // Fonction pour gérer le clic sur une préférence
   const handlePress = (id_preferences) => {
@@ -57,6 +57,8 @@ export default function OrderScreen() {
   }, []);
 
   // Créez des composants de préférences à partir des données
+
+  // REVOIR COMMENT SA FONCTIONNE 
   const preferences = preferenceData.map((data, i) => (
     <TouchableOpacity
       key={i}
@@ -102,7 +104,6 @@ export default function OrderScreen() {
             <View style={styles.containeur_navigation_view}> 
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={styles.detailContainer}>
-                  
                   <View style={{height: 5,width: '100%',backgroundColor: '#E9EBEE',marginBottom: 5}}></View>
                   <Text style={styles.txt_p_bold}>Detail</Text>
                 </View>
