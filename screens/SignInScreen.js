@@ -11,7 +11,7 @@ import { StyleSheet,
  } from 'react-native';
  import { useNavigation } from '@react-navigation/native';
  import React, { useState } from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { useDispatch, useSelector } from 'react-redux';
 // importer reducer 
 import { login } from '../reducers/user';
@@ -43,6 +43,7 @@ export default function SignInScreen() {
       if (data.result) {
         setEmailInput('');
         setPasswordInput('');
+
         const userInfo = {
           email : data.dataUserConnexion.email,
           token : data.dataUserConnexion.token,
@@ -61,9 +62,11 @@ export default function SignInScreen() {
           };
         //console.log(userInfo)
         dispatch(login(userInfo));
-        //navigation.navigate('EditProfil');
+
       } 
+      
     })
+    navigation.navigate('EditProfil');
     } else {
       Alert.alert(
         'Erreur',

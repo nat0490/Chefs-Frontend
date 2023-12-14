@@ -159,6 +159,20 @@ txt_p_bold : {
     fontSize: 12,
     fontWeight: 'bold',
 },
+txt_h1_big : {
+  color: '#5959F0',
+  fontSize: 40,
+  textAlign: 'center',
+  marginTop : 20,
+  textAlignVertical: 'center',
+  textShadowColor: 'rgba(0, 0, 0, 0.25)',
+  textShadowOffset: { width: 0, height: 4 },
+  textShadowRadius: 4,
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  fontweight: 600,
+  letterspacing: -1.5,
+},
 
 
 //  ------------ Size police ----------------

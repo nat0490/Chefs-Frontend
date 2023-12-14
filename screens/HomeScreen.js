@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image , TouchableOpacity} from 'react-native';
 import React from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import {login, logout} from '../reducers/user';
@@ -11,7 +11,25 @@ export default function App() {
   const dispatch=useDispatch();
   const navigation = useNavigation();
 
-  return (
+  const stars = [];
+
+  for (let i = 0; i < 5; i++) {
+    // let style = {};
+    // if (i < props.voteAverage - 1) {
+    //   style = { 'color': '#f1c40f' };
+    // }
+    stars.push(<FontAwesome key={i} name='star' size={8}/>);
+  }
+
+ const handlePressPlats = () =>{
+  navigation.navigate('HomePlat')
+ }
+ const handlePressChefs = () =>{
+  navigation.navigate('HomeChefs')
+ }
+
+
+ return (
     <View style={styles.container}>
           {/* Barre de navigation colorée */}
       <View style={styles.nav_bar_color}></View>
@@ -44,32 +62,40 @@ export default function App() {
             }}
           />
 
-
         {/* Conteneur des boîtes de recettes */}
         <View style={styles.containeur_box}>
-          <TouchableOpacity activeOpacity={1} style={styles.box}>
+          <TouchableOpacity onPress={handlePressPlats} activeOpacity={1} style={styles.box}>
             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
               <View style={styles.box_description }>
-                <FontAwesome name='bowl-food' size={22}    />
-                <Text >Italien</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1} style={styles.box}>
-            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
-              <Text style={styles.margin_rigth}>Pizza</Text>
+                <Image source={require('../assets/img_plats_categories.png')} style={styles.photo_preferences} />
+                <Text style={styles.txt_preferences}>Italien</Text>
+              </View>
               <View style={styles.box_description }>
-                <FontAwesome name='food' size={22}    />
-                <Text>Italien</Text>
+                {stars}
               </View>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={1} style={styles.box}>
-              <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
+            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               <Text style={styles.margin_rigth}>Pizza</Text>
-                <View style={styles.box_description }>
-                  <FontAwesome name='bowl-food' size={22}  />
-                  <Text >Italien</Text>
-                </View>
+              <View style={styles.box_description }>
+                <Image source={require('../assets/img_plats_categories.png')} style={styles.photo_preferences} />
+                <Text style={styles.txt_preferences}>Italien</Text>
+              </View>
+              <View style={styles.box_description }>
+                {stars}
+              </View>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={1} style={styles.box}>
+            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
+              <Text style={styles.margin_rigth}>Pizza</Text>
+              <View style={styles.box_description }>
+                <Image source={require('../assets/img_plats_categories.png')} style={styles.photo_preferences} />
+                <Text style={styles.txt_preferences}>Italien</Text>
+              </View>
+              <View style={styles.box_description }>
+                {stars}
+              </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -104,29 +130,26 @@ export default function App() {
 
         {/* Conteneur des boîtes de recettes */}
         <View style={styles.containeur_box}>
-          <TouchableOpacity activeOpacity={1} style={styles.box}>
+          <TouchableOpacity onPress={handlePressChefs} activeOpacity={1} style={styles.box}>
             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
-              <Text style={styles.margin_rigth}>Pizza</Text>
+              <Text style={[styles.txt_preferences, styles.margin_rigth]}>Preferences</Text>
               <View style={styles.box_description }>
-                <FontAwesome name='bowl-food' size={22}  />
-                <Text >Italien</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1} style={styles.box}>
-            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
-              <Text style={styles.margin_rigth}>Pizza</Text>
-              <View style={styles.box_description }>
-                <FontAwesome name='food' size={22}   />
-                <Text>Italien</Text>
+                <Text>Chef Roberto</Text>
               </View>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={1} style={styles.box}>
-              <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
-              <Text style={styles.margin_rigth}>Pizza</Text>
-                <View style={styles.box_description }>
-                  <FontAwesome name='bowl-food' size={22}   />
-                  <Text >Italien</Text>
-                </View>
+            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
+              <Text style={[styles.txt_preferences, styles.margin_rigth]}>Preferences</Text>
+              <View style={styles.box_description }>
+                <Text>Chef Roberto</Text>
+              </View>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={1} style={styles.box}>
+            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
+              <Text style={[styles.txt_preferences, styles.margin_rigth]}>Preferences</Text>
+              <View style={styles.box_description }>
+                <Text>Chef Roberto</Text>
+              </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -144,8 +167,7 @@ export default function App() {
           </TouchableOpacity>
           
 
-  
-          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Terms')}>
+          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Preference')}>
               <Text style={styles.buttonText_sign_up}>navigation</Text>
           </TouchableOpacity>
         </View>
@@ -182,9 +204,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   photo_logo : {
+    width: 100,
+    height: 100,
     marginTop: 30,
     marginBottom : -5,
   },
+
+
+  //---------- Recette Box ----------------
   section_box: {
     width: "100%",
     marginTop: 20,
@@ -214,11 +241,20 @@ const styles = StyleSheet.create({
   box_description : {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 5,
     marginLeft : 5,
   },
   margin_rigth:{
     marginLeft : 5,
   },
+  photo_preferences :{
+    width: 15,
+    height: 15
+  },
+  txt_preferences : {
+    fontSize: 8,
+  },
+// --------- Btn Register --------------
   section_btn_register: {
     width: '100%',
     marginTop: 30,
@@ -234,6 +270,20 @@ const styles = StyleSheet.create({
   titre_register: {
     color: '#9292FE',
     fontSize: 15,
+  },
+  btn_sign_in : {
+    paddingVertical: 10, // 10 units of padding at the top and bottom
+    paddingHorizontal: 25, // A
+    borderRadius: 5,
+    backgroundColor: '#9292FE',
+  },
+  buttonText_sign_in :  {
+    fontSize : 15,
+    color : '#fff'
+  },
+  buttonText_sign_up: {
+    fontSize : 15,
+    color : '#9292FE'
   },
 
   
@@ -260,4 +310,8 @@ const styles = StyleSheet.create({
     fontSize : 15,
     color : '#9292FE'
   },
+
+
+  //----------------Box recette----------------
+  
 });

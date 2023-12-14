@@ -1,13 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,TouchableOpacity } from 'react-native'
 import { CheckBox } from 'react-native-elements';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 import React, { useState } from 'react';
 
 export default function App() {
 
   const [accepteConditions, setAccepteConditions] = useState(false);
   
+  const handleSubmit = () => {
+
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.nav_bar_color}></View>
@@ -24,7 +28,6 @@ export default function App() {
             <View style={styles.containeur_navigation_view}> 
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={styles.detailContainer}>
-                  
                   <View style={{height: 5,width: '100%',backgroundColor: '#E9EBEE',marginBottom: 5}}></View>
                   <Text style={styles.txt_p_bold}>Detail</Text>
                 </View>
@@ -52,7 +55,7 @@ export default function App() {
               <Text >J'accepte les termes et conditions</Text>
             </View>
 
-            <TouchableOpacity onPress={handleSubmit}style={[styles.button, styles.marginTop]}>
+            <TouchableOpacity onPress={handleSubmit} style={[styles.button, styles.marginTop]}>
                       <Text style={{ color:'white'}}>Confirmer</Text>
             </TouchableOpacity>
           </View>

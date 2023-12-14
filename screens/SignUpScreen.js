@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { CheckBox } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import DateTimePikers from "@react-native-community/datetimepicker"
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { login, logout} from '../reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -102,7 +102,6 @@ const handleSubmitRegister = () => {
         .then(response => response.json())
         .then(data => {
           console.log(data);
-          
           if (data.result) {
             setPasswordInput('');
             setEmailInput('');
@@ -114,7 +113,7 @@ const handleSubmitRegister = () => {
             setPostalInput('');
             setCityInput('');
             Alert.alert('Vous êtes connecté');
-            //navigation.navigate('Preference');
+            navigation.navigate('Preference');
              //navigation.navigate('EditProfil');
           } 
         })

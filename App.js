@@ -34,9 +34,11 @@ import ConfigureOrderScreen from './screens/ConfigureOrderScreen';
 import DishScreen from './screens/DishScreen';
 import MainScreen from './screens/MainScreen';
 import OrderScreen from './screens/OrderScreen';
+import HomePlatScreen from './screens/Home_platsScreen';
+import HomeChefsScreen from './screens/Home_chefsScreen';
 //import ProfilScreen from './screens/Profil/ProfilScreen';
 
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 
 //REDUX
 import { Provider } from 'react-redux';
@@ -127,10 +129,11 @@ export default function App() {
               <Stack.Screen name="Sign_up" component={SignUpScreen} />
               <Stack.Screen name="Preference" component={PreferencesScreen} />
               <Stack.Screen name="EditProfil" component={EditProfilScreen} />
-              
-              <Stack.Screen name="Preference" component={PreferencesScreen}/>
               <Stack.Screen name="Terms" component={TermsScreen}/>
-              
+              <Stack.Screen name="HomePlat" component={HomePlatScreen}/>
+              <Stack.Screen name="HomeChefs" component={HomeChefsScreen}/>
+
+
             </>
           )}
           {/*<Stack.Screen name="EditProfil" component={EditProfilScreen} /> */}
