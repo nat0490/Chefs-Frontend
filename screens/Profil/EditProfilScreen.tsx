@@ -311,8 +311,8 @@ export default function EditProfilScreen() {
                 <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> forgetPW()} >
                   <Text style={styles.buttonText_sign_up}>Mots de passe oublié?</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> setModifEmailPw(!modifEmailPw)} >
-                  <Text style={styles.buttonText_sign_up}>Retour</Text>
+                <TouchableOpacity activeOpacity={1} style={styles.backBtn} onPress={()=> setModifEmailPw(!modifEmailPw)} >
+                  <Text style={styles.buttonText_sign_up}>←</Text>
                 </TouchableOpacity>
               </View>
               </> : modifCoordonne ?
@@ -344,8 +344,8 @@ export default function EditProfilScreen() {
                 <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> changeTel()} >
                   <Text style={styles.buttonText_sign_in}>Valider le nouveau numéro</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> setModifCoordonne(!modifCoordonne)} >
-                  <Text style={[styles.buttonText_sign_up, styles.backBtn]}>Retour</Text>
+                <TouchableOpacity activeOpacity={1} style={styles.backBtn} onPress={()=> setModifCoordonne(!modifCoordonne)} >
+                  <Text style={styles.buttonText_sign_up}>←</Text>
                 </TouchableOpacity>
               </> :
 /*JUSTE AFFICHER LES INFO*/
@@ -471,7 +471,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
 },
 backBtn: {
-  maxWidth: "50%",
-
+  paddingBottom: 5, // 10 units of padding at the top and bottom
+  paddingHorizontal: 15, // A
+  borderRadius:50,
+  borderWidth: 2,
+  borderColor: '#9292FE',
+  backgroundColor: '#fff',
 }
 });

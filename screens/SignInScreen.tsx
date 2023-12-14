@@ -61,7 +61,7 @@ export default function SignInScreen() {
           };
         //console.log(userInfo)
         dispatch(login(userInfo));
-        //navigation.navigate('EditProfil');
+        navigation.navigate('HomeTabs', { screen: 'Main' }) ;
       } 
     })
     } else {
