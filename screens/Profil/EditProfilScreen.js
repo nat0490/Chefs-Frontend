@@ -15,58 +15,27 @@ import { login, logout} from '../../reducers/user';
 
 
 
-//TYPESCRIPT DES ELEMENTS
-interface Adresse {
-  rue: string;
-  ville: string;
-  codePostal: string;
-}
-
-//A MODIFIER POUR ENLEVER LES MSG ERREUR
-interface UserProfil {
-  id: string,
-  nom: string;
-  prenom: string;
-  dateOfBirth: Date;
-  adresse: Adresse;
-  tel: string;
-  chef: boolean,
-  userConnexion: string,
-  orders: string[],
-  userPreference: string[],
-}
-
-interface UserState {
-  user: {
-    value: {
-      token: string | null;
-      email: string | null;
-      userProfile: string | null;  // Remplacez UserProfile par le type réel de votre profil utilisateur
-    };
-  }
-}
-
 
 export default function EditProfilScreen() {
 
 //HOOK DETAT
-  const [ user, setUser ] =useState<UserProfil | null>(null);
+  const [ user, setUser ] = useState(null);
   //const [ userConnexion, setUserConnexion ] = useState<boolean | null>(true);
-  const [ modifCoordonne, setModifCoordonne ] = useState<boolean>(false);
-  const [ modifEmailPw, setModifEmailPw ] = useState<boolean>(false);
-  const [ newRue, setNewRue ] = useState<string | null >("");
-  const [ newVille, setNewVille ] = useState<string | null>("");
-  const [ newCodePostal, setNewCodePostal ] = useState<string | null>("");
-  const [ newTel, setNewTel ] = useState<string | null>("");
-  const [ newEmail, setNewEmail ] = useState<string | null>("");
-  const [ newPw, setNewPw ] = useState<string | null>("");
-  const [ showErrorTel, setShowErrorTel ] = useState<boolean> (false);
+  const [ modifCoordonne, setModifCoordonne ] = useState(false);
+  const [ modifEmailPw, setModifEmailPw ] = useState(false);
+  const [ newRue, setNewRue ] = useState("");
+  const [ newVille, setNewVille ] = useState("");
+  const [ newCodePostal, setNewCodePostal ] = useState("");
+  const [ newTel, setNewTel ] = useState("");
+  const [ newEmail, setNewEmail ] = useState("");
+  const [ newPw, setNewPw ] = useState("");
+  const [ showErrorTel, setShowErrorTel ] = useState(false);
   
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
 //REDUCER RECUPERER EST POUSSER DANS LE HOOK DETAT USER
-  const reducerUser = useSelector((state: UserState) => state.user.value);
+  const reducerUser = useSelector(state => state.user.value);
   console.log(reducerUser);
   useEffect(() => {
     setUser(reducerUser);
@@ -76,7 +45,7 @@ export default function EditProfilScreen() {
   
 //Changer de numéro + vérif données renseignés
   const changeTel = () => {
-    const newValueTel : string | null = newTel ? newTel: user? user.tel : null;
+    const newValueTel= newTel ? newTel: user? user.tel : null;
     //const pattern = /^\+(?:[0-9] ?){6,14}[0-9]$/;
     const TEL_REGEX = /^0[0-9]{9}$/;
     if (newValueTel !== null && TEL_REGEX.test(newValueTel)) {
@@ -153,7 +122,7 @@ export default function EditProfilScreen() {
 
 //Changer Email => PAS TESTE!! ATTENTE DU REDUCER EN PLACE!!
   const changeEmail = () => {
-    const newValueEmail : string | null = newEmail ? newEmail: user? user.email : null;
+    const newValueEmail = newEmail ? newEmail: user? user.email : null;
     const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (newValueEmail !== null && EMAIL_REGEX.test(newValueEmail)) {
       if(user) {
@@ -190,7 +159,7 @@ export default function EditProfilScreen() {
 
 //Changer PW => PAS TESTE!! ATTENTE DU REDUCER EN PLACE!!
   const changePW = () => {
-    const newValuePW : string | null = newPw ? newPw: null;
+    const newValuePW = newPw ? newPw: null;
     const PW_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     if (newValuePW !== null && PW_REGEX.test(newValuePW)) {
       if(user) {

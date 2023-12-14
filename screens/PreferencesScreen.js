@@ -57,6 +57,8 @@ export default function OrderScreen() {
   }, []);
 
   // Créez des composants de préférences à partir des données
+
+  // REVOIR COMMENT SA FONCTIONNE 
   const preferences = preferenceData.map((data, i) => (
     <TouchableOpacity
       key={i}
