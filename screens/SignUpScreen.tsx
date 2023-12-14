@@ -98,6 +98,7 @@ const handleSubmitRegister = () => {
         .then(data => {
           console.log(data)
           if (data.result) {
+
             setPasswordInput('');
             setEmailInput('');
             setNameInput('');
@@ -124,6 +125,8 @@ const handleSubmitRegister = () => {
   return (
     <View style={styles.container}>
       <View style={styles.nav_bar_color}></View>
+
+      
       {/* Fleche revenir sur la page précédente  */}
       <View style={styles.containeur_fleche}>
         <FontAwesome name='arrow-left' size={22}  />
@@ -326,13 +329,7 @@ const styles = StyleSheet.create({
       marginBottom: 10,
     },
   
-    // Navigation View Styles
-    containeur_navigation_view: {
-      width: "80%",
-      marginTop: 20,
-      marginBottom: 20,
-    },
-  
+    
     // Input Styles
     input: {
       height: 40,
@@ -393,6 +390,15 @@ const styles = StyleSheet.create({
       marginTop: -10,
       
     },
+
+    
+     // Navigation View Styles
+    containeur_navigation_view: {
+      width: "80%",
+      marginTop: 20,
+      marginBottom: 20,
+    },
+  
   
     // Detail Container Styles
     detailContainer: {

@@ -16,6 +16,7 @@ import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import LoginScreen from './screens/LoginScreen';
 import PreferencesScreen from './screens/PreferencesScreen'
+import TermsScreen from './screens/TermsScreen'
 //For Home
 import HomeScreen from './screens/HomeScreen';
 import SearchScreen from './screens/SearchScreen';
@@ -121,7 +122,9 @@ export default function App() {
               <Stack.Screen name="Home" component={HomeScreen} />
               <Stack.Screen name="Sign_in" component={SignInScreen} />
               <Stack.Screen name="Sign_up" component={SignUpScreen} />
-              <Stack.Screen name="Preference" component={PreferencesScreen} />
+              <Stack.Screen name="Preference" component={PreferencesScreen}/>
+              <Stack.Screen name="Terms" component={TermsScreen}/>
+              
             </>
           )}
           <Stack.Screen name="EditProfil" component={EditProfilScreen} />
