@@ -26,6 +26,7 @@ import EditProfilScreen from './screens/Profil/EditProfilScreen';
 import PastOrderScreen from './screens/Profil/PastOrderScreen';
 import SettingScreen from './screens/Profil/SettingScreen';
 import EditProfilChefScreen from './screens/Profil/EditProfilChef';
+import AddNewRecipeScreen from './screens/Profil/AddNewRecipeScreen';
 
 //A TRIER
 import BookDateScreen from './screens/BookDateScreen';
@@ -43,6 +44,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/user';
+import typeCuisine from './reducers/typeCuisine';
+import ustensil from './reducers/ustensils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
@@ -76,7 +79,7 @@ const HomeTabs = () => (
 );
 
 const store = configureStore({
-  reducer: { user },
+  reducer: { user, typeCuisine, ustensil },
 })
 
 
@@ -98,6 +101,7 @@ export default function App() {
           <Stack.Screen name="HomeChefs" component={HomeChefScreen} />
           <Stack.Screen name="Terms" component={TermsScreen}/>
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />
+          <Stack.Screen name="AddNewRecipe" component={AddNewRecipeScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

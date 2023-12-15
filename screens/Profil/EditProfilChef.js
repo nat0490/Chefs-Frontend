@@ -1,5 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TouchableOpacity, View, TextInput} from 'react-native';
+import { 
+  StyleSheet, 
+  Text, 
+  TouchableOpacity, 
+  View, 
+  TextInput, 
+  Pressable,
+  Button,
+  Modal,
+  FlatList 
+} from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,8 +24,13 @@ export default function EditProfilChef() {
     const dispatch = useDispatch();
 
     const reducerUser = useSelector((state) => state.user.value);
+    const typeCuisine = useSelector((state) => state.typeCuisine.value);
+    //console.log(typeCuisine);
+    /*const listeType = typeCuisine.map((cuisine, i) => {
+        key={i} , label={cuisine.cuisine} , value={cuisine.cuisine}
+    })*/
 
-    const [ chefProfil, setChefProfil] = useState(false);
+    const [ chefProfil, setChefProfil] = useState(null);
 //CREATION DE PROFIL
     const [ showCreateChef, setShowCreateChef] = useState(false);
     const [ spe, setSpe] = useState("");
@@ -29,12 +44,12 @@ export default function EditProfilChef() {
     const [ newExpe, setNewExpe] = useState("");
     const [ newPassion, setNewPassion] = useState("");
     const [ newService, setNewService ] = useState("");
+//RECETTE 
+  const [ showAddRecipe, setShowAddRecipe] = useState(false);
     
-    
-    
+  
 //AU CHARGEMENT DE LA PAGE: RECUPERE LES PROFIL CHEF SI IL Y EN A UN ET LE POUSSE DANS CHEFPROFIL
     useState(()=> {
-        if (reducerUser){ 
         //console.log(reducerUser.userProfile.id);
         fetch(`https://chefs-backend-amber.vercel.app/users/chef/find/${reducerUser.userProfile.id}`)
             .then( res => res.json())
@@ -46,7 +61,6 @@ export default function EditProfilChef() {
                     console.log(data.message)
                 }
             })
-        }
     },[])
         
 
@@ -136,60 +150,68 @@ export default function EditProfilChef() {
             <Text style={styles.buttonText_sign_in}>Valider</Text>
         </TouchableOpacity>
     </>;
-        
+
+  
+  const chefProfilExiste = chefProfil?
+     modifierProfil ? 
+//AFFICHER POUR MODIFIER LE PROFIL
+      <>
+        <View style={styles.topPage}> 
+          <TouchableOpacity style={styles.backBtn} onPress={() => setModifierProfil(!modifierProfil)}>
+            <Text style={styles.btnTextBack}>←</Text>
+          </TouchableOpacity>
+          <Text style={styles.txt_h1}>Profil du chef</Text>
+        </View>
+        <Text style={styles.txt_h2}>Modification du profil</Text>
+      </> 
+              : 
+
+//AFFICHER LE PROFIL
+          <>
+            <View style={styles.topPage}> 
+              <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Setting' )}>
+                <Text style={styles.btnTextBack}>←</Text>
+              </TouchableOpacity>
+              <Text style={styles.txt_h1}>Profil du chef</Text>
+            </View>
+            { chefProfil.spécialisation? <View style={styles.infoChef}><Text>Spécialisation: </Text><Text style={styles.inputText}>{chefProfil.spécialisation}</Text></View> : ""}
+            { chefProfil.experience? <View style={styles.infoChef}><Text>Expérience: </Text><Text style={styles.inputText}>{chefProfil.experience}</Text></View> : ""}
+            { chefProfil.passion? <View style={styles.infoChef}><Text>Passion: </Text><Text style={styles.inputText}>{chefProfil.passion}</Text></View>: ""}
+            { chefProfil.services? <View style={styles.infoChef}><Text>Service: </Text><Text style={styles.inputText}>{chefProfil.services}</Text></View>: ""}
+            { chefProfil.userCompliment? <View style={styles.infoChef}><Text>Mes compliments: </Text><Text style={styles.inputText}> {chefProfil.userCompliment}</Text></View>: ""}
+            { chefProfil.recipes ? <View style={styles.infoChef}><Text>Mes recettes: </Text><Text style={styles.inputText}>{chefProfil.recipes}</Text>
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up}  >
+                <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Voir mes recettes      ➔</Text> 
+            </TouchableOpacity></View> : "" }
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setModifierProfil(!modifierProfil)} >
+                <Text style={styles.buttonText_sign_in}>Modifier</Text>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> navigation.navigate('AddNewRecipe')} >
+                <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Ajouter une nouvelle recette      ➔</Text>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up}  >
+                <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Modifier / Supprimer une recette      ➔</Text>
+            </TouchableOpacity>
+          </>
+
+      : "";
+   
 
   return (
     
 
     <View style={styles.container}>
       <View style={styles.nav_bar_color}></View>
-        <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> dispatch(logout())}>
-          <Text style={styles.buttonText_sign_in}>LOGOUT: Vider reducer</Text>
-        </TouchableOpacity>
         <View style={styles.container_box_width}>
-        
         { chefProfil ?
 /*AFFICHE SI UN PROFIL CHEF EXISTE*/
-        <> 
-        
-{/*A CHANGER DE PLACE CAR RENVOI AU SETTING MEME QUAND ON EST EN TRAIN DE MODIFIER SON PROGIL */}
-        <View style={styles.topPage}> 
-            <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Setting' )}>
-            <Text style={styles.btnTextBack}>←</Text>
-            </TouchableOpacity>
-            <Text style={styles.txt_h1}>Profil du chef</Text>
-        </View>
-       
-{/*CHAQUE LIGNE SAFFICHERA UNIQUEMENT SI IL Y A LES INFOS*/}
-        { !modifierProfil ? 
-//AFFICHER LE PROFIL
-        <>
-            { chefProfil.spécialisation? <View style={styles.infoChef}><Text>Spécialisation: </Text><Text style={styles.inputText}>{chefProfil.spécialisation}</Text></View> : ""}
-            { chefProfil.experience? <View style={styles.infoChef}><Text>Expérience: </Text><Text style={styles.inputText}>{chefProfil.experience}</Text></View> : ""}
-            { chefProfil.passion? <View style={styles.infoChef}><Text>Passion: </Text><Text style={styles.inputText}>{chefProfil.passion}</Text></View>: ""}
-            { chefProfil.services? <View style={styles.infoChef}><Text>Service: </Text><Text style={styles.inputText}>{chefProfil.services}</Text></View>: ""}
-            { chefProfil.userCompliment? <View style={styles.infoChef}><Text>Mes compliments: </Text><Text style={styles.inputText}> {chefProfil.userCompliment}</Text></View>: ""}
-            { chefProfil.recipes ? <View style={styles.infoChef}><Text>Mes recettes: </Text><Text style={styles.inputText}>{chefProfil.recipes}</Text></View> : ""}
-            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setModifierProfil(!modifierProfil)} >
-                <Text style={styles.buttonText_sign_in}>Modifier</Text>
-            </TouchableOpacity>
-            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up}  >
-                <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Ajouter une nouvelle recette      ➔</Text>
-            </TouchableOpacity>
-        </>
-        :
-//OU AFFICHER POUR MODIFIER LE PROFIL
-        <>
-        <Text>Viens modifier ton profil là</Text>
-        </>}
-        </>
+      chefProfilExiste
     : 
 /*PROFIL CHEF INEXISTANT*/     
        newChefProfil }
- 
-        </View> 
        <StatusBar style="auto" />
       </View>
+    </View> 
   );
 }
 
@@ -313,13 +335,17 @@ topPage: {
     display:'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
-
-
   },
   buttonText_sign_up: {
     fontSize : 15,
     color : '#9292FE',
     textAlign: 'center',
   },
+  txt_h2 : {
+    color: '#5959F0',
+    fontSize: 20,
+    textAlign: 'center',
+},
+
   
 });

@@ -15,6 +15,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { useDispatch, useSelector } from 'react-redux';
 // importer reducer 
 import { login } from '../reducers/user';
+import {add, remove} from '../reducers/typeCuisine';
+
 
 // Grabbed from emailregex.com
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -29,9 +31,28 @@ export default function SignInScreen() {
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
 
-
-
+//REDUCER TYPE CUISINE : FETCH pour récuperer tous les type puis Dispatch pour les mettre dans le reducer
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`https://chefs-backend-amber.vercel.app/userPreference/display_preference`);
+      if (!response.ok) {
+        throw new Error(`Réponse du serveur non valide: ${response.status}`);
+      }  
+      const result = await response.json();
+      //console.log(data);
+      result.data.forEach((item) => {
+        dispatch(add({ id: item._id, typeCuisine: item.typeCuisine }));
+      });
+    } catch (error) {
+      console.error('Erreur lors du chargement des données depuis la base de données', error);
+    }
+  };
   
+
+
+
+
+
 
   // création signin connexion 
   const handleConnection = () => {
@@ -63,9 +84,10 @@ export default function SignInScreen() {
             chef : data.dataUserConnexion.userProfile.chef,
             }
           };
-        console.log(userInfo)
+        //console.log(userInfo)
         dispatch(login(userInfo));
-        navigation.navigate('EditProfil');
+        fetchData();
+        navigation.navigate('HomeTabs', { screen: 'Main' });
       } 
       
     })
