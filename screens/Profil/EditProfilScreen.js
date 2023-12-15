@@ -17,6 +17,10 @@ export default function EditProfilScreen() {
 
 //HOOK DETAT
   const [ user, setUser ] =useState(null);
+<<<<<<< HEAD
+=======
+  //const [ userConnexion, setUserConnexion ] = useState<boolean | null>(true);
+>>>>>>> christof
   const [ modifCoordonne, setModifCoordonne ] = useState(false);
   const [ modifEmailPw, setModifEmailPw ] = useState(false);
   const [ newRue, setNewRue ] = useState("");
@@ -25,8 +29,12 @@ export default function EditProfilScreen() {
   const [ newTel, setNewTel ] = useState("");
   const [ newEmail, setNewEmail ] = useState("");
   const [ newPw, setNewPw ] = useState("");
+<<<<<<< HEAD
   const [ forgetPw, setForgetPw] = useState(false);
   
+=======
+  const [ showErrorTel, setShowErrorTel ] = useState(false);
+>>>>>>> christof
   
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -154,7 +162,11 @@ export default function EditProfilScreen() {
 
 //Changer Email
   const changeEmail = () => {
+<<<<<<< HEAD
     const newValueEmail = newEmail ? newEmail: user.email;
+=======
+    const newValueEmail= newEmail ? newEmail: user? user.email : null;
+>>>>>>> christof
     const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (newValueEmail !== null && EMAIL_REGEX.test(newValueEmail)) {
       if(user) {
