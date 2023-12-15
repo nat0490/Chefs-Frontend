@@ -26,12 +26,15 @@ import EditProfilScreen from './screens/Profil/EditProfilScreen';
 import PastOrderScreen from './screens/Profil/PastOrderScreen';
 import SettingScreen from './screens/Profil/SettingScreen';
 import EditProfilChefScreen from './screens/Profil/EditProfilChef';
+
 //A TRIER
 import BookDateScreen from './screens/BookDateScreen';
 import ConfigureOrderScreen from './screens/ConfigureOrderScreen';
 import DishScreen from './screens/DishScreen';
 import MainScreen from './screens/MainScreen';
 import OrderScreen from './screens/OrderScreen';
+import HomePlatScreen from './screens/Home_platsScreen'
+import HomeChefScreen from './screens/Home_chefsScreen'
 //import ProfilScreen from './screens/Profil/ProfilScreen';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -88,28 +91,12 @@ export default function App() {
           <Stack.Screen name="EditProfilChef" component={EditProfilChefScreen} />
           <Stack.Screen name="HomeTabs" component={HomeTabs} />
           <Stack.Screen name="Setting" component={SettingScreen} />
-<<<<<<< HEAD
           <Stack.Screen name="Sign_in" component={SignInScreen} />
           <Stack.Screen name="Sign_up" component={SignUpScreen} />
           <Stack.Screen name="Preference" component={PreferencesScreen} />
+          <Stack.Screen name="HomePlat" component={HomePlatScreen} />
+          <Stack.Screen name="HomeChefs" component={HomeChefScreen} />
           <Stack.Screen name="Terms" component={TermsScreen}/>
-=======
-
-         
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Sign_in" component={SignInScreen} />
-              <Stack.Screen name="Sign_up" component={SignUpScreen} />
-              <Stack.Screen name="Preference" component={PreferencesScreen} />
-              <Stack.Screen name="EditProfil" component={EditProfilScreen} />
-              
-              <Stack.Screen name="Preference" component={PreferencesScreen}/>
-              <Stack.Screen name="Terms" component={TermsScreen}/>
-              
-           
-          {/*<Stack.Screen name="EditProfil" component={EditProfilScreen} /> */}
-          <Stack.Screen name="Notification" component={NotificationScreen} />
-          <Stack.Screen name="Security" component={SecurityScreen} />
->>>>>>> christof
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />
         </Stack.Navigator>
       </NavigationContainer>
