@@ -92,7 +92,7 @@ export default function App() {
           <Stack.Screen name="EditProfil" component={EditProfilScreen} />
           <Stack.Screen name="HomeTabs" component={HomeTabs} />
           <Stack.Screen name="Setting" component={SettingScreen} />
-
+          <Stack.Screen name="Main" component={MainScreen} />
           
           <Stack.Screen name="Sign_in" component={SignInScreen} />
           <Stack.Screen name="Sign_up" component={SignUpScreen} />

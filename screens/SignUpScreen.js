@@ -84,7 +84,7 @@ const handleSubmitRegister = () => {
   
   if (verifierEmail() /*&& verifierMotDePasse()*/) {
       //fetch('http://172.20.10.5:3000/users/signup', {
-      fetch('http://192.168.154.247:3000/users/signup', {
+      fetch('http://192.168.1.63:3000/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
