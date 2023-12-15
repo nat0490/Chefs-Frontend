@@ -65,11 +65,11 @@ export default function SignInScreen() {
           };
         console.log(userInfo)
         dispatch(login(userInfo));
-        //navigation.navigate('EditProfil');
+        navigation.navigate('EditProfil');
       } 
       
     })
-    navigation.navigate('EditProfil');
+    //navigation.navigate('EditProfil');
     } else {
       Alert.alert(
         'Erreur',
@@ -162,9 +162,9 @@ export default function SignInScreen() {
             </TouchableOpacity>
 
         </View>
-        <FontAwesome name='apple1' size={10}  />
+        <FontAwesome name='apple' size={10}  />
         <FontAwesome name='google' size={10}  />
-        <FontAwesome name='facebook-with-circle' size={10}  />
+        {/*<FontAwesome name='facebook-with-circle' size={10}  /> */}
 
         </View>
       </View>

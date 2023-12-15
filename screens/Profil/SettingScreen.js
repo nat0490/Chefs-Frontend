@@ -77,7 +77,7 @@ export default function SettingScreen() {
     <View style={styles.container}>
         <View style={styles.nav_bar_color}></View>
             <View style={styles.topPage}> 
-                <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Main' )}>
+                <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('HomeTabs', { screen: 'Main' })}>
                     <Text style={styles.btnTextBack}>←</Text>
                 </TouchableOpacity>
                 <Text style={styles.txt_h1}>Setting</Text>
@@ -118,7 +118,7 @@ export default function SettingScreen() {
                   <TouchableOpacity onPress={() => navigation.navigate('EditProfilChef')}>
                     <Text style={styles.menuAction}> <FontAwesomeIcon icon={faUtensils} style={{color: "#5959f0",}} />  Profil Chef</Text>
                   </TouchableOpacity> :
-                  <TouchableOpacity onPress={() => changeStatusChef()}>
+                  <TouchableOpacity onPress={() => (changeStatusChef(),navigation.navigate('EditProfilChef') )}>
                     <Text style={styles.menuAction}> <FontAwesomeIcon icon={faUtensils} style={{color: "#5959f0",}} />  Devenir un chef</Text>
                   </TouchableOpacity>
                   }
@@ -197,7 +197,7 @@ btn_sign_up : {
     marginTop: 20,
 },
 bloc: {
-  backgroundColor: "rgba(89,89,240, 0.3)",
+  backgroundColor: "rgba(89,89,240, 0.2)",
   margin: 20,
   paddingVertical: 30,
   paddingHorizontal: 30,

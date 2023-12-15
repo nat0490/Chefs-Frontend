@@ -13,10 +13,6 @@ import { login, logout} from '../../reducers/user';
 //import user from '../../reducers/user';
 
 
-
-
-
-
 export default function EditProfilScreen() {
 
 //HOOK DETAT
@@ -48,6 +44,7 @@ export default function EditProfilScreen() {
   const changeTel = () => {
     const newValueTel = newTel ? newTel: user.tel ;
     //const pattern = /^\+(?:[0-9] ?){6,14}[0-9]$/;
+//A DECOMENTER!!
     //const TEL_REGEX = /^0[0-9]{9}$/;
     if (newValueTel !== null /*&& TEL_REGEX.test(newValueTel)*/) {
       setModifCoordonne(!modifCoordonne);
