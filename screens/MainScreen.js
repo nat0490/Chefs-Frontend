@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { useNavigation } from '@react-navigation/native';
 
 const foodIcon = require('../assets/user.png');
 
 export default function MainScreen() {
+
+  const navigation = useNavigation();
+  
   const [location, setLocation] = useState(null);
   const [chefAddresses, setChefAddresses] = useState([]);
 
@@ -88,6 +92,10 @@ export default function MainScreen() {
           <TouchableOpacity activeOpacity={0.8} style={styles.btn_sign_in}>
             <Text style={styles.buttonText_sign_in}>Réserve maintenant !</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity activeOpacity={0.8} style={styles.btn_sign_up} onPress={()=> navigation.navigate('Setting')}>
+            <Text style={styles.buttonText_sign_up}>SETTING PAGE</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
@@ -129,4 +137,21 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#fff',
   },
+  btn_sign_up : {
+    paddingVertical: 10, // 10 units of padding at the top and bottom
+    paddingHorizontal: 25, // A
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#9292FE',
+    backgroundColor: '#fff',
+    marginTop: 10,
+    display:'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  buttonText_sign_up: {
+    fontSize : 15,
+    color : '#9292FE',
+    textAlign: 'center',
+  }
 });

@@ -13,6 +13,7 @@ import {
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
+import { addId, removeId } from '../../reducers/chef';
 //FONTAWESOME
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -55,8 +56,10 @@ export default function EditProfilChef() {
             .then( res => res.json())
             .then(data => {
                 if (data.result) {
-                    console.log(data);
+                    console.log(data.data);
                     setChefProfil(data.data);
+                    
+                    dispatch(addId(data.data._id));
                 } else {
                     console.log(data.message)
                 }
@@ -82,6 +85,8 @@ export default function EditProfilChef() {
             .then(data => {
                 if (data.result){
                     console.log(data);
+//VERIFIER LE BON FONCTIONNEMENT DU REDUCER ID
+                    dispatch(addId(data._id));
                     setChefProfil(newChef);
                     setSpe('');
                     setExp('');

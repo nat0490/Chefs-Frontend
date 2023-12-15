@@ -42,13 +42,14 @@ export default function AddNewRecipeScreen() {
 
     const typeCuisine = useSelector((state) => state.typeCuisine.value);
     const ustensilsReducer = useSelector((state) => state.ustensil.value);
+    const chefId = useSelector((state) => state.chef.value);
     //console.log(ustensilsReducer);
 
     const [ title, setTitle] = useState("");
     const [ imageDish, setImageDish] = useState("");
     const [ selectedTime, setSelectedTime] = useState(new Date());
     const [ type, setType ] = useState(null);
-    const [isFocusT, setIsFocusT] = useState(false);
+    const [ isFocusT, setIsFocusT] = useState(false);
     const [ prixMini, setPrixMini] = useState("");
     const [ prixParPersonne, setPrixParPersonne] = useState("");
     const [ panierCourse, setPanierCourse ] = useState("");
@@ -65,10 +66,6 @@ export default function AddNewRecipeScreen() {
     //const [ listeTypeCuisine, setListeTypeCuisine] = useState([]);
 
 
-  
-    
-
-    
     const [searchText, setSearchText] = useState('');
     const [filteredUstensils, setFilteredUstensils] = useState([]);
 
@@ -92,7 +89,10 @@ export default function AddNewRecipeScreen() {
               console.error('Erreur lors du chargement des données depuis la base de données', error);
             }
           };
-        fetchData();
+    useEffect(()=> {
+      fetchData();
+    },[])
+        
         
 
       
@@ -210,7 +210,7 @@ newlisteUstensils.sort((a, b) => {
 //console.log(newliste);
 //dataPour le menu déroulant
   const dataUstensils = newlisteUstensils.map((ustensil) => (
-     {label: ustensil.nom, value : ustensil.nom}
+     {label: ustensil.nom, value : ustensil._id}
  ));
 //quand un nom d'ustensils est selectionné, l'ajouter à la liste
  useEffect(() => {
@@ -225,22 +225,65 @@ newlisteUstensils.sort((a, b) => {
 
 
 
+//AFFICHER USTENSILS SELECTIONNE
+console.log(ustensilsList);
+const afficheUstensils= ustensilsList.map( (oneUstensil, i) => {
+  return <Text key={i}> {oneUstensil.label} </Text>
+})
+
+//Envoyer les INFO A LA BDD
+const creationRecette = () => {
+  console.log('creation de recette');
+//Mettre ustensils aux bons format pour envoyer dans la BDD
+  const allUstensils = [];
+    ustensilsList.map(e => allUstensils.push(e.value));
+//Mettre les ingrédients aux bon format pour envoyer dans la BDD
+  const allIngredients = [];
+  recapIngredient.map(e => allIngredients.push({name: e.nom, quantity: e.quantite, unit: e.unite}))
+  
+  console.log(allIngredients);
+  const newDish = {
+    userChef: chefId,
+        title: title,
+        image: imageDish,
+        time: selectedTime,
+        type: type,
+        prix: {
+          minimum: prixMini,
+          personneSup: prixParPersonne,
+          panierCourseParPersonne: panierCourse,
+        },
+        ustensils:allUstensils,
+        ingredients: allIngredients,
+  }
+  fetch(`https://chefs-backend-amber.vercel.app/recipes/newrecipes/${chefId}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify(newDish),
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log(data)
+  })
+}
+
+
 //INGREDIENTS
 const ajouterIngredient = () => {
-    if (ingredientName && ingredientQty && ingredientUnit) {
-      const nouvelIngredient = {
-        nom: ingredientName,
-        quantite: ingredientQty,
-        unite: ingredientUnit,
-      };
-      setRecapIngredient([...recapIngredient, nouvelIngredient]);
-      setIngredientName('');
-      setIngredientQty('');
-      setIngredientUnit('');
-    } else {
-      alert("Veuillez remplir toutes les informations de l'ingrédient.");
-    }
-  };
+  if (ingredientName && ingredientQty && ingredientUnit) {
+    const nouvelIngredient = {
+      nom: ingredientName,
+      quantite: ingredientQty,
+      unite: ingredientUnit,
+    };
+    setRecapIngredient([...recapIngredient, nouvelIngredient]);
+    setIngredientName('');
+    setIngredientQty('');
+    setIngredientUnit('');
+  } else {
+    alert("Veuillez remplir toutes les informations de l'ingrédient.");
+  }
+};
 
 
   return (
@@ -324,6 +367,8 @@ const ajouterIngredient = () => {
     
   
 
+  
+
 {/*SECTION PRIX*/}
         <Text>Prix:</Text>
         <View style={styles.box}> 
@@ -349,7 +394,7 @@ const ajouterIngredient = () => {
 
         
 
-<View style={styles.listeUstensils}><Text> {ustensilsList}</Text></View>
+<View style={styles.listeUstensils}><Text> {afficheUstensils}</Text></View>
 {/*SECTION USTENSIL */}
 <View >
         {titreMenuUstensils()}
@@ -370,7 +415,7 @@ const ajouterIngredient = () => {
             onFocus={() => setIsFocusU(true)}
             onBlur={() => setIsFocusU(false)}
             onChange={item => {
-                setUstensils(item.value);
+                setUstensils({ value: item.value, label: item.label });
                 setIsFocusU(false);
             }}
           renderLeftIcon={() => (
@@ -420,7 +465,7 @@ const ajouterIngredient = () => {
       )) : "" }
 
 
-        <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} >
+        <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> creationRecette()}>
             <Text style={styles.buttonText_sign_up}>Valider Ma recette </Text>
         </TouchableOpacity>
         </View>

@@ -46,6 +46,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/user';
 import typeCuisine from './reducers/typeCuisine';
 import ustensil from './reducers/ustensils';
+import chef from './reducers/chef';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
@@ -79,7 +80,7 @@ const HomeTabs = () => (
 );
 
 const store = configureStore({
-  reducer: { user, typeCuisine, ustensil },
+  reducer: { user, typeCuisine, ustensil, chef },
 })
 
 
