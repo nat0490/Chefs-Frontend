@@ -83,11 +83,7 @@ const handleSubmitRegister = () => {
 //VERIF MOTS DE PASSE MASQUE POUR FACILITER NOS TEST
   if (verifierEmail() /*&& verifierMotDePasse()*/) {
       //fetch('http://172.20.10.5:3000/users/signup', {
-<<<<<<< HEAD
-      fetch('http://192.168.154.247:3000/users/signup', {
-=======
       fetch('https://chefs-backend-amber.vercel.app/users/signup', {
->>>>>>> 8603fb583eb89c2cc4e2607185e4d799b8610146
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
