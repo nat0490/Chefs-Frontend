@@ -10,22 +10,23 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { login, logout} from '../../reducers/user';
+//import user from '../../reducers/user';
 
 
 export default function EditProfilScreen() {
 
 //HOOK DETAT
-  const [ user, setUser ] =useState<UserProfil | null>(null);
-  //const [ userConnexion, setUserConnexion ] = useState<boolean | null>(true);
-  const [ modifCoordonne, setModifCoordonne ] = useState<boolean>(false);
-  const [ modifEmailPw, setModifEmailPw ] = useState<boolean>(false);
-  const [ newRue, setNewRue ] = useState<string | null >("");
-  const [ newVille, setNewVille ] = useState<string | null>("");
-  const [ newCodePostal, setNewCodePostal ] = useState<string | null>("");
-  const [ newTel, setNewTel ] = useState<string | null>("");
-  const [ newEmail, setNewEmail ] = useState<string | null>("");
-  const [ newPw, setNewPw ] = useState<string | null>("");
-  const [ showErrorTel, setShowErrorTel ] = useState<boolean> (false);
+  const [ user, setUser ] =useState(null);
+  const [ modifCoordonne, setModifCoordonne ] = useState(false);
+  const [ modifEmailPw, setModifEmailPw ] = useState(false);
+  const [ newRue, setNewRue ] = useState("");
+  const [ newVille, setNewVille ] = useState("");
+  const [ newCodePostal, setNewCodePostal ] = useState("");
+  const [ newTel, setNewTel ] = useState("");
+  const [ newEmail, setNewEmail ] = useState("");
+  const [ newPw, setNewPw ] = useState("");
+  const [ forgetPw, setForgetPw] = useState(false);
+  
   
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -35,20 +36,21 @@ export default function EditProfilScreen() {
   console.log(reducerUser);
   useEffect(() => {
     setUser(reducerUser);
-  },[]); 
-  console.log(user);
+  },[reducerUser]); 
+  //console.log(user);
 
   
-//Changer de numéro + vérif données renseignés
+//Changer de numéro 
   const changeTel = () => {
-    const newValueTel = newTel ? newTel: user? user.tel : null;
+    const newValueTel = newTel ? newTel: user.tel ;
     //const pattern = /^\+(?:[0-9] ?){6,14}[0-9]$/;
-    const TEL_REGEX = /^0[0-9]{9}$/;
-    if (newValueTel !== null && TEL_REGEX.test(newValueTel)) {
+//A DECOMENTER!!
+    //const TEL_REGEX = /^0[0-9]{9}$/;
+    if (newValueTel !== null /*&& TEL_REGEX.test(newValueTel)*/) {
       setModifCoordonne(!modifCoordonne);
       if(user) {
-        //fetch(`http://192.168.1.106:3000/users/profil/${userConnexion.userProfile}/update-tel`, {
-        fetch(`http://192.168.1.106:3000/users/profil/579c585c03077192e6dea33/update-tel`, {
+        fetch(`https://chefs-backend-amber.vercel.app/users/profil/${user.userProfile.id}/update-tel`, {
+        //fetch(`http://192.168.1.106:3000/users/profil/579c585c03077192e6dea33/update-tel`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify({newTel: newValueTel}),
@@ -57,14 +59,35 @@ export default function EditProfilScreen() {
           .then(data => {
             //console.log(data);
             if(data.result) {
-              //setShowAdresseMsg(false);
-              setShowErrorTel(false);
+              const userInfo = {
+                email : user.email,
+                token : user.token,
+                userProfile : {
+                  id : user.userProfile.id,
+                  nom : user.userProfile.nom,
+                  prenom : user.userProfile.prenom,
+                  dateOfBirth : user.userProfile.dateOfBirth,
+                  adresse : {
+                    rue : user.userProfile.adresse.rue,
+                    ville : user.userProfile.adresse.ville,
+                    codePostal : user.userProfile.adresse.codePostal,
+                  }, 
+                  tel : newValueTel,
+                  chef : user.userProfile.chef,
+                  }
+                };
+              //console.log(userInfo)
+              dispatch(logout());
+              dispatch(login(userInfo));
+              setModifCoordonne(!modifCoordonne);
+              setNewTel("");
+              
             } else { 
              console.log(data.message);
             } 
           })
           .catch((error) => {
-            console.error('Erreur lors de la requête POST :', error);
+            console.error('Erreur lors de la requête PUT :', error);
           });
       } else {
         console.log('no userConnexion');
@@ -80,16 +103,14 @@ export default function EditProfilScreen() {
 
 //Changer adresse
   const changeAdresse = () => {
-    setModifCoordonne(!modifCoordonne);
     const newAdresse = {
-      rue: newRue? newRue : user? user.adresse.rue : null,
-      ville: newVille? newVille : user? user.adresse.ville: null,
-      codePostal: newCodePostal? newCodePostal : user? user.adresse.codePostal: null,
+      rue: newRue? newRue : user.userProfile.adresse.rue,
+      ville: newVille? newVille : user.userProfile.adresse.ville,
+      codePostal: newCodePostal? newCodePostal : user.userProfile.adresse.codePostal,
     };
-    //fetch(`http://192.168.1.106:3000/users/profil/${userId}/update-adresse`,
     if (user) {
-      //fetch(`http://192.168.1.106:3000/users/profil/${userConnexion.userProfile}/update-adresse`, {
-      fetch(`http://192.168.1.106:3000/users/profil/579c585c03077192e6dea33/update-adresse`, {
+      //console.log(user.userProfile.id);
+      fetch(`https://chefs-backend-amber.vercel.app/users/profil/${user.userProfile.id}/update-adresse`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(newAdresse),
@@ -98,17 +119,32 @@ export default function EditProfilScreen() {
         .then(data => {
           //console.log(data);
           if(data.result) {
-            //récupère les infos à jour de BDD pour les afficher
-            //setShowAdresseMsg(false);
-            recupInfoUser();
+            const userInfo = {
+              email : user.email,
+              token : user.token,
+              userProfile : {
+                id : user.userProfile.id,
+                nom : user.userProfile.nom,
+                prenom : user.userProfile.prenom,
+                dateOfBirth : user.userProfile.dateOfBirth,
+                adresse : newAdresse ,
+                tel : user.userProfile.tel,
+                chef : user.userProfile.chef,
+                }
+              };
+            console.log(userInfo)
+            dispatch(logout());
+            dispatch(login(userInfo));
+            setModifCoordonne(!modifCoordonne);
+            setNewRue("");
+            setNewVille("");
+            setNewCodePostal("");
           } else { 
-            //setShowAdresseMsg(true);
-            //let errorAdress = data.message;
-            console.log('erreur de données');
+            console.log('erreur de données', data.message);
           } 
         })
         .catch((error) => {
-          console.error('Erreur lors de la requête POST :', error);
+          console.error('Erreur lors de la requête PUT :', error);
         });
       } else {
         console.log('no userConnexion ')
@@ -116,14 +152,14 @@ export default function EditProfilScreen() {
     
   };
 
-//Changer Email => PAS TESTE!! ATTENTE DU REDUCER EN PLACE!!
+//Changer Email
   const changeEmail = () => {
-    const newValueEmail = newEmail ? newEmail: user? user.email : null;
+    const newValueEmail = newEmail ? newEmail: user.email;
     const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (newValueEmail !== null && EMAIL_REGEX.test(newValueEmail)) {
       if(user) {
-        //fetch(`http://192.168.1.106:3000/users/${userConnexion.token}/update-email`, {
-        fetch(`http://192.168.1.106:3000/users/${userConnexion.token}/update-email`, {
+        //console.log(user.token);
+        fetch(`https://chefs-backend-amber.vercel.app/users/${user.token}/update-email`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify({newEmail: newValueEmail}),
@@ -132,14 +168,35 @@ export default function EditProfilScreen() {
           .then(data => {
             //console.log(data);
             if(data.result) {
+              const userInfo = {
+                email : newValueEmail,
+                token : user.token,
+                userProfile : {
+                  id : user.userProfile.id,
+                  nom : user.userProfile.nom,
+                  prenom : user.userProfile.prenom,
+                  dateOfBirth : user.userProfile.dateOfBirth,
+                  adresse : {
+                    rue : user.userProfile.adresse.rue,
+                    ville : user.userProfile.adresse.ville,
+                    codePostal : user.userProfile.adresse.codePostal,
+                  },
+                  tel : user.userProfile.tel,
+                  chef : user.userProfile.chef,
+                  }
+                };
+              console.log(userInfo)
+              dispatch(logout());
+              dispatch(login(userInfo));
               setModifEmailPw(!modifEmailPw);
+              setEmail("");
               //setShowAdresseMsg(false);
             } else { 
               console.log(data.message);
             } 
           })
           .catch((error) => {
-            console.error('Erreur lors de la requête POST :', error);
+            console.error('Erreur lors de la requête PUT :', error);
           });
       } else {
         console.log('no userConnexion');
@@ -159,8 +216,7 @@ export default function EditProfilScreen() {
     const PW_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     if (newValuePW !== null && PW_REGEX.test(newValuePW)) {
       if(user) {
-        //fetch(`http://192.168.1.106:3000/users/${userConnexion.token}/update-password`, {
-        fetch(`http://192.168.1.106:3000/users/${user.token}/update-password`, {
+        fetch(`https://chefs-backend-amber.vercel.app/users/${user.token}/update-password`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify({newPassword: newValuePW}),
@@ -170,12 +226,13 @@ export default function EditProfilScreen() {
             //console.log(data);
             if(data.result) {
               setModifEmailPw(!modifEmailPw);
+              setNewPw("");
             } else { 
               console.log(data.message);
             } 
           })
           .catch((error) => {
-            console.error('Erreur lors de la requête POST :', error);
+            console.error('Erreur lors de la requête PUT :', error);
           });
       } else {
         console.log('no userConnexion');
@@ -189,18 +246,16 @@ export default function EditProfilScreen() {
     }
   };
 
-//PW oublié // COMMENT ONT FAIT?????
-  const forgetPW = () => {
 
-  };
-
-  
-  
-
-
-//INFOS DU USER
+//INFOS DU USER: AFFICHER CES INFOS EN LE RECUPERANT DANS LE REDUCER
   const afficherLesInfos = user ? (
       <>
+          <View style={styles.topPage}> 
+            <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Setting' )}>
+              <Text style={styles.btnTextBack}>←</Text>
+            </TouchableOpacity>
+            <Text style={styles.txt_h1}>Profil</Text>
+          </View>
         <View style={styles.blocProfil}> 
           <Text style={styles.inputText}>Nom: {user.userProfile.nom}</Text>
           <Text style={styles.inputText}>Prenom: {user.userProfile.prenom}</Text>
@@ -229,7 +284,29 @@ export default function EditProfilScreen() {
         <View style={styles.container_box_width}>
           {modifEmailPw ? 
 /*MODIFIER LE PW ou EMAIL*/
+       forgetPw ? 
+/*PAGE MOTS DE PASSE OUBLIE*/
+        <>
+            <View> 
+              <TouchableOpacity style={styles.backBtn} onPress={()=> {setForgetPw(!forgetPw)}}>
+                <Text style={styles.btnTextBack}>←</Text>
+              </TouchableOpacity>
+              <Text style={styles.txt_h1}>Mots de passe oublié?</Text>
+            </View>
+            <Text>Veuillez rentrer votre adresse email ci-dessous et nous vous enverons les instructions</Text>
+            <Text style={styles.inputText}>Email</Text>
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in}>
+              <Text style={styles.buttonText_sign_in}>Valider</Text>
+            </TouchableOpacity>
+        </> :
+/*PAGE MODIF MOTS DE PASSE*/
             <> 
+              <View> 
+                <TouchableOpacity style={styles.backBtn} onPress={()=> setModifEmailPw(!modifEmailPw)}>
+                  <Text style={styles.btnTextBack}>←</Text>
+                </TouchableOpacity>
+                <Text style={styles.txt_h1}>Modifier Email / Mots de passe</Text>
+              </View>
               <View >
                 <TextInput 
                   style={styles.input} 
@@ -238,27 +315,30 @@ export default function EditProfilScreen() {
                   value={newEmail || "" }/>
               </View> 
               <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> changeEmail()} >
-                  <Text style={styles.buttonText_sign_in}>Valider le nouvel Email</Text>
+                  <Text style={styles.buttonText_sign_in}>Valider</Text>
                 </TouchableOpacity>
               <TextInput 
                 style={styles.input} 
-                placeholder="******"
+                placeholder=""
                 onChangeText={(value) => setNewPw(value)} 
                 value={newPw || "" }/>
               <View style={styles.buttonEmailPw}>
                 <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> changePW()} >
-                  <Text style={styles.buttonText_sign_in}>Valider le nouveau mots de passe</Text>
+                  <Text style={styles.buttonText_sign_in}>Valider</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> forgetPW()} >
+                <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> setForgetPw(!forgetPw)} >
                   <Text style={styles.buttonText_sign_up}>Mots de passe oublié?</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} style={styles.backBtn} onPress={()=> setModifEmailPw(!modifEmailPw)} >
-                  <Text style={styles.buttonText_sign_up}>←</Text>
                 </TouchableOpacity>
               </View>
               </> : modifCoordonne ?
 /*MODIFIER LES COORDONNES */
               <> 
+                <View> 
+                  <TouchableOpacity style={styles.backBtn} onPress={()=> setModifCoordonne(!modifCoordonne)}>
+                    <Text style={styles.btnTextBack}>←</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.txt_h1}>Modifier coordonnées</Text>
+                </View>
                 <TextInput 
                   style={styles.input} 
                   placeholder={user.userProfile.adresse.rue}
@@ -275,19 +355,15 @@ export default function EditProfilScreen() {
                   onChangeText={(value) => setNewCodePostal(value)} 
                   value={newCodePostal || "" }/>
                 <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> changeAdresse()} >
-                  <Text style={styles.buttonText_sign_in}>Valider la nouvelle adresse</Text>
+                  <Text style={styles.buttonText_sign_in}>Valider</Text>
                 </TouchableOpacity>
                 <TextInput 
                   style={styles.input} 
                   placeholder={user.userProfile.tel}
                   onChangeText={(value) => setNewTel(value)} 
                   value={newTel || "" }/>
-                  { showErrorTel ? <Text style={styles.errorMsg}>* Mauvais format</Text> : null }
                 <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> changeTel()} >
                   <Text style={styles.buttonText_sign_in}>Valider le nouveau numéro</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} style={styles.backBtn} onPress={()=> setModifCoordonne(!modifCoordonne)} >
-                  <Text style={styles.buttonText_sign_up}>←</Text>
                 </TouchableOpacity>
               </> :
 /*JUSTE AFFICHER LES INFO*/
@@ -303,12 +379,13 @@ export default function EditProfilScreen() {
         <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> dispatch(logout())}>
           <Text style={styles.buttonText_sign_in}>LOGOUT: Vider reducer</Text>
         </TouchableOpacity>
-        <Text style={styles.txt_h1}>Profil</Text>
+        
         { user ? profil : (
           <View style={styles.container}>
             <Text>Oops... Il y a eu un petit problème on dirais</Text>
           </View>
         )}
+        
        <StatusBar style="auto" />
       </View>
   );
@@ -388,7 +465,7 @@ const styles = StyleSheet.create({
   container_box_width:{
     margin: 0,
     padding: 0,
-    width: "100%",
+    width: "80%",
     flex:1,
     height: "100%",
     //display: 'flex',
@@ -419,5 +496,19 @@ backBtn: {
   borderWidth: 2,
   borderColor: '#9292FE',
   backgroundColor: '#fff',
-}
+  marginBottom: 50,
+},
+topPage: {
+  width:"100%",
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-around',
+  marginTop: 20,
+  paddingRight: 100,
+},
+btnTextBack: {
+  fontSize : 30,
+  fontWeight: 'bold',
+  color : '#9292FE'
+},
 });

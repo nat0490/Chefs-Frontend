@@ -25,13 +25,17 @@ import WishlistScreen from './screens/WishlistScreen';
 import EditProfilScreen from './screens/Profil/EditProfilScreen';
 import PastOrderScreen from './screens/Profil/PastOrderScreen';
 import SettingScreen from './screens/Profil/SettingScreen';
+import EditProfilChefScreen from './screens/Profil/EditProfilChef';
+
 //A TRIER
 import BookDateScreen from './screens/BookDateScreen';
 import ConfigureOrderScreen from './screens/ConfigureOrderScreen';
 import DishScreen from './screens/DishScreen';
 import MainScreen from './screens/MainScreen';
 import OrderScreen from './screens/OrderScreen';
-
+import HomePlatScreen from './screens/Home_platsScreen'
+import HomeChefScreen from './screens/Home_chefsScreen'
+//import ProfilScreen from './screens/Profil/ProfilScreen';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -45,9 +49,6 @@ import { useEffect } from 'react';
 //const navigation = useNavigation();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-//const Drawer = createDrawerNavigator();
-//const dispatch = useDispatch();
-
 
 
 const HomeTabs = () => (
@@ -55,9 +56,9 @@ const HomeTabs = () => (
     tabBarIcon: ({ color, size }) => {
       let iconName = '';
       if (route.name === 'Home') {
-        iconName = 'house';
+        iconName = 'home';
       } else if (route.name === 'Search') {
-        iconName = 'magnifying-glass';
+        iconName = 'search';
       } else if (route.name === 'Wishlist') {
         iconName = 'heart';
       }
@@ -81,29 +82,23 @@ const store = configureStore({
 
 
 export default function App() {
-
-
   return (
     <Provider store={store}> 
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={HomeScreen} />
-          
           <Stack.Screen name="EditProfil" component={EditProfilScreen} />
+          <Stack.Screen name="EditProfilChef" component={EditProfilChefScreen} />
           <Stack.Screen name="HomeTabs" component={HomeTabs} />
           <Stack.Screen name="Setting" component={SettingScreen} />
-
-          
           <Stack.Screen name="Sign_in" component={SignInScreen} />
           <Stack.Screen name="Sign_up" component={SignUpScreen} />
           <Stack.Screen name="Preference" component={PreferencesScreen} />
+          <Stack.Screen name="HomePlat" component={HomePlatScreen} />
+          <Stack.Screen name="HomeChefs" component={HomeChefScreen} />
           <Stack.Screen name="Terms" component={TermsScreen}/>
-          
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />
-         
         </Stack.Navigator>
-        
-
       </NavigationContainer>
     </Provider>
   );

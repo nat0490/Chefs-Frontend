@@ -7,6 +7,7 @@ const initialState = {
       email: null,
       token: null,
       userProfile: {
+        id: null,
         nom: null,
         prenom: null,
         dateOfBirth: null,
@@ -29,8 +30,9 @@ export const userSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.value.email = action.payload.email;
-      state.value.token = action.payload.email;
+      state.value.token = action.payload.token;
       userProfile : {
+        state.value.userProfile.id =action.payload.userProfile.id;
         state.value.userProfile.nom =action.payload.userProfile.nom ;
         state.value.userProfile.prenom = action.payload.userProfile.prenom ;
         state.value.userProfile.dateOfBirth = action.payload.userProfile.dateOfBirth ;

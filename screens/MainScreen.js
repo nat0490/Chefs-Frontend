@@ -1,10 +1,7 @@
-<<<<<<< HEAD:screens/MainScreen.tsx
-=======
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 //import { DrawerActions } from '@react-navigation/routers';
->>>>>>> b60cbfa2fbe89e456c6491d920e84df2f741bd9f:screens/MainScreen.js
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';

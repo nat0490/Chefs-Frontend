@@ -11,7 +11,7 @@ import { StyleSheet,
  } from 'react-native';
  import { useNavigation } from '@react-navigation/native';
  import React, { useState } from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { useDispatch, useSelector } from 'react-redux';
 // importer reducer 
 import { login } from '../reducers/user';
@@ -30,10 +30,17 @@ export default function SignInScreen() {
   const [passwordInput, setPasswordInput] = useState('');
 
 
+
+  
+
   // création signin connexion 
   const handleConnection = () => {
     if(EMAIL_REGEX.test(emailInput)) {
+<<<<<<< HEAD
       fetch('http://192.168.154.247:3000/users/signin', {
+=======
+      fetch('https://chefs-backend-amber.vercel.app/users/signin', {
+>>>>>>> 8603fb583eb89c2cc4e2607185e4d799b8610146
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: emailInput, password: passwordInput }),
@@ -47,6 +54,7 @@ export default function SignInScreen() {
           email : data.dataUserConnexion.email,
           token : data.dataUserConnexion.token,
           userProfile : {
+            id : data.dataUserConnexion.userProfile._id,
             nom : data.dataUserConnexion.userProfile.nom,
             prenom : data.dataUserConnexion.userProfile.prenom,
             dateOfBirth : data.dataUserConnexion.userProfile.dateOfBirth,
@@ -59,11 +67,13 @@ export default function SignInScreen() {
             chef : data.dataUserConnexion.userProfile.chef,
             }
           };
-        //console.log(userInfo)
+        console.log(userInfo)
         dispatch(login(userInfo));
-        navigation.navigate('HomeTabs', { screen: 'Main' }) ;
+        navigation.navigate('EditProfil');
       } 
+      
     })
+    //navigation.navigate('EditProfil');
     } else {
       Alert.alert(
         'Erreur',
@@ -156,9 +166,9 @@ export default function SignInScreen() {
             </TouchableOpacity>
 
         </View>
-        <FontAwesome name='apple1' size={10}  />
+        <FontAwesome name='apple' size={10}  />
         <FontAwesome name='google' size={10}  />
-        <FontAwesome name='facebook-with-circle' size={10}  />
+        {/*<FontAwesome name='facebook-with-circle' size={10}  /> */}
 
         </View>
       </View>

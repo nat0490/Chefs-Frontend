@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet,ScrollView, Text, View ,TouchableOpacity, Alert} from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
@@ -15,7 +15,7 @@ export default function OrderScreen() {
   const [preferenceData, setPreferenceData] = useState([]);
 
   // État pour suivre les couleurs actives des préférences
-  const [activeColors, setActiveColors] = useState((preferenceData.length).fill(false));
+  const [activeColors, setActiveColors] = useState(preferenceData.map(() => false));
 
   // État pour stocker les ID sélectionnés
   const [selectedIds, setSelectedIds] = useState([]);

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { CheckBox } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import DateTimePikers from "@react-native-community/datetimepicker"
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { login, logout} from '../reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -66,7 +66,7 @@ export default function SignUpScreen() {
 
     const verifierMotDePasse = () => {
       // La regex vérifie si le mot de passe contient au moins une majuscule, un chiffre et une minuscule
-      const motDePasseRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+      //const motDePasseRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
       if (!motDePasseRegex.test(passwordInput)) {
         Alert.alert(
           'Erreur',
@@ -80,11 +80,14 @@ export default function SignUpScreen() {
 // Quand j'appuie sur mon onPresse je déclanche mon handleSubmitRegister qui fait appel au deux fonction de regex 
 
 const handleSubmitRegister = () => {
-  //AJOUTER REDUCER LA!!
-  
+//VERIF MOTS DE PASSE MASQUE POUR FACILITER NOS TEST
   if (verifierEmail() /*&& verifierMotDePasse()*/) {
       //fetch('http://172.20.10.5:3000/users/signup', {
+<<<<<<< HEAD
       fetch('http://192.168.154.247:3000/users/signup', {
+=======
+      fetch('https://chefs-backend-amber.vercel.app/users/signup', {
+>>>>>>> 8603fb583eb89c2cc4e2607185e4d799b8610146
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -104,6 +107,7 @@ const handleSubmitRegister = () => {
           console.log(data);
           
           if (data.result) {
+            
             setPasswordInput('');
             setEmailInput('');
             setNameInput('');
@@ -114,8 +118,30 @@ const handleSubmitRegister = () => {
             setPostalInput('');
             setCityInput('');
             Alert.alert('Vous êtes connecté');
-            //navigation.navigate('Preference');
+            navigation.navigate('Preference');
              //navigation.navigate('EditProfil');
+//PARTIE REDUX: ENVOIE DANS LE REDUCER DES INFO USER
+             const userInfo = {
+              email : data.savedUserConnexion.email,
+              token : data.savedUserConnexion.token,
+              userProfile : {
+                id : data.savedUserProfil._id,
+                nom : data.savedUserProfil.nom,
+                prenom : data.savedUserProfil.prenom,
+                dateOfBirth : data.savedUserProfil.dateOfBirth,
+                adresse : {
+                  rue : data.savedUserProfil.adresse.rue,
+                  ville : data.savedUserProfil.adresse.ville,
+                  codePostal : data.savedUserProfil.adresse.codePostal,
+                },
+                tel : data.savedUserProfil.tel,
+                chef : data.savedUserProfil.chef,
+                }
+              };
+            console.log(userInfo)
+            dispatch(login(userInfo));
+//ENVOIE SUR LA PAGE MAIN ENSUITE (PAS DACCEUIL)
+            navigation.navigate('HomeTabs', { screen: 'Main' }) ;
           } 
         })
         .catch(error => {
@@ -270,17 +296,17 @@ const handleSubmitRegister = () => {
               <TextInput
                 placeholder="City"
                 style={[styles.input_double, { marginRight: 0}]}
-                onChangeText={(value) => setPostalInput(value)}
-                value={postalInput}
+                onChangeText={(value) => setCityInput(value)}
+                value={cityInput}
               />
             </View>
             <View style={{flex: 1,}}>
               <Text style={[styles.label, { marginLeft: 16}]}>Postale</Text>
               <TextInput
-                placeholder="Postale"
+                placeholder="Code Postal"
                 style={[styles.input_double, { marginLeft: 16}]}
-                onChangeText={(value) => setCityInput(value)}
-                value={cityInput}
+                onChangeText={(value) => setPostalInput(value)}
+                value={postalInput}
               />
             </View>
           </View> 
