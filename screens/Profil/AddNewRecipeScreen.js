@@ -226,7 +226,7 @@ newlisteUstensils.sort((a, b) => {
 
 
 //AFFICHER USTENSILS SELECTIONNE
-console.log(ustensilsList);
+//console.log(ustensilsList);
 const afficheUstensils= ustensilsList.map( (oneUstensil, i) => {
   return <Text key={i}> {oneUstensil.label} </Text>
 })
@@ -241,18 +241,16 @@ const creationRecette = () => {
   const allIngredients = [];
   recapIngredient.map(e => allIngredients.push({name: e.nom, quantity: e.quantite, unit: e.unite}))
   
-  console.log(allIngredients);
+  //console.log(allIngredients);
   const newDish = {
-    userChef: chefId,
+        userChef: chefId,
         title: title,
         image: imageDish,
         time: selectedTime,
         type: type,
-        prix: {
-          minimum: prixMini,
-          personneSup: prixParPersonne,
-          panierCourseParPersonne: panierCourse,
-        },
+        minimum: prixMini,
+        personneSup: prixParPersonne,
+        panierCourseParPersonne: panierCourse,
         ustensils:allUstensils,
         ingredients: allIngredients,
   }
@@ -263,7 +261,21 @@ const creationRecette = () => {
   })
   .then(res => res.json())
   .then(data => {
-    console.log(data)
+    console.log(data);
+    if (data.result) {
+      fetch(`https://chefs-backend-amber.vercel.app/users/chef/addRecipe/${chefId}` , {
+        mothod: 'PUT',
+        headers: { 'Content-type': 'application/json'},
+        body: JSON.stringify({recipeId : data._id})
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log('nouvelle recette créé et ajouté au chef', data)
+        })
+    } else {
+      console.log("can't had");
+    }
+    //console.log(data)
   })
 }
 

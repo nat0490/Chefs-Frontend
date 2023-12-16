@@ -210,7 +210,7 @@ export default function EditProfilScreen() {
     }
   };
 
-//Changer PW => PAS TESTE!! ATTENTE DU REDUCER EN PLACE!!
+//Changer PW 
   const changePW = () => {
     const newValuePW = newPw ? newPw: null;
     const PW_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
