@@ -15,6 +15,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 // importer reducer 
 import { login } from '../reducers/user';
+import {add, remove} from '../reducers/typeCuisine';
+
 
 // Grabbed from emailregex.com
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -30,6 +32,29 @@ export default function SignInScreen() {
   const [passwordInput, setPasswordInput] = useState('');
 
 
+//REDUCER TYPE CUISINE : FETCH pour récuperer tous les type puis Dispatch pour les mettre dans le reducer
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`https://chefs-backend-amber.vercel.app/userPreference/display_preference`);
+      if (!response.ok) {
+        throw new Error(`Réponse du serveur non valide: ${response.status}`);
+      }  
+      const result = await response.json();
+      //console.log(data);
+      result.data.forEach((item) => {
+        dispatch(add({ id: item._id, typeCuisine: item.typeCuisine }));
+      });
+    } catch (error) {
+      console.error('Erreur lors du chargement des données depuis la base de données', error);
+    }
+  };
+  
+
+
+
+
+
+
   // création signin connexion 
   const handleConnection = () => {
     if(EMAIL_REGEX.test(emailInput)) {
@@ -39,10 +64,11 @@ export default function SignInScreen() {
       body: JSON.stringify({ email: emailInput, password: passwordInput }),
     }).then(response => response.json())
     .then(data => {
-      //console.log(data.savedUserConnexion);
+      console.log(data);
       if (data.result) {
         setEmailInput('');
         setPasswordInput('');
+        
         const userInfo = {
           email : data.dataUserConnexion.email,
           token : data.dataUserConnexion.token,
@@ -57,6 +83,8 @@ export default function SignInScreen() {
             },
             tel : data.dataUserConnexion.userProfile.tel,
             chef : data.dataUserConnexion.userProfile.chef,
+            orders: data.dataUserConnexion.userProfile.chef.orders,
+            userPreference: data.dataUserConnexion.userProfile.chef.userPreference,
             }
           };
         //console.log(userInfo)

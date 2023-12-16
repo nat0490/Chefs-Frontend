@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image , TouchableOpacity} from 'react-native';
 import React from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+//import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import {login, logout} from '../reducers/user';
@@ -23,7 +23,7 @@ export default function App() {
     // if (i < props.voteAverage - 1) {
     //   style = { 'color': '#f1c40f' };
     // }
-    stars.push(<FontAwesome key={i} name='star' size={8}/>);
+    //stars.push(<FontAwesome key={i} name='star' size={8}/>);
   }
 
  const handlePressPlats = () =>{
@@ -40,12 +40,14 @@ export default function App() {
       <View style={styles.nav_bar_color}></View>
 
       {/* Logo */}
+     
+      
       <Image source={require('../assets/logo.png')} style={styles.photo_logo} />
 
       {/* Section avec titre et barre en dessous */}
       <View style={styles.section_box}>
         <View style={styles.box_titre}>
-            <FontAwesome name='heart' size={22}/>
+            {/*<FontAwesome name='heart' size={22}/> */}
             <Text style={styles.txt_h1}>Our trendy recipes</Text>
         </View>
 
@@ -100,7 +102,7 @@ export default function App() {
       {/* Section avec un autre titre et barre en dessous */}      
       <View style={styles.section_box}>
         <View style={styles.box_titre}>
-            <FontAwesome name='heart' size={22} />
+            {/*<FontAwesome name='heart' size={22} /> */}
             <Text style={styles.txt_h1}>Our trendy recipes</Text>
         </View>
 
@@ -167,6 +169,7 @@ export default function App() {
           
 
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('CheckProfile')}>
+          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Main')}>
               <Text style={styles.buttonText_sign_up}>navigation</Text>
           </TouchableOpacity>
         </View>
