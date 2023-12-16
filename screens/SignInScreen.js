@@ -63,10 +63,11 @@ export default function SignInScreen() {
       body: JSON.stringify({ email: emailInput, password: passwordInput }),
     }).then(response => response.json())
     .then(data => {
-      //console.log(data.savedUserConnexion);
+      console.log(data);
       if (data.result) {
         setEmailInput('');
         setPasswordInput('');
+        
         const userInfo = {
           email : data.dataUserConnexion.email,
           token : data.dataUserConnexion.token,
@@ -82,6 +83,8 @@ export default function SignInScreen() {
             },
             tel : data.dataUserConnexion.userProfile.tel,
             chef : data.dataUserConnexion.userProfile.chef,
+            orders: data.dataUserConnexion.userProfile.chef.orders,
+            userPreference: data.dataUserConnexion.userProfile.chef.userPreference,
             }
           };
         //console.log(userInfo)

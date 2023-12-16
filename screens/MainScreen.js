@@ -25,7 +25,7 @@ export default function MainScreen() {
       setLocation(currentLocation);
     })();
   }, []);
-
+/*
   useEffect(() => {
     const fetchChefAddresses = async () => {
       const response = await fetch('http://192.168.154.247:3000/users/chef/userchefs/addresses', {
@@ -33,17 +33,36 @@ export default function MainScreen() {
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await response.json();
-
       // Filtrer les adresses sans coordonnées
       const filteredAddresses = data.filter(address => address.coordinates.latitude && address.coordinates.longitude);
-
-
       // Placer le console.log ici pour vérifier les données avant de les utiliser
       console.log('Adresses des chefs : ', filteredAddresses);
-
       setChefAddresses(filteredAddresses);
     };
+    fetchChefAddresses();
+  }, []);*/
 
+//AJOUT DE CATCH POUR EVITER LES MESSAGE D'ERREUR DANS LA CONSOLE(même chose qu'au-dessus, mais avec catch)
+  useEffect(() => {
+    const fetchChefAddresses = async () => {
+      try {
+        const response = await fetch('http://192.168.154.247:3000/users/chef/userchefs/addresses', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        // Filtrer les adresses sans coordonnées
+        const filteredAddresses = data.filter(address => address.coordinates.latitude && address.coordinates.longitude);
+        // Placer le console.log ici pour vérifier les données avant de les utiliser
+        console.log('Adresses des chefs : ', filteredAddresses);
+        setChefAddresses(filteredAddresses);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des adresses des chefs :', error);
+      }
+    };
     fetchChefAddresses();
   }, []);
 

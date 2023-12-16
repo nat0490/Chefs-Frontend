@@ -5,13 +5,8 @@ import {
   TouchableOpacity, 
   View, 
   TextInput, 
-  Pressable,
-  Button,
-  Modal,
-  FlatList,
   KeyboardAvoidingView,
-  Platform,
-  ScrollView 
+  Image 
 } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -30,7 +25,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 //FONTAWESOME
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSquarePlus } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faBowlFood, faCircleUser } from '@fortawesome/free-solid-svg-icons'
 
 
 
@@ -63,14 +58,10 @@ export default function AddNewRecipeScreen() {
   
     const [voirPickerTime, setVoirPickerTime] = useState(false);
     const [timeSelectedByUser, setTimeSelectedByUser] = useState(false);
-    //const [ listeTypeCuisine, setListeTypeCuisine] = useState([]);
-
-
-    const [searchText, setSearchText] = useState('');
-    const [filteredUstensils, setFilteredUstensils] = useState([]);
-
-
+    const [ recetteValide, setRecetteValide ] = useState(false);
     const [value, setValue] = useState(null);
+
+
 
 //Recupère les ustensils de la BDD et les mets dans le reducer
     const fetchData = async () => {
@@ -228,7 +219,7 @@ newlisteUstensils.sort((a, b) => {
 //AFFICHER USTENSILS SELECTIONNE
 //console.log(ustensilsList);
 const afficheUstensils= ustensilsList.map( (oneUstensil, i) => {
-  return <Text key={i}> {oneUstensil.label} </Text>
+  return <Text key={i} style={styles.ustensilName}> {oneUstensil.label} </Text>
 })
 
 //Envoyer les INFO A LA BDD
@@ -240,8 +231,7 @@ const creationRecette = () => {
 //Mettre les ingrédients aux bon format pour envoyer dans la BDD
   const allIngredients = [];
   recapIngredient.map(e => allIngredients.push({name: e.nom, quantity: e.quantite, unit: e.unite}))
-  
-  //console.log(allIngredients);
+//Mettre en forme la recette
   const newDish = {
         userChef: chefId,
         title: title,
@@ -253,8 +243,9 @@ const creationRecette = () => {
         panierCourseParPersonne: panierCourse,
         ustensils:allUstensils,
         ingredients: allIngredients,
-  }
-  fetch(`https://chefs-backend-amber.vercel.app/recipes/newrecipes/${chefId}`, {
+    }
+//Poster la recette
+  fetch(`https://chefs-backend-amber.vercel.app/recipes/newrecipesV2/${chefId}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json'},
     body: JSON.stringify(newDish),
@@ -262,22 +253,26 @@ const creationRecette = () => {
   .then(res => res.json())
   .then(data => {
     console.log(data);
-    if (data.result) {
-      fetch(`https://chefs-backend-amber.vercel.app/users/chef/addRecipe/${chefId}` , {
-        mothod: 'PUT',
-        headers: { 'Content-type': 'application/json'},
-        body: JSON.stringify({recipeId : data._id})
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log('nouvelle recette créé et ajouté au chef', data)
-        })
+    if (data) {
+      setTitle("");
+      setImageDish("");
+      setSelectedTime(new Date());
+      setType("");
+      setPrixMini("");
+      setPrixParPersonne("");
+      setPanierCourse(""); 
+      setUstensilsList([]);  
+      setIngredientName("");
+      setIngredientQty("");
+      setIngredientUnit("");
+      setRecapIngredient("");
+      //navigation.navigate('AddNewRecipe')
+
     } else {
-      console.log("can't had");
+      console.log('error');
     }
-    //console.log(data)
   })
-}
+};
 
 
 //INGREDIENTS
@@ -298,15 +293,43 @@ const ajouterIngredient = () => {
 };
 
 
+
+
+
+
+
   return (
     <KeyboardAvoidingView style={styles.container} >
     <View style={styles.nav_bar_color}></View>
       <View style={styles.container_box_width}>
+
+{ recetteValide ? 
+//PAGE MESSAGE: AJOUT RECETTE OK!
+          <View style={styles.msgPage}> 
+              <Image source={require('../../assets/logo.png')} style={styles.photo_logo} />
+              <View style={styles.msg}>
+                <Text style={styles.txt_h1}>Ta recette a bien été ajouté!</Text>
+                <Text style={styles.validationIcon}>  ✔  </Text>
+              </View>
+              <View> 
+                <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> setRecetteValide(!recetteValide)} >
+                  <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>    Ajouter une nouvelle recette    ➔</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> navigation.navigate('EditProfilChef')} >
+                  <FontAwesomeIcon icon={faCircleUser} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>←    Retourner sur ton profil</Text>
+                </TouchableOpacity>
+              </View>
+          </View>
+    :
+//AJOUTER UNE RECETTE
+      <> 
         <View> 
+        <View style={styles.topPage}> 
             <TouchableOpacity style={styles.backBtn} onPress={()=> navigation.navigate('EditProfilChef')}>
                 <Text style={styles.btnTextBack}>←</Text>
             </TouchableOpacity>
             <Text style={styles.txt_h1}>Ajoute ta recette</Text>
+            </View>
         </View>
 {/*INPUT TITRE ET IMAGE */}
         <TextInput 
@@ -376,10 +399,6 @@ const ajouterIngredient = () => {
           )}
         />
     </View>
-    
-  
-
-  
 
 {/*SECTION PRIX*/}
         <Text>Prix:</Text>
@@ -404,10 +423,8 @@ const ajouterIngredient = () => {
             value={panierCourse}/>
         </View>
 
-        
-
-<View style={styles.listeUstensils}><Text> {afficheUstensils}</Text></View>
 {/*SECTION USTENSIL */}
+<View style={styles.listeUstensils}><Text>Selectionné: {afficheUstensils}</Text></View>
 <View >
         {titreMenuUstensils()}
         <Dropdown
@@ -441,9 +458,6 @@ const ajouterIngredient = () => {
         />
     </View>
 
-
-
-
 {/*PARTIE INGREDIENT*/}
         <Text>Ingredients:</Text>
         <View style={styles.ingredientInput}> 
@@ -476,10 +490,13 @@ const ajouterIngredient = () => {
         </View> 
       )) : "" }
 
-
         <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> creationRecette()}>
             <Text style={styles.buttonText_sign_up}>Valider Ma recette </Text>
         </TouchableOpacity>
+
+      </>
+      }
+
         </View>
     </KeyboardAvoidingView> 
   );
@@ -501,8 +518,8 @@ const styles = StyleSheet.create({
         height: 65,
       },
       btn_sign_in : {
-        paddingVertical: 10, // 10 units of padding at the top and bottom
-        paddingHorizontal: 25, // A
+        paddingVertical: 10, 
+        paddingHorizontal: 25, 
         borderRadius: 5,
         backgroundColor: '#9292FE',
         marginTop: 10,
@@ -518,8 +535,8 @@ const styles = StyleSheet.create({
         color : '#9292FE'
       },
       backBtn: {
-        paddingBottom: 5, // 10 units of padding at the top and bottom
-        paddingHorizontal: 15, // A
+        paddingBottom: 5, 
+        paddingHorizontal: 15, 
         borderRadius:50,
         borderWidth: 2,
         borderColor: '#9292FE',
@@ -583,8 +600,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
       },
       btn_sign_in : {
-        paddingVertical: 10, // 10 units of padding at the top and bottom
-        paddingHorizontal: 25, // A
+        paddingVertical: 10, 
+        paddingHorizontal: 25, 
         borderRadius: 5,
         backgroundColor: '#9292FE',
         marginTop: 10,
@@ -595,8 +612,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
       },
       btn_sign_up : {
-        paddingVertical: 10, // 10 units of padding at the top and bottom
-        paddingHorizontal: 25, // A
+        paddingVertical: 10, 
+        paddingHorizontal: 25, 
         borderRadius: 5,
         borderWidth: 2,
         borderColor: '#9292FE',
@@ -665,8 +682,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     ingredientInputItem: {
-        flex: 1, // Cette propriété spécifie que chaque élément prendra une portion égale de l'espace disponible
-        marginHorizontal: 5, // Marge horizontale pour séparer les éléments
+        flex: 1, 
+        marginHorizontal: 5, 
     },
     
     ingredientItem: {
@@ -679,22 +696,22 @@ const styles = StyleSheet.create({
 placeholderStyle: {
     fontSize: 16,
   },
-  selectedTextStyle: {
+selectedTextStyle: {
     fontSize: 16,
   },
-  iconStyle: {
+iconStyle: {
     width: 20,
     height: 20,
   },
-  inputSearchStyle: {
+inputSearchStyle: {
     height: 30,
     fontSize: 16,
   },
-  icon: {
+icon: {
     marginRight: 5,
     color: '#9292FE'
   },
-  dropdown: {
+dropdown: {
     height: 40,
     width: '100%',
     borderColor: '#9292FE',
@@ -702,8 +719,43 @@ placeholderStyle: {
     borderRadius: 8,
     paddingHorizontal: 8,
   },
-  listeUstensils: {
+listeUstensils: {
     marginHorizontal: 5,
+    marginBottom: 10,
+  },
+ustensilName: {
+    fontWeight: '600',
+    fontSize: 16,
+    color: '#9292FE',
+  },
+  topPage: {
+    width:"100%",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 20,
+    paddingRight: 100,
+  },
+//PAGE DE RECETTE VALIDE
+  msgPage: {
+    height: '100%',
+    width: '100%',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  photo_logo : {
+    width: 100,
+    height: 100,
+    marginTop: 30,
+    marginBottom : -5,
+  },
+  msg: {
+    alignItems: 'center',
+  },
+  validationIcon: {
+    marginTop: 20,
+    fontSize: 50,
+    color: '#9292FE',
   }
           
 });

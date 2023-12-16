@@ -5,10 +5,8 @@ import {
   TouchableOpacity, 
   View, 
   TextInput, 
-  Pressable,
-  Button,
-  Modal,
-  FlatList 
+  Image,
+  ScrollView,
 } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -21,17 +19,17 @@ import { faBowlFood } from '@fortawesome/free-solid-svg-icons'
 
 export default function EditProfilChef() {
 
+  //comment afficher l'image cloudinary
+  // <Image source={{uri: 'https://res.cloudinary.com/dawkemcl5/image/upload/v1702733195/burger_vhotlh.png'}} style={styles.photo_logo} />
+
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
     const reducerUser = useSelector((state) => state.user.value);
     const typeCuisine = useSelector((state) => state.typeCuisine.value);
-    //console.log(typeCuisine);
-    /*const listeType = typeCuisine.map((cuisine, i) => {
-        key={i} , label={cuisine.cuisine} , value={cuisine.cuisine}
-    })*/
-
+   
     const [ chefProfil, setChefProfil] = useState(null);
+    const [ chefRecipe, setChefRecipe] = useState([]);
 //CREATION DE PROFIL
     const [ showCreateChef, setShowCreateChef] = useState(false);
     const [ spe, setSpe] = useState("");
@@ -46,7 +44,12 @@ export default function EditProfilChef() {
     const [ newPassion, setNewPassion] = useState("");
     const [ newService, setNewService ] = useState("");
 //RECETTE 
-  const [ showAddRecipe, setShowAddRecipe] = useState(false);
+  const [ showMyRecipe, setShowMyRecipe] = useState(false);
+
+
+
+
+
     
   
 //AU CHARGEMENT DE LA PAGE: RECUPERE LES PROFIL CHEF SI IL Y EN A UN ET LE POUSSE DANS CHEFPROFIL
@@ -56,9 +59,9 @@ export default function EditProfilChef() {
             .then( res => res.json())
             .then(data => {
                 if (data.result) {
-                    console.log(data.data);
+                    console.log(data.data.recipes);
+                    setChefRecipe(data.data.recipes);
                     setChefProfil(data.data);
-                    
                     dispatch(addId(data.data._id));
                 } else {
                     console.log(data.message)
@@ -156,6 +159,31 @@ export default function EditProfilChef() {
         </TouchableOpacity>
     </>;
 
+
+//Voir mes recettes
+    const newTime = (time) => {
+      const date = new Date(time);
+      const formattedTime = `${date.getHours()} H ${(date.getMinutes() < 10 ? '0' : '') + date.getMinutes()}`;
+      return formattedTime
+    };
+
+    const myRecipe =  chefRecipe? 
+    chefRecipe.map((recipe,i) => {
+      return <View key={i} style={styles.oneRecipe}>
+        <Image source={{uri: recipe.image}} style={styles.photoRecipe} />
+        <View style={styles.textRecipe}> 
+          <Text> {recipe.title} </Text>
+          <Text> Temps de préparation: {newTime(recipe.time)} </Text>
+          <Text> Prix: </Text>
+          <Text> Minimum: {recipe.prix.minimum}€, Par personne sup: {recipe.prix.personneSup}€, Panier course par personne: {recipe.prix.panierCourseParPersonne}€  </Text>
+          {/*<Text> Ustensils: {recipe.time} </Text> */}
+          {/*<Text> Ingredients: {recipe.time} </Text> */}
+          {/*<Text> Note: {recipe.time} </Text> */}
+          {/*<Text> Feedback: {recipe.time} </Text> */}
+         </View>
+      </View>
+    }) : null;
+
   
   const chefProfilExiste = chefProfil?
      modifierProfil ? 
@@ -169,8 +197,21 @@ export default function EditProfilChef() {
         </View>
         <Text style={styles.txt_h2}>Modification du profil</Text>
       </> 
-              : 
+              :  showMyRecipe ?
 
+//AFFICHER MES RECETTE
+      <>
+            <View style={styles.topPage}> 
+              <TouchableOpacity style={styles.backBtn} onPress={() => setShowMyRecipe(!showMyRecipe)}>
+                <Text style={styles.btnTextBack}>←</Text>
+              </TouchableOpacity>
+              <Text style={styles.txt_h1}>Mes plats</Text>
+            </View>
+            <ScrollView>{myRecipe}</ScrollView>
+
+      </>
+
+:
 //AFFICHER LE PROFIL
           <>
             <View style={styles.topPage}> 
@@ -183,19 +224,20 @@ export default function EditProfilChef() {
             { chefProfil.experience? <View style={styles.infoChef}><Text>Expérience: </Text><Text style={styles.inputText}>{chefProfil.experience}</Text></View> : ""}
             { chefProfil.passion? <View style={styles.infoChef}><Text>Passion: </Text><Text style={styles.inputText}>{chefProfil.passion}</Text></View>: ""}
             { chefProfil.services? <View style={styles.infoChef}><Text>Service: </Text><Text style={styles.inputText}>{chefProfil.services}</Text></View>: ""}
-            { chefProfil.userCompliment? <View style={styles.infoChef}><Text>Mes compliments: </Text><Text style={styles.inputText}> {chefProfil.userCompliment}</Text></View>: ""}
-            { chefProfil.recipes ? <View style={styles.infoChef}><Text>Mes recettes: </Text><Text style={styles.inputText}>{chefProfil.recipes}</Text>
-            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up}  >
-                <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Voir mes recettes      ➔</Text> 
+            { chefProfil.userCompliment.lenght > 0 ? <View style={styles.infoChef}><Text>Mes compliments: </Text><Text style={styles.inputText}> {chefProfil.userCompliment}</Text></View>: ""}
+            { chefProfil.recipes ? <View style={styles.infoChef}>
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPresse={()=> setShowMyRecipe(!showMyRecipe)} >
+                <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Voir mes plats</Text><Text style={styles.buttonText_sign_up}>➔</Text>
             </TouchableOpacity></View> : "" }
-            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setModifierProfil(!modifierProfil)} >
-                <Text style={styles.buttonText_sign_in}>Modifier</Text>
-            </TouchableOpacity>
+            
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> navigation.navigate('AddNewRecipe')} >
-                <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Ajouter une nouvelle recette      ➔</Text>
+                <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Ajouter un nouveau plat</Text><Text style={styles.buttonText_sign_up}>➔</Text>
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up}  >
-                <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Modifier / Supprimer une recette      ➔</Text>
+                <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Modifier / Supprimer un plat</Text><Text style={styles.buttonText_sign_up}>➔</Text>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setModifierProfil(!modifierProfil)} >
+                <Text style={styles.buttonText_sign_in}>Modifier mon profil</Text>
             </TouchableOpacity>
           </>
 
@@ -249,7 +291,7 @@ const styles = StyleSheet.create({
   },
   btnTextBack: {
     fontSize : 30,
-    fontWeight: 'bold',
+    fontWeight: '800',
     color : '#9292FE'
   },
   backBtn: {
@@ -351,6 +393,22 @@ topPage: {
     fontSize: 20,
     textAlign: 'center',
 },
+//CES RECETTES
+photoRecipe : {
+  width: 100,
+  height: 100,
+  marginTop: 30,
+  marginBottom : -5,
+},
+oneRecipe: {
+  marginBottom: 10,
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+},
+textRecipe: {
+  marginLeft: 5,
+}
 
   
 });

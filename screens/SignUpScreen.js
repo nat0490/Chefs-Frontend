@@ -81,6 +81,7 @@ export default function SignUpScreen() {
 
 const handleSubmitRegister = () => {
 //VERIF MOTS DE PASSE MASQUE POUR FACILITER NOS TEST
+console.log('connection');
   if (verifierEmail() /*&& verifierMotDePasse()*/) {
       //fetch('http://172.20.10.5:3000/users/signup', {
       fetch('https://chefs-backend-amber.vercel.app/users/signup', {
@@ -125,7 +126,7 @@ const handleSubmitRegister = () => {
                 nom : data.savedUserProfil.nom,
                 prenom : data.savedUserProfil.prenom,
                 dateOfBirth : data.savedUserProfil.dateOfBirth,
-                adresse : {
+                adresse: {
                   rue : data.savedUserProfil.adresse.rue,
                   ville : data.savedUserProfil.adresse.ville,
                   codePostal : data.savedUserProfil.adresse.codePostal,
@@ -137,6 +138,7 @@ const handleSubmitRegister = () => {
             console.log(userInfo)
             dispatch(login(userInfo));
 //ENVOIE SUR LA PAGE MAIN ENSUITE (PAS DACCEUIL)
+            //navigation.navigate('HomeTabs', { screen: 'Preference' }) ;
             navigation.navigate('HomeTabs', { screen: 'Main' }) ;
           } 
         })
