@@ -11,7 +11,7 @@ import { StyleSheet,
  } from 'react-native';
  import { useNavigation } from '@react-navigation/native';
  import React, { useState } from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 // importer reducer 
 import { login } from '../reducers/user';
@@ -30,13 +30,10 @@ export default function SignInScreen() {
   const [passwordInput, setPasswordInput] = useState('');
 
 
-
-  
-
   // création signin connexion 
   const handleConnection = () => {
     if(EMAIL_REGEX.test(emailInput)) {
-      fetch('https://chefs-backend-amber.vercel.app/users/signin', {
+      fetch('http://172.20.10.5:3000/users/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: emailInput, password: passwordInput }),
@@ -50,7 +47,6 @@ export default function SignInScreen() {
           email : data.dataUserConnexion.email,
           token : data.dataUserConnexion.token,
           userProfile : {
-            id : data.dataUserConnexion.userProfile._id,
             nom : data.dataUserConnexion.userProfile.nom,
             prenom : data.dataUserConnexion.userProfile.prenom,
             dateOfBirth : data.dataUserConnexion.userProfile.dateOfBirth,
@@ -63,13 +59,11 @@ export default function SignInScreen() {
             chef : data.dataUserConnexion.userProfile.chef,
             }
           };
-        console.log(userInfo)
+        //console.log(userInfo)
         dispatch(login(userInfo));
-        navigation.navigate('EditProfil');
+        navigation.navigate('HomeTabs', { screen: 'Main' }) ;
       } 
-      
     })
-    //navigation.navigate('EditProfil');
     } else {
       Alert.alert(
         'Erreur',
@@ -81,93 +75,102 @@ export default function SignInScreen() {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <View> 
-        {/* Saisie titre */}
-        <Text>Salut toi ! Prêt a passer a la casserole ?</Text>
-        <StatusBar style="auto" />
-      </View>
+      {/* block header */}
+      <View style={styles.nav_bar_color}></View>
 
-      <View style={styles.contentContainer}> 
-          {/* Saisie email */}
-          <View style={styles.inputContainer}> 
-            <Text style={styles.label}>Email</Text>
-            <TextInput 
-            style={styles.input} 
-            placeholder= 'Entre ton adresse email' 
-            keyboardType='email-address'   
-            value={emailInput}
-            onChangeText={(value) => setEmailInput(value)}
-          />
-          </View>
-          {/* Saisie mot de passe */}
-          <View style={styles.inputContainer}> 
-            <Text style={styles.label}>Mot de passe</Text>
-            <TextInput 
-            style={styles.input} 
-            placeholder= 'Saisis ton mot de passe' 
-            keyboardType='visible-password'  
-            value={passwordInput}  
-            onChangeText={(value) => setPasswordInput(value)}
-        
-          />
-          </View>
-
-
-          {/* Boutons forgot password + Se connecter */}
-          <View style={styles.containerButton}>
-            <TouchableOpacity activeOpacity={1}
-            style={styles.btn_sign_in}
-            // ajouter onPress redirection page
-            >
-              <Text style={styles.buttonText_sign_in}> Mot de passe oublié ?</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              onPress={() => {handleConnection();
-              //navigation.navigate('Preference');
-              }}
-              style={styles.btn_sign_up}>
-              <Text style={styles.buttonText_sign_up}> Se connecter</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-{/* partie à revoir pour mise de place des icones */}
-        {/* Icons de connexion */}
+      <View style={[styles.QuetuChoisisPourTonStyle, styles.marginTop]}> 
         <View>
-          <View>  
-            <Text style={styles.iconContainer}> S'inscrire avec:</Text>
+          <View> 
+            {/* Saisie titre */}
+            <Text style={{ ...styles.txt_h1, marginLeft: 10 }}>Salut toi !</Text>
+            <Text style={{ ...styles.txt_h1_2, marginLeft: 20 }}>Prêt a passer a la casserole ?</Text>
+            <StatusBar style="auto" />
           </View>
-          <View style={styles.iconsSign}> 
-            <FontAwesome name='apple' size={22} /> 
-            <FontAwesome name='google' size={22} />
-          <FontAwesome name='facebook' size={22} />
+
+          <View> 
+              {/* Saisie email */}
+              <View style={styles.inputContainer}> 
+                <Text style={styles.label}>Email</Text>
+                <TextInput 
+                style={styles.input} 
+                placeholder= 'Entre ton adresse email' 
+                keyboardType='email-address'   
+                value={emailInput}
+                onChangeText={(value) => setEmailInput(value)}
+              />
+              </View>
+              {/* Saisie mot de passe */}
+              <View style={styles.inputContainer}> 
+                <Text style={styles.label}>Mot de passe</Text>
+                <TextInput 
+                style={styles.input} 
+                placeholder= 'Saisis ton mot de passe' 
+                keyboardType='visible-password'  
+                value={passwordInput}  
+                onChangeText={(value) => setPasswordInput(value)}
+            
+              />
+              </View>
+
+
+              {/* Boutons forgot password + Se connecter */}
+              <View style={styles.container_btn}>
+                <TouchableOpacity activeOpacity={1}
+                style={styles.btn_sign_in}
+                // ajouter onPress redirection page
+                >
+                  <Text style={styles.buttonText_sign_in}> Mot de passe oublié ?</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  onPress={() => {handleConnection();
+                  //navigation.navigate('Preference');
+                  }}
+                  style={styles.btn_sign_up}>
+                  <Text style={styles.buttonText_sign_up}> Se connecter</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+    {/* partie à revoir pour mise de place des icones */}
+            {/* Icons de connexion */}
+            <View>
+              <View style={styles.iconContainer}>  
+                <View style={{alignItems:'center'}}> 
+                  <Text style={styles.txt_p_regulard}> ──── S'inscrire avec: ─── </Text>
+                </View>
+               <View style={styles.iconsSign}> 
+                <FontAwesome name='apple' size={40} /> 
+                <FontAwesome name='google' size={40} />
+                <FontAwesome name='facebook' size={40} />
+              </View>
+          </View>
+
+            
+              {/* connexion new user  */}
+            <View style={styles.section_btn_register}>
+              <Text style={styles.titre_register}>New user?</Text>
+              <View style={styles.container_btn_bottom}> 
+                <TouchableOpacity
+                activeOpacity={1}
+                style={styles.btn_sign_in}
+                // ajouter onPress redirection page
+                >
+                  <Text style={styles.buttonText_sign_in}>Termes & conditions</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                activeOpacity={1}
+                style={styles.btn_sign_up} 
+                // ajouter onPress redirection page  
+                >
+                  <Text style={styles.buttonText_sign_up}>Créer un compte</Text>
+                </TouchableOpacity>
+            </View>
+            </View>
+            
         </View>
 
-        
-          {/* connexion already user  */}
-        <View>
-          <Text >New user?</Text>
-          <View style={styles.buttonContainer}> 
-            <TouchableOpacity
-            activeOpacity={1}
-            style={styles.btn_sign_in}
-            // ajouter onPress redirection page
-            >
-              <Text style={styles.buttonText_sign_in}>Termes & conditions</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-            activeOpacity={1}
-            style={styles.btn_sign_up} >
-              <Text style={styles.buttonText_sign_up}>Créer un compte</Text>
-            </TouchableOpacity>
-
-        </View>
-        <FontAwesome name='apple' size={10}  />
-        <FontAwesome name='google' size={10}  />
-        {/*<FontAwesome name='facebook-with-circle' size={10}  /> */}
-
-        </View>
-      </View>
+    </View>
+    </View>
 
     </KeyboardAvoidingView>
   );
@@ -177,74 +180,139 @@ export default function SignInScreen() {
 
 const styles = StyleSheet.create({
 
-  // général
+  // ----- général ----- 
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  contentContainer: {
-    width: '100%',
-    padding: 10,
+  flex: 1,
+  alignItems: 'center',
   },
 
-  // email & mot de passe
+  marginTop:{
+    margin : 20,
+  },
+
+  nav_bar_color: {
+    backgroundColor : '#9292FE',
+    width: '100%',
+    height: 65,
+  },
+
+  txt_h1 : {
+      color: '#5959F0',
+      fontSize: 40,
+      marginTop : 20,
+      textAlignVertical: 'center',
+      textShadowColor: 'rgba(0, 0, 0, 0.25)',
+      textShadowOffset: { width: 0, height: 4 },
+      textShadowRadius: 4,
+      fontFamily: 'Inter',
+      fontStyle: 'normal',
+      fontweight: 600,
+      letterspacing: -1.5,
+},
+
+txt_h1_2 : {
+    color: '#5959F0',
+      fontSize: 40,
+      marginTop : 5,
+      textAlignVertical: 'center',
+      textShadowColor: 'rgba(0, 0, 0, 0.25)',
+      textShadowOffset: { width: 0, height: 4 },
+      textShadowRadius: 4,
+      fontFamily: 'Inter',
+      fontStyle: 'normal',
+      fontweight: 600,
+      letterspacing: -1.5,
+      marginBottom: 40,
+},
+
+txt_p_bold : {
+  color: 'black',
+  fontSize: 12,
+  fontWeight: 'bold',
+},
+
+txt_p_regulard: {
+  color: 'black',
+  fontSize: 12,
+},
+
+
+  // ----- email & mot de passe -----
   input: {
     height: 40,
-    width: '100%',
+
     borderColor: '#9292FE',
     borderRadius:10,
     borderWidth: 1,
     paddingHorizontal: 10,
   },
-  inputContainer : {
 
-   }, 
+
+
   label: {
+    marginTop: 5,
     fontSize: 14,
     color: "#615DEC"
   },
   
-  // Boutons forgot password + Se connecter
+  // ----- Boutons forgot password + Se connecter -----
   containerButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
 
-  // Icons de connexion 
+  // ----- Icons de connexion  -----
   iconContainer: {
-    width: '100%',
-    backgroundColor:'green',
-    
+    marginHorizontal: 30,
+    flexDirection: 'column',
+    marginTop: 20,
   },
+
   iconsSign: {
-    width: '85%',
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: 'blue',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-
-
+      marginTop: 10,
+      justifyContent: 'space-between',
   },
 
+    // ----- boutons -----
+    section_btn_register: {
+      marginTop: 30,
+      alignItems: 'center',
+    },
+    container_btn: {
+      marginTop: 10,
+      flexDirection : 'row',
+      justifyContent : 'space-around',
+    },
+    
+    container_btn_bottom: {
+      marginTop: 10,
+      flexDirection : 'row',
+      justifyContent: 'space-between',
+    },
 
-    // boutons 
+    titre_register: {
+      color: '#9292FE',
+      fontSize: 15,
+    },
+  
+    
+    // UIKIT POUR LES BTN 
     btn_sign_in : {
-      paddingVertical: 10, // 10 units of padding at the top and bottom
-      paddingHorizontal: 25, // A
+      paddingVertical: 5,
+      paddingHorizontal: 15,
       borderRadius: 5,
       backgroundColor: '#9292FE',
     },
+
     btn_sign_up : {
-      paddingVertical: 10, // 10 units of padding at the top and bottom
-      paddingHorizontal: 25, // A
-      borderRadius: 5,
-      borderWidth: 2,
-      borderColor: '#9292FE',
-      backgroundColor: '#fff',
+      paddingVertical: 5,
+  paddingHorizontal: 15,
+  borderRadius: 5,
+  borderWidth: 2,
+  borderColor: '#9292FE',
+  backgroundColor: '#fff',
+
     },
     buttonText_sign_in :  {
       fontSize : 15,
@@ -253,7 +321,7 @@ const styles = StyleSheet.create({
     buttonText_sign_up: {
       fontSize : 15,
       color : '#9292FE'
-    }
+    },
 
    
 });
