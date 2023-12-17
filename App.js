@@ -105,11 +105,9 @@ export default function App() {
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />
           <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
           <Stack.Screen name="AddNewRecipe" component={AddNewRecipeScreen} />
+          <Stack.Screen name="Main" component={MainScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
   );
 };
-
-
-
