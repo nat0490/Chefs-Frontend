@@ -103,11 +103,9 @@ export default function App() {
           <Stack.Screen name="Terms" component={TermsScreen}/>
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />
           <Stack.Screen name="AddNewRecipe" component={AddNewRecipeScreen} />
+          <Stack.Screen name="Main" component={MainScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
   );
 };
-
-
-

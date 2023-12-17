@@ -3,6 +3,8 @@ import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image } from 'rea
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useNavigation } from '@react-navigation/native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBowlFood } from '@fortawesome/free-solid-svg-icons'
 
 const foodIcon = require('../assets/user.png');
 
@@ -28,7 +30,7 @@ export default function MainScreen() {
 
   useEffect(() => {
     const fetchChefAddresses = async () => {
-      const response = await fetch('http://192.168.154.247:3000/users/chef/userchefs/addresses', {
+      const response = await fetch('http://192.168.1.58:3000/users/chef/userchefs/addresses', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -46,6 +48,11 @@ export default function MainScreen() {
 
     fetchChefAddresses();
   }, []);
+
+
+
+
+  
 
   return (
     <View style={styles.container}>
@@ -89,14 +96,50 @@ export default function MainScreen() {
         </View>
 
         <View style={styles.btnContainer}>
-          <TouchableOpacity activeOpacity={0.8} style={styles.btn_sign_in}>
-            <Text style={styles.buttonText_sign_in}>Réserve maintenant !</Text>
+          <TouchableOpacity activeOpacity={0.8} style={styles.Réserve}>
+            <Text style={styles.Réserve_maintenant}>Réserve maintenant !</Text>
+          </TouchableOpacity>                   
+        </View>
+        <View style={styles.container_box_width}>
+        <View style={styles.containeur_box}>
+          <TouchableOpacity activeOpacity={1} style={styles.box}>
+            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
+              <Text style={styles.margin_rigth}>Nouille</Text>
+              <View style={styles.box_description }>
+              <FontAwesomeIcon icon={faBowlFood}/>
+                <Text >  Italien</Text>
+            </View>
           </TouchableOpacity>
-
-          <TouchableOpacity activeOpacity={0.8} style={styles.btn_sign_up} onPress={()=> navigation.navigate('Setting')}>
-            <Text style={styles.buttonText_sign_up}>SETTING PAGE</Text>
+          <TouchableOpacity activeOpacity={1} style={styles.box}>
+            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
+              <Text style={styles.margin_rigth}>Pasta</Text>
+              <View style={styles.box_description }>
+              <FontAwesomeIcon icon={faBowlFood}/>
+                <Text>  Italien</Text>
+              </View>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={1} style={styles.box}>
+              <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
+              <Text style={styles.margin_rigth}>Pizza</Text>
+                <View style={styles.box_description }>
+                <FontAwesomeIcon icon={faBowlFood}/>
+                  <Text >  Italien</Text>
+                </View>
           </TouchableOpacity>
         </View>
+        </View>
+          
+
+          
+
+
+
+
+
+      
+
+
+
       </ScrollView>
     </View>
   );
@@ -105,6 +148,7 @@ export default function MainScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    
   },
   nav_bar_color: {
     backgroundColor: '#9292FE',
@@ -114,12 +158,12 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   mapContainer: {
-    marginVertical: 20,
+    marginVertical: 0,
     alignItems: 'center',
   },
   map: {
     width: '100%',
-    height: 300,
+    height: 500,
   },
   btnContainer: {
     marginVertical: 20,
@@ -127,31 +171,66 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     bottom: 20,
   },
-  btn_sign_in: {
+  Réserve: {
     paddingVertical: 10,
     paddingHorizontal: 25,
     borderRadius: 5,
     backgroundColor: '#9292FE',
+    marginVertical: 10,
   },
-  buttonText_sign_in: {
+  Réserve_maintenant: {
     fontSize: 15,
     color: '#fff',
   },
-  btn_sign_up : {
-    paddingVertical: 10, // 10 units of padding at the top and bottom
-    paddingHorizontal: 25, // A
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: '#9292FE',
-    backgroundColor: '#fff',
-    marginTop: 10,
-    display:'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+
+  container_box_width: {
+    width: '80%',
+    alignSelf: 'center', // Centre horizontalement
+    
+    flex: 1,
+    alignItems: 'center', // Centre verticalement
+    marginBottom: 20, // Ajoute un espacement en bas
+    justifyContent : 'space-around',
   },
-  buttonText_sign_up: {
-    fontSize : 15,
-    color : '#9292FE',
-    textAlign: 'center',
-  }
+
+  photo:{
+    width : "100%",
+    height: 100
+  },
+  containeur_box: {
+      height : 160,
+      marginTop : 10,
+      flexDirection: 'row',
+      width: '100%',
+      justifyContent : 'space-around',
+      flexWrap: 'wrap',
+  },
+  box : {
+    width : 100,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius : 10,
+    borderWidth: 2,
+    borderColor: '#5959F0',
+    justifyContent : 'space-between',
+    flexDirection: 'column',
+  },
+  box_description : {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+    marginLeft : 5,
+  },
+  margin_rigth:{
+    marginLeft : 5,
+  },
+  photo_preferences :{
+    width: 15,
+    height: 15
+  },
+  txt_preferences : {
+    fontSize: 8,
+  },
+
+
+
 });
