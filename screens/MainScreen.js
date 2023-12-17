@@ -14,66 +14,125 @@ export default function MainScreen() {
   
   const [location, setLocation] = useState(null);
   const [chefAddresses, setChefAddresses] = useState([]);
-
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.error('Permission to access location was denied');
-        return;
-      }
-
-      let currentLocation = await Location.getCurrentPositionAsync({});
-      setLocation(currentLocation);
-    })();
-  }, []);
-/*
-  useEffect(() => {
-    const fetchChefAddresses = async () => {
-      const response = await fetch('http://192.168.1.58:3000/users/chef/userchefs/addresses', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      const data = await response.json();
-      // Filtrer les adresses sans coordonnées
-      const filteredAddresses = data.filter(address => address.coordinates.latitude && address.coordinates.longitude);
-      // Placer le console.log ici pour vérifier les données avant de les utiliser
-      console.log('Adresses des chefs : ', filteredAddresses);
-      setChefAddresses(filteredAddresses);
-    };
-    fetchChefAddresses();
-  }, []);*/
-
-//AJOUT DE CATCH POUR EVITER LES MESSAGE D'ERREUR DANS LA CONSOLE(même chose qu'au-dessus, mais avec catch)
-  useEffect(() => {
-    const fetchChefAddresses = async () => {
-      try {
-        const response = await fetch('http://192.168.154.247:3000/users/chef/userchefs/addresses', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        // Filtrer les adresses sans coordonnées
-        const filteredAddresses = data.filter(address => address.coordinates.latitude && address.coordinates.longitude);
-        // Placer le console.log ici pour vérifier les données avant de les utiliser
-        console.log('Adresses des chefs : ', filteredAddresses);
-        setChefAddresses(filteredAddresses);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des adresses des chefs :', error);
-      }
-    };
-    fetchChefAddresses();
-  }, []);
+//   //  état pour stocker les recettes du chef sélectionné
+// const [selectedChefRecipes, setSelectedChefRecipes] = useState([]);
+// // //  état pour stocker les recettes aléatoires
+// // const [randomRecipes, setRandomRecipes] = useState([]);
 
 
 
+useEffect(() => {
+  (async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      console.error('Permission to access location was denied');
+      return;
+    }
+
+    let currentLocation = await Location.getCurrentPositionAsync({});
+    setLocation(currentLocation);
+  })();
+}, []);
+
+
+// // // Fonction pour récupérer les recettes du chef sélectionné
+// // const fetchSelectedChefRecipes = async (chefId) => {
+// //   try {
+// //     // Récupérer les recettes du chef via une requête HTTP
+// //     const response = await fetch(`http://192.168.1.58:3000/users/chef/${chefId}/recipes`, {
+// //       method: 'GET',
+// //       headers: { 'Content-Type': 'application/json' },
+// //     });
+// //     if (!response.ok) {
+// //       throw new Error(`HTTP error! Status: ${response.status}`);
+// //     }
+// //     const data = await response.json();
+// //     // Mettre à jour l'état des recettes du chef sélectionné
+// //     setSelectedChefRecipes(data.recipes);
+// //   } catch (error) {
+// //     console.error('Erreur lors de la récupération des recettes du chef :', error);
+// //   }
+// };
+
+// // Fonction pour récupérer les recettes aléatoires
+// const fetchRandomRecipes = async () => {
+//   try {
+//     // Récupérer les recettes aléatoires via une requête HTTP
+//     const response = await fetch('http://192.168.1.58:3000/recipes/random', {
+//       method: 'GET',
+//       headers: { 'Content-Type': 'application/json' },
+//     });
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+//     const data = await response.json();
+//     // Mettre à jour l'état des recettes aléatoires
+//     setRandomRecipes(data.recipes);
+//   } catch (error) {
+//     console.error('Erreur lors de la récupération des recettes aléatoires :', error);
+//   }
+// };
+
+// Hook useEffect pour charger les adresses des chefs au chargement initial de la page
+useEffect(() => {
+  const fetchChefAddresses = async () => {
+    const response = await fetch('http://192.168.1.58:3000/users/chef/userchefs/addresses', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response.json();
+
+    // Filtrer les adresses sans coordonnées
+    const filteredAddresses = data.filter(address => address.coordinates.latitude && address.coordinates.longitude);
+
+   
+
+    setChefAddresses(filteredAddresses);
+  };
+
+  fetchChefAddresses();
+}, []);
+
+
+// // Hook useEffect pour charger les recettes aléatoires au chargement initial de la page
+// useEffect(() => {
+//   fetchRandomRecipes();
+// }, []);
+
+// // Hook useEffect pour charger les recettes aléatoires si aucun chef n'est sélectionné
+// useEffect(() => {
+//   if (selectedChefRecipes.length === 0) {
+//     fetchRandomRecipes();
+//   }
+// }, [selectedChefRecipes]);
+
+// // Fonction pour gérer le clic sur un marqueur de chef
+// const handleChefMarkerPress = (chefId) => {
+//   fetchSelectedChefRecipes(chefId);
+// };
+
+
+     {/* <View style={styles.container_box_width}>
+          <ScrollView contentContainerStyle={styles.containeur_box}>
+           {selectedChefRecipes.map((recipe, index) => (
+            <TouchableOpacity key={index} activeOpacity={1} style={styles.box}>
+            <Image source={{ uri: recipe.image }} style={styles.photo} />
+            <Text style={styles.margin_rigth}>{recipe.title}</Text>
+            <View style={styles.box_description}>
+            <FontAwesomeIcon icon={faBowlFood} />
+            <Text> {recipe.type}</Text>
+           </View>
+           </TouchableOpacity>
+           ))}
+         </ScrollView>
+       </View>
+           */}
+
+           // onPress={() => handleChefMarkerPress(address.chefId)} // Appel de la fonction pour récupérer les recettes du chef au clic
 
   
 
-  return (
+ return (
     <View style={styles.container}>
       <View style={styles.nav_bar_color}></View>
 
@@ -159,9 +218,7 @@ export default function MainScreen() {
 
 
 
-
       
-
 
 
       </ScrollView>
@@ -238,7 +295,7 @@ const styles = StyleSheet.create({
     justifyContent : 'space-between',
     flexDirection: 'column',
   },
-  box_description : {
+  box_description : {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 5,
@@ -273,5 +330,6 @@ buttonText_sign_up: {
 /////////////
 
 
-
 });
+
+
