@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUstensiles, addUstensilesV2, removeUstensils } from '../../reducers/ustensils';
+import { loginChef, logoutChef } from '../../reducers/chef';
 import ustensil from '../../reducers/ustensils';
 //import CustomDropdown from './chemin/vers/CustomDropdown';
 import ScrollPicker from "react-native-wheel-scrollview-picker";
@@ -35,9 +36,12 @@ export default function AddNewRecipeScreen() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
+    const user = useSelector((state) => state.user.value);
     const typeCuisine = useSelector((state) => state.typeCuisine.value);
     const ustensilsReducer = useSelector((state) => state.ustensil.value);
-    const chefId = useSelector((state) => state.chef.value);
+    const userChef = useSelector((state) => state.chef.value);
+    //console.log(userChef);
+    //const chefId = useSelector((state) => state.chef.value);
     //console.log(ustensilsReducer);
 
     const [ title, setTitle] = useState("");
@@ -60,6 +64,31 @@ export default function AddNewRecipeScreen() {
     const [timeSelectedByUser, setTimeSelectedByUser] = useState(false);
     const [ recetteValide, setRecetteValide ] = useState(false);
     const [value, setValue] = useState(null);
+
+  
+    useEffect(() => {
+      fetch(`https://chefs-backend-amber.vercel.app/users/chef/find/${user.id}`)
+            .then( res => res.json())
+            .then(data => {
+                if (data.result) {
+                  //console.log(data);
+                    const infoChef = {
+                      id: data.data._id,
+                      spécialisation: data.data.spécialisation,
+                      userCompliment: data.data.userCompliment,
+                      experience: data.data.experience,
+                      passion: data.data.passion,
+                      services: data.data.services,
+                      userProfil: data.data.userProfil,
+                      recipes: data.data.recipes
+                    };
+                    //console.log(infoChef);
+                    dispatch(loginChef(infoChef));
+                } else {
+                    console.log(data.message)
+                }
+            })
+    },[recetteValide]);
 
 
 
@@ -212,7 +241,7 @@ newlisteUstensils.sort((a, b) => {
  }, [ustensils])
 
  
- //console.log(ustensilsList);
+
 
 
 
@@ -221,6 +250,8 @@ newlisteUstensils.sort((a, b) => {
 const afficheUstensils= ustensilsList.map( (oneUstensil, i) => {
   return <Text key={i} style={styles.ustensilName}> {oneUstensil.label} </Text>
 })
+
+
 
 //Envoyer les INFO A LA BDD
 const creationRecette = () => {
@@ -233,7 +264,7 @@ const creationRecette = () => {
   recapIngredient.map(e => allIngredients.push({name: e.nom, quantity: e.quantite, unit: e.unite}))
 //Mettre en forme la recette
   const newDish = {
-        userChef: chefId,
+        userChef: userChef.id,
         title: title,
         image: imageDish,
         time: selectedTime,
@@ -244,8 +275,9 @@ const creationRecette = () => {
         ustensils:allUstensils,
         ingredients: allIngredients,
     }
+    console.log(userChef);
 //Poster la recette
-  fetch(`https://chefs-backend-amber.vercel.app/recipes/newrecipesV2/${chefId}`, {
+  fetch(`https://chefs-backend-amber.vercel.app/recipes/newrecipesV2/${userChef.id}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json'},
     body: JSON.stringify(newDish),
@@ -265,9 +297,8 @@ const creationRecette = () => {
       setIngredientName("");
       setIngredientQty("");
       setIngredientUnit("");
-      setRecapIngredient("");
-      //navigation.navigate('AddNewRecipe')
-
+      setRecapIngredient(""); 
+      setRecetteValide(!recetteValide);
     } else {
       console.log('error');
     }
@@ -315,7 +346,7 @@ const ajouterIngredient = () => {
                 <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> setRecetteValide(!recetteValide)} >
                   <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>    Ajouter une nouvelle recette    ➔</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> navigation.navigate('EditProfilChef')} >
+                <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> {navigation.navigate('EditProfilChef'), setRecetteValide(!recetteValide)}} >
                   <FontAwesomeIcon icon={faCircleUser} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>←    Retourner sur ton profil</Text>
                 </TouchableOpacity>
               </View>

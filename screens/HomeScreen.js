@@ -177,9 +177,7 @@ export default function App() {
         </View>
       </View>
 
-      <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> dispatch(logout())}>
-        <Text style={styles.buttonText_sign_in}>LOGOUT: Vider reducer</Text>
-      </TouchableOpacity>
+      
      
       {/* Barre de statut */}
       <StatusBar style="auto" />

@@ -114,6 +114,11 @@ export default function MainScreen() {
           </MapView>
         </View>
 
+{/*NE PAS EFFACER! MERCI!! Acces à la page setting!! */}
+        <TouchableOpacity onPress={()=> navigation.navigate('Setting')} style={styles.btn_sign_up}>
+            <Text style={styles.buttonText_sign_up}>SETTING SCREEN</Text>
+        </TouchableOpacity>
+
         <View style={styles.btnContainer}>
           <TouchableOpacity activeOpacity={0.8} style={styles.Réserve}>
             <Text style={styles.Réserve_maintenant}>Réserve maintenant !</Text>
@@ -249,6 +254,23 @@ const styles = StyleSheet.create({
   txt_preferences : {
     fontSize: 8,
   },
+//A EFFACER QUAND LA NAVIGATION VERS SETTING PAGE SERA FAITE
+btn_sign_up : {
+  paddingVertical: 10, // 10 units of padding at the top and bottom
+  paddingHorizontal: 25, // A
+  borderRadius: 5,
+  borderWidth: 2,
+  borderColor: '#9292FE',
+  backgroundColor: '#fff',
+  marginTop: 10,
+
+},
+buttonText_sign_up: {
+  fontSize : 15,
+  color : '#9292FE',
+  textAlign: 'center',
+},
+/////////////
 
 
 

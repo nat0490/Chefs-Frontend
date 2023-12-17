@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { login, logout} from '../../reducers/user';
+import { loginChef, logoutChef } from '../../reducers/chef';
 //FONTAWESOME
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -28,17 +29,44 @@ export default function SettingScreen() {
 
     const user = useSelector((state) => state.user.value);
     const chefStatus = useSelector((state) => state.user.value.userProfile.chef);
-    //console.log(chefStatus);
+    const userChef = useSelector((state) => state.chef.value);
+    //console.log(userChef);
+    //console.log(user.id);
 
     const [ chef, setChef ] = useState(false);
+  
+
+
 
   useEffect(()=> {
     setChef(chefStatus);
-    //console.log(user);
+    fetch(`https://chefs-backend-amber.vercel.app/users/chef/find/${user.id}`)
+            .then( res => res.json())
+            .then(data => {
+             
+                if (data.result) {
+                  //console.log(data);
+                    const infoChef = {
+                      id: data.data._id,
+                      spécialisation: data.data.spécialisation,
+                      userCompliment: data.data.userCompliment,
+                      experience: data.data.experience,
+                      passion: data.data.passion,
+                      services: data.data.services,
+                      userProfil: data.data.userProfil,
+                      recipes: data.data.recipes
+                    };
+                    //console.log(infoChef);
+                    dispatch(loginChef(infoChef));
+                } else {
+                    console.log(data.message)
+                }
+            })
   },[chefStatus]);
 
   const changeStatusChef = () => {
-    fetch(`https://chefs-backend-amber.vercel.app/users/profil/${user.userProfile.id}/update-chef`, {
+    console.log(user.id);
+    fetch(`https://chefs-backend-amber.vercel.app/users/profil/${user.id}/update-chef`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify(),
@@ -48,10 +76,10 @@ export default function SettingScreen() {
         console.log(data)
         if (data.result) {
           const userInfo = {
+            id: user.id,
             email : user.email,
             token : user.token,
             userProfile : {
-              id : user.userProfile.id,
               nom : user.userProfile.nom,
               prenom : user.userProfile.prenom,
               dateOfBirth : user.userProfile.dateOfBirth,
@@ -62,6 +90,8 @@ export default function SettingScreen() {
               },
               tel : user.userProfile.tel,
               chef : data.newStatus,
+              orders: user.userProfile.orders,
+              userPreference: user.userProfile.userPreference,
               }
             };
           //console.log(userInfo);
@@ -118,7 +148,7 @@ export default function SettingScreen() {
                   <TouchableOpacity onPress={() => navigation.navigate('EditProfilChef')}>
                     <Text style={styles.menuAction}> <FontAwesomeIcon icon={faUtensils} style={{color: "#5959f0",}} />  Profil Chef</Text>
                   </TouchableOpacity> :
-                  <TouchableOpacity onPress={() => (changeStatusChef(),navigation.navigate('EditProfilChef') )}>
+                  <TouchableOpacity onPress={() => (changeStatusChef() ,navigation.navigate('EditProfilChef') )}>
                     <Text style={styles.menuAction}> <FontAwesomeIcon icon={faUtensils} style={{color: "#5959f0",}} />  Devenir un chef</Text>
                   </TouchableOpacity>
                   }

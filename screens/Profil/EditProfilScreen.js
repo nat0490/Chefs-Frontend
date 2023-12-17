@@ -33,7 +33,7 @@ export default function EditProfilScreen() {
 
 //REDUCER RECUPERER EST POUSSER DANS LE HOOK DETAT USER
   const reducerUser = useSelector((state) => state.user.value);
-  console.log(reducerUser);
+  //console.log(reducerUser);
   useEffect(() => {
     setUser(reducerUser);
   },[reducerUser]); 
@@ -299,13 +299,13 @@ export default function EditProfilScreen() {
               <Text style={styles.buttonText_sign_in}>Valider</Text>
             </TouchableOpacity>
         </> :
-/*PAGE MODIF MOTS DE PASSE*/
+/*PAGE MODIF MOTS DE PASSE & EMAIL*/
             <> 
-              <View> 
-                <TouchableOpacity style={styles.backBtn} onPress={()=> setModifEmailPw(!modifEmailPw)}>
+              <View > 
+                <TouchableOpacity style={styles.backBtnAlone} onPress={()=> setModifEmailPw(!modifEmailPw)}>
                   <Text style={styles.btnTextBack}>←</Text>
                 </TouchableOpacity>
-                <Text style={styles.txt_h1}>Modifier Email / Mots de passe</Text>
+                <Text style={{...styles.txt_h1, marginBottom: 50}}>Modifier Email / Mots de passe</Text>
               </View>
               <View >
                 <TextInput 
@@ -317,11 +317,13 @@ export default function EditProfilScreen() {
               <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> changeEmail()} >
                   <Text style={styles.buttonText_sign_in}>Valider</Text>
                 </TouchableOpacity>
+              <View >
               <TextInput 
                 style={styles.input} 
                 placeholder=""
                 onChangeText={(value) => setNewPw(value)} 
                 value={newPw || "" }/>
+                </View >
               <View style={styles.buttonEmailPw}>
                 <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> changePW()} >
                   <Text style={styles.buttonText_sign_in}>Valider</Text>
@@ -332,13 +334,14 @@ export default function EditProfilScreen() {
               </View>
               </> : modifCoordonne ?
 /*MODIFIER LES COORDONNES */
-              <> 
+              <View> 
                 <View> 
-                  <TouchableOpacity style={styles.backBtn} onPress={()=> setModifCoordonne(!modifCoordonne)}>
+                  <TouchableOpacity style={styles.backBtnAlone} onPress={()=> setModifCoordonne(!modifCoordonne)}>
                     <Text style={styles.btnTextBack}>←</Text>
                   </TouchableOpacity>
                   <Text style={styles.txt_h1}>Modifier coordonnées</Text>
                 </View>
+                <View> 
                 <TextInput 
                   style={styles.input} 
                   placeholder={user.userProfile.adresse.rue}
@@ -354,18 +357,21 @@ export default function EditProfilScreen() {
                   placeholder={user.userProfile.adresse.codePostal}
                   onChangeText={(value) => setNewCodePostal(value)} 
                   value={newCodePostal || "" }/>
+                </View>
                 <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> changeAdresse()} >
                   <Text style={styles.buttonText_sign_in}>Valider</Text>
                 </TouchableOpacity>
+                <View> 
                 <TextInput 
                   style={styles.input} 
                   placeholder={user.userProfile.tel}
                   onChangeText={(value) => setNewTel(value)} 
                   value={newTel || "" }/>
+                </View>
                 <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> changeTel()} >
                   <Text style={styles.buttonText_sign_in}>Valider le nouveau numéro</Text>
                 </TouchableOpacity>
-              </> :
+              </View> :
 /*JUSTE AFFICHER LES INFO*/
          afficherLesInfos }
         </View>
@@ -376,9 +382,6 @@ export default function EditProfilScreen() {
   return (
       <View style={styles.container}>
       <View style={styles.nav_bar_color}></View>
-        <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> dispatch(logout())}>
-          <Text style={styles.buttonText_sign_in}>LOGOUT: Vider reducer</Text>
-        </TouchableOpacity>
         
         { user ? profil : (
           <View style={styles.container}>
@@ -415,14 +418,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   btn_sign_up : {
-    paddingVertical: 10, // 10 units of padding at the top and bottom
-    paddingHorizontal: 25, // A
+    paddingVertical: 10, 
+    paddingHorizontal: 25, 
     borderRadius: 5,
     borderWidth: 2,
     borderColor: '#9292FE',
     backgroundColor: '#fff',
     marginTop: 10,
-
   },
   buttonText_sign_up: {
     fontSize : 15,
@@ -441,9 +443,6 @@ const styles = StyleSheet.create({
   inputText: {
     height: 40,
     width: '100%',
-    //borderColor: '#9292FE',
-    //borderRadius:10,
-    //borderWidth: 1,
     borderBottomWidth: 1,
     borderBottomColor: '#9292FE', 
     borderStyle: 'solid', 
@@ -451,11 +450,6 @@ const styles = StyleSheet.create({
     color: '#9292FE',
     textAlignVertical: 'center',
     marginTop: 10,
-    
-  },
-  errorMsg: {
-    color: 'red',
-    fontSize: 10,
   },
   nav_bar_color: {
     backgroundColor : '#9292FE',
@@ -468,21 +462,15 @@ const styles = StyleSheet.create({
     width: "80%",
     flex:1,
     height: "100%",
-    //display: 'flex',
-    
-    //backgroundColor:'red',
   },
   identite: {
     minWidth: "80%",
-    
   },
   buttonEmailPw: {
     display:'flex',
     flexDirection: 'column',
-    //maxWidth: "80%",
   },
   blocProfil: {
-    //marginBottom: 30,
     marginTop: 30,
   },
   txt_h1 : {
@@ -498,6 +486,17 @@ backBtn: {
   backgroundColor: '#fff',
   marginBottom: 50,
 },
+backBtnAlone: {
+  width: '20%',
+  marginTop: 20,
+  paddingBottom: 5, // 10 units of padding at the top and bottom
+  paddingHorizontal: 15, // A
+  borderRadius:50,
+  borderWidth: 2,
+  borderColor: '#9292FE',
+  backgroundColor: '#fff',
+  marginBottom: 20,
+},
 topPage: {
   width:"100%",
   display: 'flex',
@@ -508,7 +507,7 @@ topPage: {
 },
 btnTextBack: {
   fontSize : 30,
-  fontWeight: 'bold',
+  fontWeight: 300,
   color : '#9292FE'
 },
 });

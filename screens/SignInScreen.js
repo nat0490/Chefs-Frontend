@@ -10,7 +10,7 @@ import { StyleSheet,
   Alert,
  } from 'react-native';
  import { useNavigation } from '@react-navigation/native';
- import React, { useState } from 'react';
+ import React, { useEffect, useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 // importer reducer 
@@ -48,6 +48,11 @@ export default function SignInScreen() {
       console.error('Erreur lors du chargement des données depuis la base de données', error);
     }
   };
+
+
+  useEffect(()=> {
+    fetchData();
+  },[])
   
 
 
@@ -58,7 +63,7 @@ export default function SignInScreen() {
   // création signin connexion 
   const handleConnection = () => {
     if(EMAIL_REGEX.test(emailInput)) {
-      fetch('http://172.20.10.5:3000/users/signin', {
+      fetch('https://chefs-backend-amber.vercel.app/users/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: emailInput, password: passwordInput }),
@@ -66,10 +71,12 @@ export default function SignInScreen() {
     .then(data => {
       console.log(data);
       if (data.result) {
+        //console.log(data);
         setEmailInput('');
         setPasswordInput('');
         
         const userInfo = {
+          id: data.dataUserConnexion.userProfile._id,
           email : data.dataUserConnexion.email,
           token : data.dataUserConnexion.token,
           userProfile : {

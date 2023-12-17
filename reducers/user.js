@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     value: { 
+      id: null,
       email: null,
       token: null,
       userProfile: {
@@ -17,8 +18,8 @@ const initialState = {
         },
         tel: null,
         chef: null,
-        //orders: [{type: mongoose.Schema.Types.ObjectId, ref: 'orders'}],
-        //userPreference: [{type: mongoose.Schema.Types.ObjectId, ref: 'userPreference'}]
+        orders: [],
+        userPreference: []
       }
 }};
 
@@ -28,6 +29,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
+      state.value.id = action.payload.id;
       state.value.email = action.payload.email;
       state.value.token = action.payload.token;
       userProfile : {
@@ -42,12 +44,12 @@ export const userSlice = createSlice({
         };
         state.value.userProfile.tel = action.payload.userProfile.tel ;
         state.value.userProfile.chef = action.payload.userProfile.chef  ;
-        //orders: [{type: mongoose.Schema.Types.ObjectId, ref: 'orders'}],
-        //userPreference: [{type: mongoose.Schema.Types.ObjectId, ref: 'userPreference'}]
+        state.value.userProfile.orders = [action.payload.userProfile.orders],
+        state.value.userProfile.userPreference = [action.payload.userProfile.userPreference]
       }
     },
     logout: (state) => {
-      state.value.email = null;
+      state.value.id = null;
       state.value.token = null;
       userProfile : {
         state.value.userProfile.nom =null ;
@@ -60,8 +62,8 @@ export const userSlice = createSlice({
         };
         state.value.userProfile.tel = null ;
         state.value.userProfile.chef = null;
-        //orders: [{type: mongoose.Schema.Types.ObjectId, ref: 'orders'}],
-        //userPreference: [{type: mongoose.Schema.Types.ObjectId, ref: 'userPreference'}]
+        state.value.userProfile.orders = [];
+        state.value.userProfile.userPreference = [];
       }
     },
   },

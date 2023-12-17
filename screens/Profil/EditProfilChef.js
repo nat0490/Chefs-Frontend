@@ -11,7 +11,7 @@ import {
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { addId, removeId } from '../../reducers/chef';
+import { loginChef, logoutChef } from '../../reducers/chef';
 //FONTAWESOME
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -25,8 +25,10 @@ export default function EditProfilChef() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
-    const reducerUser = useSelector((state) => state.user.value);
+    const user = useSelector((state) => state.user.value);
     const typeCuisine = useSelector((state) => state.typeCuisine.value);
+    const userChef = useSelector((state) => state.chef.value);
+    //console.log(userChef);
    
     const [ chefProfil, setChefProfil] = useState(null);
     const [ chefRecipe, setChefRecipe] = useState([]);
@@ -48,28 +50,6 @@ export default function EditProfilChef() {
 
 
 
-
-
-    
-  
-//AU CHARGEMENT DE LA PAGE: RECUPERE LES PROFIL CHEF SI IL Y EN A UN ET LE POUSSE DANS CHEFPROFIL
-    useState(()=> {
-        //console.log(reducerUser.userProfile.id);
-        fetch(`https://chefs-backend-amber.vercel.app/users/chef/find/${reducerUser.userProfile.id}`)
-            .then( res => res.json())
-            .then(data => {
-                if (data.result) {
-                    console.log(data.data.recipes);
-                    setChefRecipe(data.data.recipes);
-                    setChefProfil(data.data);
-                    dispatch(addId(data.data._id));
-                } else {
-                    console.log(data.message)
-                }
-            })
-    },[])
-        
-
 //CREER UN CHEF => ENVOIE DANS LA BDD
     const addNewChef = () => {
         const newChef = {
@@ -77,9 +57,9 @@ export default function EditProfilChef() {
             experience: exp,
             passion: passion,
             services: service,
-            userProfil: reducerUser.userProfile.id,
+            userProfil: user.id,
         }
-        fetch(`https://chefs-backend-amber.vercel.app/users/chef/upgradeToChef/${reducerUser.userProfile.id}`, {
+        fetch(`https://chefs-backend-amber.vercel.app/users/chef/upgradeToChef/${user.id}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(newChef),
@@ -87,10 +67,19 @@ export default function EditProfilChef() {
             .then( res => res.json())
             .then(data => {
                 if (data.result){
-                    console.log(data);
-//VERIFIER LE BON FONCTIONNEMENT DU REDUCER ID
-                    dispatch(addId(data._id));
-                    setChefProfil(newChef);
+                  const newCreateChef = {
+                    id: data.newDoc._id,
+                    spécialisation: data.newDoc.spécialisation,
+                    userCompliment: data.newDoc.userCompliment,
+                    experience: data.newDoc.experience,
+                    passion: data.newDoc.passion,
+                    services: data.newDoc.services,
+                    userProfil: data.newDoc.userProfil,
+                    recipes: data.newDoc.recipes
+                  }
+                    //console.log(data);
+                    //console.log(newCreateChef);
+                    dispatch(loginChef(newCreateChef))
                     setSpe('');
                     setExp('');
                     setPassion('');
@@ -125,10 +114,10 @@ export default function EditProfilChef() {
 //CREATION DE PROFIL
     <> 
         <View> 
-            <TouchableOpacity style={styles.backBtn} onPress={()=> setShowCreateChef(!showCreateChef)}>
+            <TouchableOpacity style={styles.backBtnAlone} onPress={()=> setShowCreateChef(!showCreateChef)}>
                 <Text style={styles.btnTextBack}>←</Text>
             </TouchableOpacity>
-            <Text style={styles.txt_h1}>Crée ton profil de chef</Text>
+            <Text style={{...styles.txt_h1, marginBottom: 50}}>Crée ton profil de chef</Text>
         </View>
         <Text>Spécialisation:</Text>
         <TextInput 
@@ -159,6 +148,7 @@ export default function EditProfilChef() {
         </TouchableOpacity>
     </>;
 
+//console.log(userChef.recipes.length);
 
 //Voir mes recettes
     const newTime = (time) => {
@@ -167,7 +157,7 @@ export default function EditProfilChef() {
       return formattedTime
     };
 
-    const myRecipe =  chefRecipe? 
+    const myRecipe =  userChef.recipes ? 
     chefRecipe.map((recipe,i) => {
       return <View key={i} style={styles.oneRecipe}>
         <Image source={{uri: recipe.image}} style={styles.photoRecipe} />
@@ -185,7 +175,7 @@ export default function EditProfilChef() {
     }) : null;
 
   
-  const chefProfilExiste = chefProfil?
+  const chefProfilExiste = userChef ?
      modifierProfil ? 
 //AFFICHER POUR MODIFIER LE PROFIL
       <>
@@ -220,12 +210,12 @@ export default function EditProfilChef() {
               </TouchableOpacity>
               <Text style={styles.txt_h1}>Profil du chef</Text>
             </View>
-            { chefProfil.spécialisation? <View style={styles.infoChef}><Text>Spécialisation: </Text><Text style={styles.inputText}>{chefProfil.spécialisation}</Text></View> : ""}
-            { chefProfil.experience? <View style={styles.infoChef}><Text>Expérience: </Text><Text style={styles.inputText}>{chefProfil.experience}</Text></View> : ""}
-            { chefProfil.passion? <View style={styles.infoChef}><Text>Passion: </Text><Text style={styles.inputText}>{chefProfil.passion}</Text></View>: ""}
-            { chefProfil.services? <View style={styles.infoChef}><Text>Service: </Text><Text style={styles.inputText}>{chefProfil.services}</Text></View>: ""}
-            { chefProfil.userCompliment.lenght > 0 ? <View style={styles.infoChef}><Text>Mes compliments: </Text><Text style={styles.inputText}> {chefProfil.userCompliment}</Text></View>: ""}
-            { chefProfil.recipes ? <View style={styles.infoChef}>
+            { userChef.spécialisation? <View style={styles.infoChef}><Text>Spécialisation: </Text><Text style={styles.inputText}>{userChef.spécialisation}</Text></View> : ""}
+            { userChef.experience? <View style={styles.infoChef}><Text>Expérience: </Text><Text style={styles.inputText}>{userChef.experience}</Text></View> : ""}
+            { userChef.passion? <View style={styles.infoChef}><Text>Passion: </Text><Text style={styles.inputText}>{userChef.passion}</Text></View>: ""}
+            { userChef.services? <View style={styles.infoChef}><Text>Service: </Text><Text style={styles.inputText}>{userChef.services}</Text></View>: ""}
+            { userChef.userCompliment.lenght > 0 ? <View style={styles.infoChef}><Text>Mes compliments: </Text><Text style={styles.inputText}> {userChef.userCompliment}</Text></View>: ""}
+            { userChef.recipes.length > 0 ? <View style={styles.infoChef}>
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPresse={()=> setShowMyRecipe(!showMyRecipe)} >
                 <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Voir mes plats</Text><Text style={styles.buttonText_sign_up}>➔</Text>
             </TouchableOpacity></View> : "" }
@@ -250,7 +240,7 @@ export default function EditProfilChef() {
     <View style={styles.container}>
       <View style={styles.nav_bar_color}></View>
         <View style={styles.container_box_width}>
-        { chefProfil ?
+        { userChef.userProfil ?
 /*AFFICHE SI UN PROFIL CHEF EXISTE*/
       chefProfilExiste
     : 
@@ -387,6 +377,17 @@ topPage: {
     fontSize : 15,
     color : '#9292FE',
     textAlign: 'center',
+  },
+  backBtnAlone: {
+    width: '20%',
+    marginTop: 20,
+    paddingBottom: 5, // 10 units of padding at the top and bottom
+    paddingHorizontal: 15, // A
+    borderRadius:50,
+    borderWidth: 2,
+    borderColor: '#9292FE',
+    backgroundColor: '#fff',
+    marginBottom: 20,
   },
   txt_h2 : {
     color: '#5959F0',
