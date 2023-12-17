@@ -158,20 +158,31 @@ export default function EditProfilChef() {
     };
 
     const myRecipe =  userChef.recipes ? 
-    chefRecipe.map((recipe,i) => {
+    userChef.recipes.map((recipe,i) => {
       return <View key={i} style={styles.oneRecipe}>
         <Image source={{uri: recipe.image}} style={styles.photoRecipe} />
-        <View style={styles.textRecipe}> 
-          <Text> {recipe.title} </Text>
+        <View style={styles.textAndBtnContainer}> 
+          <Text style={styles.txt_h2}> {recipe.title} </Text>
+          <View style={styles.btnRecipe}> 
+            <TouchableOpacity activeOpacity={1} style={styles.onebtnRecipe}  >
+                <Text style={styles.buttonTextRecipe}>Voir / Modifier</Text>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={1} style={styles.onebtnRecipe}  >
+                <Text style={styles.buttonTextRecipe}>Supprimer</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        </View>
+        {/*    
           <Text> Temps de préparation: {newTime(recipe.time)} </Text>
           <Text> Prix: </Text>
-          <Text> Minimum: {recipe.prix.minimum}€, Par personne sup: {recipe.prix.personneSup}€, Panier course par personne: {recipe.prix.panierCourseParPersonne}€  </Text>
+    <Text> Minimum: {recipe.prix.minimum}€, Par personne sup: {recipe.prix.personneSup}€, Panier course par personne: {recipe.prix.panierCourseParPersonne}€  </Text> */}
           {/*<Text> Ustensils: {recipe.time} </Text> */}
           {/*<Text> Ingredients: {recipe.time} </Text> */}
           {/*<Text> Note: {recipe.time} </Text> */}
           {/*<Text> Feedback: {recipe.time} </Text> */}
-         </View>
-      </View>
+         
+      
     }) : null;
 
   
@@ -209,6 +220,10 @@ export default function EditProfilChef() {
                 <Text style={styles.btnTextBack}>←</Text>
               </TouchableOpacity>
               <Text style={styles.txt_h1}>Profil du chef</Text>
+              
+            </View>
+            <View style={styles.logoPosition}> 
+            <Image source={require('../../assets/logo.png')} style={styles.photo_logo} />
             </View>
             { userChef.spécialisation? <View style={styles.infoChef}><Text>Spécialisation: </Text><Text style={styles.inputText}>{userChef.spécialisation}</Text></View> : ""}
             { userChef.experience? <View style={styles.infoChef}><Text>Expérience: </Text><Text style={styles.inputText}>{userChef.experience}</Text></View> : ""}
@@ -216,16 +231,14 @@ export default function EditProfilChef() {
             { userChef.services? <View style={styles.infoChef}><Text>Service: </Text><Text style={styles.inputText}>{userChef.services}</Text></View>: ""}
             { userChef.userCompliment.lenght > 0 ? <View style={styles.infoChef}><Text>Mes compliments: </Text><Text style={styles.inputText}> {userChef.userCompliment}</Text></View>: ""}
             { userChef.recipes.length > 0 ? <View style={styles.infoChef}>
-            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPresse={()=> setShowMyRecipe(!showMyRecipe)} >
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> setShowMyRecipe(!showMyRecipe)} >
                 <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Voir mes plats</Text><Text style={styles.buttonText_sign_up}>➔</Text>
             </TouchableOpacity></View> : "" }
             
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> navigation.navigate('AddNewRecipe')} >
                 <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Ajouter un nouveau plat</Text><Text style={styles.buttonText_sign_up}>➔</Text>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up}  >
-                <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Modifier / Supprimer un plat</Text><Text style={styles.buttonText_sign_up}>➔</Text>
-            </TouchableOpacity>
+           
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setModifierProfil(!modifierProfil)} >
                 <Text style={styles.buttonText_sign_in}>Modifier mon profil</Text>
             </TouchableOpacity>
@@ -398,7 +411,7 @@ topPage: {
 photoRecipe : {
   width: 100,
   height: 100,
-  marginTop: 30,
+  marginTop: 20,
   marginBottom : -5,
 },
 oneRecipe: {
@@ -406,9 +419,44 @@ oneRecipe: {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
+  maxWidth: '100%',
 },
-textRecipe: {
+textAndBtnContainer: {
+  justifyContent: 'space-between', 
+  flex: 1, 
   marginLeft: 5,
+},
+btnRecipe: {
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between', 
+  flexWrap: 'wrap',
+},
+onebtnRecipe: {
+  paddingVertical: 10, 
+    paddingHorizontal: 10, 
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#9292FE',
+    backgroundColor: '#fff',
+    marginTop: 10,
+    marginLeft: 10
+},
+buttonTextRecipe: {
+  fontSize : 15,
+  color : '#9292FE',
+  textAlign: 'center',
+},
+photo_logo : {
+  width: 100,
+  height: 100,
+  marginTop: 30,
+  marginBottom : -5,
+},
+logoPosition: {
+  alignItems: 'center',
+  marginBottom: 40,
+  marginTop: -50,
 }
 
   
