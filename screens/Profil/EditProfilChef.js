@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginChef, logoutChef } from '../../reducers/chef';
 //FONTAWESOME
-import { FontAwesome } from '@expo/vector-icons';
+//import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBowlFood } from '@fortawesome/free-solid-svg-icons'
 
