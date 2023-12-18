@@ -16,8 +16,7 @@ export default function MainScreen() {
   const [chefAddresses, setChefAddresses] = useState([]);
 //   //  état pour stocker les recettes du chef sélectionné
 // const [selectedChefRecipes, setSelectedChefRecipes] = useState([]);
-// // //  état pour stocker les recettes aléatoires
-// // const [randomRecipes, setRandomRecipes] = useState([]);
+
 
 
 
@@ -54,24 +53,7 @@ useEffect(() => {
 // //   }
 // };
 
-// // Fonction pour récupérer les recettes aléatoires
-// const fetchRandomRecipes = async () => {
-//   try {
-//     // Récupérer les recettes aléatoires via une requête HTTP
-//     const response = await fetch('http://192.168.1.58:3000/recipes/random', {
-//       method: 'GET',
-//       headers: { 'Content-Type': 'application/json' },
-//     });
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! Status: ${response.status}`);
-//     }
-//     const data = await response.json();
-//     // Mettre à jour l'état des recettes aléatoires
-//     setRandomRecipes(data.recipes);
-//   } catch (error) {
-//     console.error('Erreur lors de la récupération des recettes aléatoires :', error);
-//   }
-// };
+
 
 // Hook useEffect pour charger les adresses des chefs au chargement initial de la page
 useEffect(() => {
@@ -94,17 +76,7 @@ useEffect(() => {
 }, []);
 
 
-// // Hook useEffect pour charger les recettes aléatoires au chargement initial de la page
-// useEffect(() => {
-//   fetchRandomRecipes();
-// }, []);
 
-// // Hook useEffect pour charger les recettes aléatoires si aucun chef n'est sélectionné
-// useEffect(() => {
-//   if (selectedChefRecipes.length === 0) {
-//     fetchRandomRecipes();
-//   }
-// }, [selectedChefRecipes]);
 
 // // Fonction pour gérer le clic sur un marqueur de chef
 // const handleChefMarkerPress = (chefId) => {
