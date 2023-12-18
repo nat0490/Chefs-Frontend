@@ -16,7 +16,7 @@ import { login, logout} from '../../reducers/user';
 export default function EditProfilScreen() {
 
 //HOOK DETAT
-  const [ user, setUser ] =useState(null);
+  //const [ user, setUser ] =useState(null);
   const [ modifCoordonne, setModifCoordonne ] = useState(false);
   const [ modifEmailPw, setModifEmailPw ] = useState(false);
   const [ newRue, setNewRue ] = useState("");
@@ -32,13 +32,15 @@ export default function EditProfilScreen() {
   const navigation = useNavigation();
 
 //REDUCER RECUPERER EST POUSSER DANS LE HOOK DETAT USER
-  const reducerUser = useSelector((state) => state.user.value);
+  const user = useSelector((state) => state.user.value);
+
+  /*
   //console.log(reducerUser);
   useEffect(() => {
     setUser(reducerUser);
   },[reducerUser]); 
   //console.log(user);
-
+*/
   
 //Changer de numéro 
   const changeTel = () => {
