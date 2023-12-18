@@ -4,7 +4,7 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBowlFood } from '@fortawesome/free-solid-svg-icons'
+import { faBowlFood, faCircleUser, faFaceLaugh } from '@fortawesome/free-solid-svg-icons'
 
 const foodIcon = require('../assets/user.png');
 
@@ -147,6 +147,8 @@ const recipes = allRecipe ? allRecipe.map((dish, i) => {
         </TouchableOpacity>
       </View>
 
+      { allRecipe ? 
+      <>
         <View style={styles.btnContainer}>
           <TouchableOpacity activeOpacity={0.8} style={styles.Réserve}>
             <Text style={styles.Réserve_maintenant}>Réserve maintenant !</Text>
@@ -155,10 +157,22 @@ const recipes = allRecipe ? allRecipe.map((dish, i) => {
         <View style={styles.container_box_width}>
         <View style={styles.containeur_box}>
 
-        {recipes}
+         {recipes}
 
         </View>
         </View>
+        <View style={styles.msgChargement}>
+          <Text style={styles.txt_h1}>Qu'est-ce qu'on mange aujourd'hui?</Text>
+          <FontAwesomeIcon icon={faFaceLaugh} size={50}/>
+
+        </View>
+      </> : 
+      <View style={styles.msgChargement}>
+        <Text style={styles.txt_h1}>Qu'est-ce qu'on mange aujourd'hui?</Text>
+        <FontAwesomeIcon icon={faFaceLaugh} size={50}/>
+
+      </View>
+      } 
       </ScrollView>
     </View>
   );
@@ -279,9 +293,20 @@ accesSetting: {
  maxWidth: '100%',
  marginTop: 5,
  marginLeft: 5,
-  }
+  },
 /////////////
-
+//Message en attendant que les plats s'affiche:
+msgChargement: {
+  //justifyContent:'center',
+  marginVertical: 20,
+  alignItems: 'center',
+  height: '30%'
+},
+txt_h1 : {
+  color: '#5959F0',
+  fontSize: 26,
+  marginBottom: 30,
+},
 
 });
 

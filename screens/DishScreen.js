@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 //FONTAWESOME
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBowlRice, faBowlFood, faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import { faBowlRice, faBowlFood, faCircleUser, faStar } from '@fortawesome/free-solid-svg-icons';
 import { addInfo, removeInfo} from '../reducers/infoPourCommande';
 
 export default function DishScreen({route}) {
@@ -21,26 +21,22 @@ export default function DishScreen({route}) {
   const dispatch = useDispatch(); 
   const navigation = useNavigation();
 
-  //console.log(route.params.userChef._id);
-  //const favoriteRecipes = useSelector((state) => state.favorites.value);
-
-
   const { _id, feedback, image, ingredients, notes, prix, time, title, type, userChef, ustensils, path } = route.params;
+    //console.log(route.params.userChef._id);
 
   const [nbPeople, setNbPeople] = useState(1);
   //FAVORITE?
   const [isBookmark, setIsBookmark] = useState(false);
   const [ showPrice, setShowPrice ] = useState(false);
-  
-
+  const [ showIngredients, setShowIngedients] = useState(false);
+  const [ showUstensils, setShowUstensils] = useState(false);
+  const [ showConvives, setShowConvives] = useState(false);
 /*
   CETTE RECETTE EST-ELLE DANS LES FAVORIES? POUR AFFICHER OU LE MARQUER SUR LE BOOKMARK
   useEffect(() => {
     favoriteRecipes.some( e => e.params.name === name) ? setIsBookmark(true): setIsBookmark(false);
 }, []);
 */
-
-
 //LISTE DES INGREDIENTS
 const allIngredients = ingredients ? ingredients.map((oneIngredient, index) => (
   //console.log(data);
@@ -65,7 +61,6 @@ const handleLess = () => {
 const handleMore = () => {
   setNbPeople(nbPeople + 1);
 }
-
 /*
 const handleBookmark = () => {
   if (!isBookmark) {
@@ -78,9 +73,6 @@ const handleBookmark = () => {
   } 
 }
 */
-
-
-
 //NOTE MOYENNE
 //var total = [0, 1, 2, 3].reduce((a, b) => a + b, 0);
 const noteMoyenne = notes ?  notes.reduce((a,b)=> a +b, 0)/notes.length : "";
@@ -113,6 +105,34 @@ const validerPlat = () => {
 }; 
 
 
+
+//{ notes.length > 0 ? <Text>note: {noteMoyenne}</Text> : "" }
+const stars = [];
+  for (let i = 0; i < 5; i++) {
+    // let style = {};
+    // if (i < props.voteAverage - 1) {
+    //   style = { 'color': '#f1c40f' };
+    // }
+    stars.push(<FontAwesomeIcon key={i} icon={faStar} name='star' size={16} color='#B8B8B8'/>);
+  }
+
+
+
+//UTILE DANS LE CODE??
+/* <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={() => setShowConvives(!showConvives)} >
+              <Text style={styles.buttonText_sign_in}>Convives</Text>
+            </TouchableOpacity> 
+            <Text>Convives</Text>
+            <View style={styles.nbmConvives}> 
+              <TouchableOpacity style={{padding: 20}}  onPress={()=>handleLess()}>
+                <Text style={{fontSize: 20,fontWeight: "bold"}} >-</Text>
+              </TouchableOpacity>
+              <Text style={{padding: 20, fontSize: 20}}>{nbPeople}</Text>
+              <TouchableOpacity style={{padding: 20}}  onPress={()=>handleMore()}>
+                <Text style={{fontSize: 20, fontWeight: "bold"}} >+</Text>
+              </TouchableOpacity>
+            </View> */
+
 return (
 
   <View style={styles.container}>
@@ -128,8 +148,7 @@ return (
               </View>
               <Text style={{...styles.txt_h1, marginBottom: 40}}>{title}</Text>
             </View>
-      
-              <Image source={{uri: image}} style={styles.imagePlat} />
+            <Image source={{uri: image}} style={styles.imagePlat} />
 
   {/*<TouchableOpacity >
       <FontAwesome style={isBookmark ? {color: '#fff'} : {}} size={26} name="bookmark" />
@@ -141,33 +160,48 @@ return (
         <ScrollView contentContainerStyle={{width: '100%',}} >
           <View style={styles.textBox}> 
         
-          <View style={styles.typeCuisine}> 
-            <FontAwesomeIcon icon={faBowlRice} size={30}/><Text>    {type}</Text>
-          </View>
-            <Text >note: {notes}</Text>
-            <Text>Convives</Text>
-            <View> 
-              <TouchableOpacity style={{padding: 20}}  onPress={()=>handleLess()}>
-                <Text style={{fontSize: 20,fontWeight: "bold"}} >-</Text>
-              </TouchableOpacity>
-              <Text style={{padding: 20, fontSize: 20}}>{nbPeople}</Text>
-              <TouchableOpacity style={{padding: 20}}  onPress={()=>handleMore()}>
-                <Text style={{fontSize: 20, fontWeight: "bold"}} >+</Text>
-              </TouchableOpacity>
-            </View> 
-            <Text>Ustensils : {besoinUstensils}</Text> 
-            <Text> Ingredient :  {allIngredients} </Text> 
-            <TouchableOpacity onPress={()=> setShowPrice(!showPrice)}>
-            { showPrice?  prix > 0 ? <Text>{prixTotal}</Text> : null  : <Text>Prix</Text> } 
+          <View style={styles.typeChef}> 
+            <View style={styles.typeCuisine}> 
+              <FontAwesomeIcon icon={faBowlRice} size={30}/><Text style={{fontSize: 20}}>    {type}</Text>
+            </View>
+            <TouchableOpacity activeOpacity={1} style={{...styles.btn_sign_in, marginRight: 20}} >
+              <Text style={styles.buttonText_sign_in}>Profil du Chef</Text>
             </TouchableOpacity>
+          </View>
+
+          <View style={styles.stars}>{stars}</View>
+
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setShowIngedients(!showIngredients)}>
+              <Text style={styles.buttonText_sign_in}>Ingredients</Text>
+            </TouchableOpacity>
+            { showIngredients? <View><Text>Pour une personne:</Text>{allIngredients}</View> : "" }
+
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setShowPrice(!showPrice)}>
+              <Text style={styles.buttonText_sign_in}>Prix</Text>
+            </TouchableOpacity>
+            { showPrice ? 
+              <View>
+                <Text>Prix par prestation (1 personne): {prix.minimum} €</Text>
+                <Text>Prix par personne supplémentaire: {prix.personneSup} €</Text>
+                <Text>Panier course par personne: {prix.panierCourseParPersonne} €</Text>
+              </View> : "" }
+
+            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={() => setShowUstensils(!showUstensils)}>
+              <Text style={styles.buttonText_sign_in}>Ustensils</Text>
+            </TouchableOpacity>
+            { showUstensils ? <View>{besoinUstensils}</View> : "" }
+
+           
+
+            
 
           </View>
           </ScrollView>
         </View>
         
       
-      <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> validerPlat()} >
-            <Text style={styles.buttonText_sign_in}>Je réserve mon plat!</Text>
+        <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> validerPlat()} >
+            <Text style={styles.buttonText_sign_up}>Je réserve mon plat!</Text>
         </TouchableOpacity>
         
       </View>
@@ -245,6 +279,7 @@ imagePlat: {
 //BLOC INFOS RECETTE
 box: {
   width: '80%', 
+  maxHeight: '35%',
   backgroundColor: "rgba(89,89,240, 0.2)",
   borderRadius: 10,
   marginBottom: 10,
@@ -254,19 +289,47 @@ typeCuisine: {
   alignItems: 'center',
 },
 textBox: {
-  margin: 5,
+  margin: 10,
 },
-//BOUTON VALIDER
+stars: {
+  flexDirection: 'row',
+  marginLeft: 20,
+  marginBottom: 20,
+},
+//nbmConvives: {
+//  flexDirection: 'row',
+//},
+
 btn_sign_in : {
   paddingVertical: 10, // 10 units of padding at the top and bottom
-  paddingHorizontal: 25, // A
+  paddingHorizontal: 10, // A
   borderRadius: 5,
   backgroundColor: '#9292FE',
   marginTop: 10,
+  maxWidth: '30%',
 },
 buttonText_sign_in :  {
   fontSize : 15,
   color : '#fff',
+  textAlign: 'center',
+},
+typeChef: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+},
+//BOUTON VALIDER
+btn_sign_up : {
+  paddingVertical: 10, 
+  paddingHorizontal: 25, 
+  borderRadius: 5,
+  borderWidth: 2,
+  borderColor: '#9292FE',
+  backgroundColor: '#fff',
+  marginTop: 10,
+},
+buttonText_sign_up: {
+  fontSize : 15,
+  color : '#9292FE',
   textAlign: 'center',
 },
 });
