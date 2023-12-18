@@ -43,15 +43,9 @@ import OrderCheckProfile from './screens/OrderCheckProfile'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { 
   faHouse, 
-  faBell, 
-  faCreditCard, 
-  faShieldHalved,
-  faLock, 
-  faCircleQuestion,
-  faFlag,
-  faDiamond,
-  faUtensils,
-  faRightFromBracket,
+  faBowlFood, 
+  faHeart, 
+  faHouseChimney,
 } from '@fortawesome/free-solid-svg-icons'
 
 //REDUX
@@ -71,14 +65,14 @@ const Tab = createBottomTabNavigator();
 
 const HomeTabs = () => (
   <Tab.Navigator screenOptions={({ route }) => ({
-    tabBarIcon: ({ color, size }) => {
+    tabBarIcon: () => {
       let iconName = '';
       if (route.name === 'Main') {
-        iconName = 'house';
+        iconName = faHouseChimney;
       } else if (route.name === 'Search') {
-        iconName = 'search';
+        iconName = faBowlFood;
       } else if (route.name === 'Wishlist') {
-        iconName = 'heart';
+        iconName = faHeart;
       }
       return <FontAwesomeIcon icon={iconName} style={{color: "#5959f0",}} /> ;
       //<FontAwesome name={iconName} size={size} color={color} />;

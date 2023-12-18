@@ -115,11 +115,11 @@ export default function OrderScreen() {
                       </View>
                       <View style={styles.middleSectionBox}>
                         <TouchableOpacity onPress={handleDisplayRecette} activeOpacity={1}>
-                          <Image 
+                         <Image 
                               // créer modèle prop pour
-                              source={require('../assets/userchef.png')}
+                              source={require('../assets/chefNaima.jpg')}
                               style={styles.photoDish}
-                              />
+  /> 
                         </TouchableOpacity>
                         <View style={styles.containeur_box_recipe}>
                           <TouchableOpacity  activeOpacity={1}>

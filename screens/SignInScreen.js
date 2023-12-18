@@ -181,9 +181,9 @@ export default function SignInScreen() {
                   <Text style={styles.txt_p_regulard}> ──── S'inscrire avec: ─── </Text>
                 </View>
                <View style={styles.iconsSign}> 
-               <Text style={styles.iconStyle}><FontAwesomeIcon icon={faApple} /> </Text>
-               <Text style={styles.iconStyle}><FontAwesomeIcon icon={faGoogle} /></Text>
-               <Text style={styles.iconStyle}><FontAwesomeIcon icon={faFacebook} /></Text>
+                  <FontAwesomeIcon icon={faApple} size={40}/>
+                  <FontAwesomeIcon icon={faGoogle} size={40}/>
+                  <FontAwesomeIcon icon={faFacebook}size={40}/>
 
                   { /*
                 <FontAwesome name='apple' size={40} /> 
