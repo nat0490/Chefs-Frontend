@@ -24,7 +24,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
 //FONTAWESOME
-import { FontAwesome } from '@expo/vector-icons';
+//import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheck, faBowlFood, faCircleUser } from '@fortawesome/free-solid-svg-icons'
 

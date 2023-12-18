@@ -6,11 +6,15 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function ConfigureOrderScreen() {
   return (
     <View style={styles.container}>
-      <Text>CONFIGURE ORDER SCREEN</Text>
-      <StatusBar style="auto" />
+      <View style={styles.nav_bar_color}></View>
+      <View style={styles.container_box_width}>
+            {/* Il faut ecrire tous sont code ici la couleur rouge seras a enlever*/}
+      </View>
     </View>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {

@@ -49,12 +49,12 @@ export default function SettingScreen() {
                     const infoChef = {
                       id: data.data._id,
                       spécialisation: data.data.spécialisation,
-                      userCompliment: data.data.userCompliment,
-                      experience: data.data.experience,
-                      passion: data.data.passion,
-                      services: data.data.services,
-                      userProfil: data.data.userProfil,
-                      recipes: data.data.recipes
+                      userCompliment: data.data.userCompliment || [],
+                      experience: data.data.experience || 0,
+                      passion: data.data.passion || '',
+                      services: data.data.services || '',
+                      userProfil: data.data.userProfil || '',
+                      recipes: data.data.recipes || []
                     };
                     //console.log(infoChef);
                     dispatch(loginChef(infoChef));
@@ -62,7 +62,10 @@ export default function SettingScreen() {
                     console.log(data.message)
                 }
             })
-  },[chefStatus]);
+            .catch(error => {
+              console.error('Error fetching chef data:', error);
+            });
+  },[chefStatus, user.id, dispatch]);
 
   const changeStatusChef = () => {
     console.log(user.id);
@@ -101,6 +104,9 @@ export default function SettingScreen() {
           //setEmail("");
         }
       })
+      .catch(error => {
+        console.error('Error updating chef status:', error);
+      });
   }
 
   return (
@@ -116,7 +122,7 @@ export default function SettingScreen() {
         <View style={styles.container_box_width}>
             <Text style={styles.txt_h2}>Account</Text>
               <View style={styles.bloc}> 
-                <TouchableOpacity onPress={() => navigation.navigate('EditProfil' )}>
+                <TouchableOpacity onPress={() => {navigation.navigate('EditProfil' ), console.log('go to editprofil')}}>
                   <Text style={styles.menuAccount}><FontAwesomeIcon icon={faUser} style={{color: "#5959f0",}} />  Profil</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>

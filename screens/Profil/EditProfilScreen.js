@@ -394,7 +394,7 @@ export default function EditProfilScreen() {
        <StatusBar style="auto" />
       </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

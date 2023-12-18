@@ -3,6 +3,7 @@ import { StyleSheet, Text, View , Image , TouchableOpacity} from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import React from 'react';
 
+
 export default function OrderScreen() {
 
   const stars = [];
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
     height: 100
   },
   containeur_box: {
-      height : 130,
+      // height : 130,
       marginTop : 10,
       flexDirection: 'row',
       width: '100%',
@@ -193,6 +194,11 @@ const styles = StyleSheet.create({
   txt_preferences : {
     fontSize: 8,
   },
+  container_description_recette: {
+    width: "100%",
+    padding: 20,
+  
+  },
  
 //----------- Font  ---------------
   txt_h2 : {
@@ -212,22 +218,6 @@ photo: {
 },
 
 
-//-------------- BOX EN DESOUS DE LA PHOTO------------
-box_description : {
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginBottom: 5,
-  marginLeft : 5,
-},
-photo_preferences :{
-  width: 30,
-  height: 30
-},
-container_description_recette: {
-  width: "100%",
-  padding: 20,
-
-},
 //-------------- BOX Commentaire------------
 container_commentaire : {
   width: "100%",

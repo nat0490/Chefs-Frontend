@@ -263,7 +263,7 @@ txt_h1_2 : {
 txt_p_bold : {
   color: 'black',
   fontSize: 12,
-  fontWeight: 'bold',
+  fontWeight: 600,
 },
 
 txt_p_regulard: {
