@@ -429,8 +429,9 @@ textAndBtnContainer: {
 btnRecipe: {
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'space-between', 
+  justifyContent: 'space-around', 
   flexWrap: 'wrap',
+  marginLeft: 10,
 },
 onebtnRecipe: {
   paddingVertical: 10, 

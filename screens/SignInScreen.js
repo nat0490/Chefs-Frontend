@@ -11,7 +11,12 @@ import { StyleSheet,
  } from 'react-native';
  import { useNavigation } from '@react-navigation/native';
  import React, { useEffect, useState } from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+//import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faApple, faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons'
+
+
+
 import { useDispatch, useSelector } from 'react-redux';
 // importer reducer 
 import { login } from '../reducers/user';
@@ -21,6 +26,8 @@ import {add, remove} from '../reducers/typeCuisine';
 // Grabbed from emailregex.com
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+//REGARDE LE STYLE
+//JAI MIS DU STYLE EN COMMENTAIRE POUR ENLEVER LES MSG D'ERREUR, Je ne sais pas se que ça modifiait
 
 export default function SignInScreen() {
   const navigation = useNavigation();
@@ -94,7 +101,7 @@ export default function SignInScreen() {
             userPreference: data.dataUserConnexion.userProfile.chef.userPreference,
             }
           };
-        //console.log(userInfo)
+        //console.log(userInfo);
         dispatch(login(userInfo));
         navigation.navigate('HomeTabs', { screen: 'Main' }) ;
       } 
@@ -174,9 +181,14 @@ export default function SignInScreen() {
                   <Text style={styles.txt_p_regulard}> ──── S'inscrire avec: ─── </Text>
                 </View>
                <View style={styles.iconsSign}> 
+               <Text style={styles.iconStyle}><FontAwesomeIcon icon={faApple} /> </Text>
+               <Text style={styles.iconStyle}><FontAwesomeIcon icon={faGoogle} /></Text>
+               <Text style={styles.iconStyle}><FontAwesomeIcon icon={faFacebook} /></Text>
+
+                  { /*
                 <FontAwesome name='apple' size={40} /> 
                 <FontAwesome name='google' size={40} />
-                <FontAwesome name='facebook' size={40} />
+                <FontAwesome name='facebook' size={40} /> */}
               </View>
           </View>
 
@@ -239,10 +251,10 @@ const styles = StyleSheet.create({
       textShadowColor: 'rgba(0, 0, 0, 0.25)',
       textShadowOffset: { width: 0, height: 4 },
       textShadowRadius: 4,
-      fontFamily: 'Inter',
+      //fontFamily: 'Inter',
       fontStyle: 'normal',
-      fontweight: 600,
-      letterspacing: -1.5,
+      fontWeight: 600,
+      //letterspacing: -1.5,
 },
 
 txt_h1_2 : {
@@ -253,10 +265,10 @@ txt_h1_2 : {
       textShadowColor: 'rgba(0, 0, 0, 0.25)',
       textShadowOffset: { width: 0, height: 4 },
       textShadowRadius: 4,
-      fontFamily: 'Inter',
+      //fontFamily: 'Inter',
       fontStyle: 'normal',
-      fontweight: 600,
-      letterspacing: -1.5,
+      fontWeight: 600,
+      //letterspacing: -1.5,
       marginBottom: 40,
 },
 
@@ -357,6 +369,13 @@ txt_p_regulard: {
       fontSize : 15,
       color : '#9292FE'
     },
+
+//LOGO APPLE/FB/GOOGLE
+ /*
+    iconStyle: {
+      
+      fontSize: 20,
+    } */
 
    
 });

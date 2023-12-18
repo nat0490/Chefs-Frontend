@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { login, logout} from '../../reducers/user';
 import { loginChef, logoutChef } from '../../reducers/chef';
+import { removeUstensils} from '../../reducers/ustensils';
+import { remove } from '../../reducers/typeCuisine';
 //FONTAWESOME
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -40,6 +42,7 @@ export default function SettingScreen() {
 
   useEffect(()=> {
     setChef(chefStatus);
+    console.log(user);
     fetch(`https://chefs-backend-amber.vercel.app/users/chef/find/${user.id}`)
             .then( res => res.json())
             .then(data => {
@@ -49,12 +52,12 @@ export default function SettingScreen() {
                     const infoChef = {
                       id: data.data._id,
                       spécialisation: data.data.spécialisation,
-                      userCompliment: data.data.userCompliment || [],
-                      experience: data.data.experience || 0,
-                      passion: data.data.passion || '',
-                      services: data.data.services || '',
-                      userProfil: data.data.userProfil || '',
-                      recipes: data.data.recipes || []
+                      userCompliment: data.data.userCompliment,
+                      experience: data.data.experience ,
+                      passion: data.data.passion,
+                      services: data.data.services,
+                      userProfil: data.data.userProfil,
+                      recipes: data.data.recipes
                     };
                     //console.log(infoChef);
                     dispatch(loginChef(infoChef));
@@ -65,7 +68,7 @@ export default function SettingScreen() {
             .catch(error => {
               console.error('Error fetching chef data:', error);
             });
-  },[chefStatus, user.id, dispatch]);
+  },[chefStatus, user.id]);
 
   const changeStatusChef = () => {
     console.log(user.id);
@@ -109,6 +112,15 @@ export default function SettingScreen() {
       });
   }
 
+  const logoutApp = () => {
+    console.log('déconnection! reducer vidé')
+    dispatch(logoutChef());
+    dispatch(logout());
+    dispatch(removeUstensils());
+    dispatch(remove());
+    navigation.navigate('Home' );
+  }
+
   return (
     <View style={styles.container}>
         <View style={styles.nav_bar_color}></View>
@@ -122,7 +134,7 @@ export default function SettingScreen() {
         <View style={styles.container_box_width}>
             <Text style={styles.txt_h2}>Account</Text>
               <View style={styles.bloc}> 
-                <TouchableOpacity onPress={() => {navigation.navigate('EditProfil' ), console.log('go to editprofil')}}>
+                <TouchableOpacity onPress={() => navigation.navigate('EditProfil' )}>
                   <Text style={styles.menuAccount}><FontAwesomeIcon icon={faUser} style={{color: "#5959f0",}} />  Profil</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
@@ -164,7 +176,7 @@ export default function SettingScreen() {
                 dispatch(logout()) ;
                 */}
                 <TouchableOpacity>
-                    <Text style={styles.menuAction}> <FontAwesomeIcon icon={faRightFromBracket} style={{color: "#5959f0",}}/>  Se déconnecter</Text>
+                    <Text style={styles.menuAction} onPress={()=> logoutApp()}> <FontAwesomeIcon icon={faRightFromBracket} style={{color: "#5959f0",}}/>  Se déconnecter</Text>
                 </TouchableOpacity>
               </View>
 

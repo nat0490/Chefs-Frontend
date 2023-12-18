@@ -39,7 +39,20 @@ import HomeChefScreen from './screens/Home_chefsScreen'
 import OrderCheckProfile from './screens/OrderCheckProfile'
 //import ProfilScreen from './screens/Profil/ProfilScreen';
 
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+//import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { 
+  faHouse, 
+  faBell, 
+  faCreditCard, 
+  faShieldHalved,
+  faLock, 
+  faCircleQuestion,
+  faFlag,
+  faDiamond,
+  faUtensils,
+  faRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons'
 
 //REDUX
 import { Provider } from 'react-redux';
@@ -60,14 +73,15 @@ const HomeTabs = () => (
   <Tab.Navigator screenOptions={({ route }) => ({
     tabBarIcon: ({ color, size }) => {
       let iconName = '';
-      if (route.name === 'Home') {
-        iconName = 'home';
+      if (route.name === 'Main') {
+        iconName = 'house';
       } else if (route.name === 'Search') {
         iconName = 'search';
       } else if (route.name === 'Wishlist') {
         iconName = 'heart';
       }
-      return <FontAwesome name={iconName} size={size} color={color} />;
+      return <FontAwesomeIcon icon={iconName} style={{color: "#5959f0",}} /> ;
+      //<FontAwesome name={iconName} size={size} color={color} />;
     },
     tabBarActiveTintColor: '#e8be4b',
     tabBarInactiveTintColor: '#b2b2b2',
