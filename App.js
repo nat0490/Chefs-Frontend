@@ -119,7 +119,8 @@ export default function App() {
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />
           <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
           <Stack.Screen name="AddNewRecipe" component={AddNewRecipeScreen} />
-          <Stack.Screen name="Main" component={MainScreen} />
+          <Stack.Screen name="BookDate" component={BookDateScreen} />
+          <Stack.Screen name="OrderDetails" component={OrderScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -8,32 +8,53 @@ import { View,
     StyleSheet, 
     TouchableOpacity,
     Alert,
-    Platform
+    Platform,
+    YellowBox
 } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBowlFood } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 export default function OrderScreen() {
+
+  const navigation = useNavigation();
 
   // stock info du chef 
   const [chefInfo, setChefInfo] = useState({});
   const [chefId, setChefId] = useState('657b29f494c3dc2f6cc4576c');
 
+  // managing the comments 
+  const [commentaireVisible, setCommentaireVisible] = useState(true); //
+  const [commentaire, setCommentaire] = useState('');
+
+  // managing the touchable for chefs & recettes 
+  const handleDisplayChef = () =>{
+    navigation.navigate('HomeChefs')
+   };
+   const handleDisplayRecette = () =>{
+    navigation.navigate('HomePlat')
+   };
+
   // useEffect to upload the informations about the chefs when click on recipes when ordering 
   useEffect(() => {
-    fetch(`http://172.20.10.2:3000/users/chef/${chefId}`)
+    fetch(`http://192.168.0.127:3000/users/chef/${chefId}`)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+        // console.log(data);
         setChefInfo(data.data);
       });
   }, [setChefId]);
 
-  
-  const handleBookingDate = () => {
-  
+
+  const handleComment = (text) => { // calling the function when text input chages 
+    setCommentaire(text);
+    if (text.lenght > 0) {
+      setCommentaireVisible('false')
+    } else {
+      setCommentaireVisible('true')
+    }
   }
 
 
@@ -45,37 +66,40 @@ export default function OrderScreen() {
         <View style={styles.container_box_width}>
         {/* Top of the page */}
           <View style={styles.topHead}>
-            <View style={styles.containeur_fleche}>
-                <FontAwesome name='arrow-left' size={22}  />
-            </View>
             <View>
-            {/* Ternary operator : if object is truthy, we access property name  */}
-            {/* Loading...: if not truthy, provide feedback to user that sata is being fetched   */}
-            <Text style={[styles.txt_h1, {marginTop: 10}]}>Chef.fe: {chefInfo.userProfil ? chefInfo.userProfil.prenom : 'Loading...'}
-            </Text>
+            <View style={styles.containeur_fleche} onPress={() => navigation.goBack()}>
+              <FontAwesome name='arrow-left' size={22} onPress={() => navigation.goBack()} />
             </View>
           </View>
+            <View>
+            {/* Ternary operator : if object is truthy, we access property name  */}
+            {/* Loading...: if not truthy, provide feedback to user that data is being fetched   */}
+            <Text style={styles.chefNameTitle}>Ton chef: {chefInfo.userProfil ? chefInfo.userProfil.prenom : 'Loading...'}
+            </Text>
+            </View>
+            </View>
 
 
           {/* --- TOP SECTION --- */}
           <View style={styles.container_topSection}>
-                  {/* Chef section - (experience, pic, description) */}
                   {/* container top part */}
               <View style={styles.box1}>
-                <Image 
-                // créer modèle prop pour
-                source={require('../assets/chefNaima.jpg')}
-                style={styles.photo}
-                />
+                <TouchableOpacity onPress={handleDisplayChef} activeOpacity={1}>
+                  <Image 
+                  // IL FAUT modif modèle pour image !!!!!!! 
+                  source={require('../assets/chefNaima.jpg')}
+                  style={styles.photo}
+                  />
+                </TouchableOpacity>
                 <View style={styles.box_description}>
-                  <Text style={styles.txt_p_regular}>Années d'expérience:</Text>
-                    <Text style={styles.txt_p_regular_small}>{chefInfo.userChef ? chefInfo.userChef.services  : 'Loading...'}(s)</Text>
+                  <Text style={[styles.txt_p_regular, {fontSize: 10}]}>Notre collab depuis:</Text>
+                    <Text style={[styles.txt_p_regular_small_top, {fontSize: 10}]}>{chefInfo ? chefInfo.services  : 'Loading...'} merveilleuse(s) année(s)</Text>
                 </View>
               </View>
 
               <View style={styles.box2}> 
-                <Text style={styles.txt_p_regular}>Un petit mot sur ton chef.ffe:</Text>
-                  <Text style={styles.txt_p_regular_small}>{chefInfo.userChef ? chefInfo.userChef.experience : 'Loading...'}</Text>
+                <Text style={styles.boxDescp}>Un petit mot de ton chef :</Text>
+                  <Text style={[styles.txt_p_regular_small]}>{chefInfo ? chefInfo.experience : 'Loading...'}</Text>
               </View>
                   </View>
 
@@ -85,21 +109,24 @@ export default function OrderScreen() {
                   <View style={styles.container_middleSection}>
                     {/* left part */}
                     <View style={styles.middleSection_left}> 
-                      <View>
-                        <Text style={styles.txt_h2}>Le plat le plus populaire</Text>
+                      <View style={styles.tendance}>
+                        <FontAwesome name="fire" size={20} color="orange" />
+                        <Text style={[styles.txt_box, {paddingLeft: 10}]}>Tendance</Text>
                       </View>
                       <View style={styles.middleSectionBox}>
-                        <Image 
+                        <TouchableOpacity onPress={handleDisplayRecette} activeOpacity={1}>
+                          <Image 
                               // créer modèle prop pour
-                              source={require('../assets/chefNaima.jpg')}
+                              source={require('../assets/userchef.png')}
                               style={styles.photoDish}
                               />
+                        </TouchableOpacity>
                         <View style={styles.containeur_box_recipe}>
                           <TouchableOpacity  activeOpacity={1}>
                               <Text style={styles.margin_left_recipe}>Tajine</Text>
                               <View style={styles.box_description_recipe}>
                               <FontAwesomeIcon icon={faBowlFood} style={styles.margin_left_recipe}/>
-                                <Text>Marocain</Text>
+                                <Text style={styles.margin_left_recipe}>Marocain</Text>
                             </View>
                           </TouchableOpacity>
                           </View>
@@ -109,12 +136,12 @@ export default function OrderScreen() {
 
                     {/*  right part  */}
                     <View style={styles.middleSection_right}>
-                      <Text style={styles.txt_h2}> User's compliments</Text>
-                      <View>
-                      <Text style={{ marginLeft: 10 }}> Super nice</Text>
-                      <Text style={{ marginLeft: 30 }}> Neat and tidy</Text>
-                      <Text style={{ marginLeft: 10 }}> Very professionnal</Text>
-                      <Text style={{ marginLeft: 30 }}> Amazing experience</Text>
+                      <Text style={[styles.txt_h2, {marginLeft: 15, marginBottom: 10}]}> User's compliments</Text>
+                      <View style={styles.compliments}>
+                      <Text style={styles.firstCompliment}>{chefInfo ? chefInfo.userCompliment : 'Loading...'}</Text>
+                      <Text style={styles.secondCompliment}> xxx </Text>
+                      <Text style={styles.firstCompliment}> yyy </Text>
+                      <Text style={styles.secondCompliment}> zzzz</Text>
                       </View>
                     </View>
                   </View>
@@ -122,12 +149,19 @@ export default function OrderScreen() {
 
 
                   {/* E--- BOTTOM SECTION --- */}
-                  <View style={styles.bottom_box}>
-                    <Text>Laisse un commentaire pour ton chef(allergens, etc etc)</Text>
-                  </View>
+                  <View style={styles.bottom_boxSection}>
+                    <View style={styles.bottom_box}> 
+                    <TextInput
+                      style={styles.commentaire}
+                      placeholder="Ajoute un commentaire pour ton chef (allergens, besoins spéciaux, etc"
+                      value={commentaire}
+                      onChangeText={handleComment}
+                    />
+                    </View>
+                 </View>
 
                   {/* Bouton de connexion */}
-                  <TouchableOpacity  onPress={handleBookingDate}style={[styles.button, { marginTop: 20}]} >
+                  <TouchableOpacity  onPress={()=> navigation.navigate('BookDate')} style={[styles.button, { marginTop: 20}]} >
                     <Text style={styles.buttonText}>Je choisis ma date</Text>
                   </TouchableOpacity>
 
@@ -147,6 +181,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     },
 
+    nav_bar_color: {
+      backgroundColor : '#9292FE',
+      width: '100%',
+      height: '8%',
+      },
+
     container_box_width:{
       width: "85%",
       flex:1,
@@ -154,23 +194,23 @@ const styles = StyleSheet.create({
     },
 
     topHead: {
+      width: '100%',
       flexDirection: 'row',
       alignItems: 'center',
-      marginLeft : 50,
-      marginRight: 50,
-    },
-
-    nav_bar_color: {
-    backgroundColor : '#9292FE',
-    width: '100%',
-    height: '8%',
     },
 
     containeur_fleche: {
     width: "80%",
     marginTop: 20,
     marginBottom: 10,
-    marginLeft: 30,
+    },
+
+    chefNameTitle: {
+      color: '#5959F0',
+      fontSize: 20,
+      paddingLeft: 20,
+      paddingTop: 40,
+      fontWeight: '700',
     },
 
    // Police 
@@ -197,6 +237,11 @@ txt_p_regular_small: {
   fontWeight: 'lighter',
 },
 
+txt_p_regular_small_top: {
+  color: '#5959F0',
+  fontSize: 12,
+  fontWeight: 'lighter',
+},
       // --- TOP SECTION --- 
 
       container_topSection: {
@@ -208,36 +253,44 @@ txt_p_regular_small: {
       },
 
       box1 : {
-        width : '35%',
+        width : '40%',
         borderBottomLeftRadius: 10,
         borderBottomRightRadius : 10,
-        paddingTop: 20,
+        paddingTop: 10,
+        paddingBottom: 30,
+      },
+
+      photo:{
+        width : "90%",
+        height: '80%',
+        borderRadius: '20',
       },
 
       box_description: {
         alignItems: 'flex-start',
-        marginTop: 10,
-        paddingLeft: 10
+        paddingLeft: 10,
       },
 
       box2 : {
-        width : '50%',
+        width : '55%',
         borderBottomLeftRadius: 10,
         borderBottomRightRadius : 10,
-        borderWidth: 1,
         borderRadius: '15',
         borderColor: '#5959F0',
         backgroundColor: 'rgba(146, 146, 254, 0.19)',
         alignItems: 'center',
         justifyContent: 'flex-start',
         marginBottom: 20,
+        marginTop: 10,
+        padding: 10,
       },
-
-  photo:{
-    width : "90%",
-    height: '60%',
-    borderRadius: '20',
-  },
+  
+      boxDescp: {
+        paddingBottom: 10,
+        fontSize: 12,
+        color: '#5959F0',
+        fontWeight: '600',
+      },
 
 
   // --- MIDDLE SECTION ---
@@ -245,20 +298,32 @@ txt_p_regular_small: {
   container_middleSection: {
     flexDirection: 'row',
     height:'30%',
-    width: '90%',
+    width: '100%',
     alignContent: 'center',
   },
 
   middleSection_left: {
     width: '40%',
     borderBottomLeftRadius: 10,
-        borderBottomRightRadius : 10,
-        borderWidth: 1,
-        borderRadius: '15',
-        borderColor: '#5959F0',
-        backgroundColor: 'rgba(146, 146, 254, 0.19)',
-    
+    borderBottomRightRadius : 10,
+    borderRadius: '15',
+    borderColor: '#5959F0',
+    backgroundColor: 'rgba(146, 146, 254, 0.19)',
   },
+
+  tendance: {
+    paddingLeft: 10,
+    paddingTop: 5,
+    flexDirection: 'row', 
+    alignItems: 'center',
+  },
+
+  txt_box : {
+    color: '#5959F0',
+    fontSize: 12,
+    fontWeight: 'bold',
+    paddingTop: 5,
+},
 
   middleSectionBox: {
     width : '100%',
@@ -271,14 +336,17 @@ photoDish:{
   width : "90%",
   height: '60%',
   borderRadius: 20,
-  paddingLeft: 20,
 },
 
 containeur_box_recipe: {
   height : '20%',
   flexDirection: 'row',
   flexWrap: 'wrap',
-  paddingTop: 10,
+},
+
+margin_left_recipe:{
+  margin: 5,
+  fontSize: 10,
 },
 
   box_description_recipe : {
@@ -288,15 +356,13 @@ containeur_box_recipe: {
     paddingTop: 2,
   },
   
-  margin_left_recipe:{
-    marginLeft : 5,
-  },
+  
 
-          // right seciton 
-      middleSection_right: {
-        width: '60%',
-        borderColor: '#5959F0',
-        paddingLeft: 10,
+          // right part 
+  middleSection_right: {
+    width: '55%',
+    borderColor: '#5959F0',        
+    paddingLeft: 10,
   },
 
   txt_h2 : {
@@ -305,11 +371,48 @@ containeur_box_recipe: {
     fontWeight: 'bold',
 },
 
+compliments : {
+  marginTop: 10,
+  padding: 5,
+},
+
+firstCompliment : {
+  height: 20,
+  width: '100%',
+  borderColor: '#9292FE',
+  borderRadius: 10,
+  borderWidth: 1,
+  paddingHorizontal: 10,
+  marginBottom: 20,
+  marginLeft: 15,
+  fontSize: 12,
+  textAlign: 'center',
+},
+
+secondCompliment : {
+  height: 20,
+  width: '100%',
+  borderColor: '#9292FE',
+  borderRadius: 10,
+  borderWidth: 1,
+  paddingHorizontal: 10,
+  marginBottom: 20,
+  fontSize: 12,
+  textAlign: 'center',
+},
 
 // --- BOTTOM SECTION ---
 
+bottom_boxSection: {
+  flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+},
+
 bottom_box: {
-  height:'10%',
+  width:'100%',
+  height: '70%',
+  marginTop: 20,
   backgroundColor: 'rgba(146, 146, 254, 0.19)',
   borderWidth: 0.5,
   borderColor: 'rgba(189, 189, 189, 0.00)',
@@ -320,9 +423,13 @@ bottom_box: {
   },
   shadowRadius: 4,
   shadowOpacity: 1,
-  marginTop: 10,
-  marginRight: 32,
-  marginLeft: 32,
+},
+
+commentaire: {
+  fontSize: 10,
+  margin: 5,
+  marginTop: 5,
+  paddingLeft: 10,
 },
 
 button: {
