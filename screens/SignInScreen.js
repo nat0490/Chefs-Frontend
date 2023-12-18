@@ -71,7 +71,7 @@ export default function SignInScreen() {
     .then(data => {
       console.log(data);
       if (data.result) {
-        //console.log(data);
+        console.log(data);
         setEmailInput('');
         setPasswordInput('');
         
@@ -94,9 +94,9 @@ export default function SignInScreen() {
             userPreference: data.dataUserConnexion.userProfile.chef.userPreference,
             }
           };
-        //console.log(userInfo)
+        console.log(userInfo)
         dispatch(login(userInfo));
-        navigation.navigate('HomeTabs', { screen: 'Main' }) ;
+        //navigation.navigate('HomeTabs', { screen: 'Main' }) ;
       } 
     })
     } else {

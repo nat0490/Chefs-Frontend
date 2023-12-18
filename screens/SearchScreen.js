@@ -2,11 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity , ScrollView} from 'react-native';
 import TinderCard from 'react-tinder-card';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { login } from '../reducers/user';
+import {add, remove} from '../reducers/typeCuisine';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function SearchScreen() {
+
+
+  const user = useSelector((state) => state.user.value);
+
   // Effectue une requête pour obtenir les recettes depuis le serveur au montage du composant
   useEffect(() => {
-    fetch('http://192.168.129.27:3000/recipes')
+    fetch('http://chefs-backend-amber.vercel.app/recipes')
       .then(response => response.json())
       .then(data => {
         setCards(data.recipes);
@@ -19,25 +26,41 @@ export default function SearchScreen() {
   const [accepted, setAccepted] = useState([]); // État pour stocker les cartes acceptées
 
   const onSwipe = (direction, card) => {
-    console.log(`Vous avez balayé ${direction} avec l'identifiant : ${card.namePlats}`);
+    console.log(`Vous avez balayé ${direction} avec l'identifiant : ${user.id}`);
     if (direction === 'left') {
       console.log('rejeter');
-      setRejected([...rejected, card.id]);
+      setRejected([...rejected, card._id]);
     } else if (direction === 'right') {
-      console.log('passer');
-      setAccepted([...accepted, card.id]);
-    }
-
+      fetch(`http://172.20.10.5:3000/users/profil/addRecipeWishList/${user.id}`, {
+        method: 'PUT', // ou 'POST' selon votre implémentation côté serveur
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          recipeId: card._id,
+        }),
+      }) 
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data.message);
+          // Faites ce que vous voulez avec les données ici
+        })
+        .catch(error => console.error('Erreur lors de la requête Fetch', error));
     // Charge la carte suivante
     loadNextCard();
-  };
+  }}
 
   const loadNextCard = () => {
     setCurrentCardIndex((prevIndex) => prevIndex + 1);
   };
 
   const onCardLeftScreen = (card) => {
-    console.log(`La carte avec l'identifiant ${card.namePlats} a quitté l'écran`);
+   
   };
 
   const stars = Array.from({ length: 5 }, (_, i) => (
@@ -47,7 +70,6 @@ export default function SearchScreen() {
   const currentCard = cards[currentCardIndex];
 
   return (
-<ScrollView>
       <View style={styles.container}>
         <View style={styles.nav_bar_color}></View>
         <View style={styles.container_box_width}>
@@ -96,7 +118,6 @@ export default function SearchScreen() {
           </View>
         </View>
       </View>
-    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
