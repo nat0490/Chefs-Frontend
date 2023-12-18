@@ -10,10 +10,10 @@ import { StyleSheet,
   Alert,
  } from 'react-native';
  import { useNavigation } from '@react-navigation/native';
- import React, { useEffect, useState } from 'react';
-//import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faApple, faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons'
+ import React, { useState , useEffect } from 'react';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome';
+ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+ import { faApple, faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons'
 
 
 
@@ -39,27 +39,26 @@ export default function SignInScreen() {
   const [passwordInput, setPasswordInput] = useState('');
 
 
-//REDUCER TYPE CUISINE : FETCH pour récuperer tous les type puis Dispatch pour les mettre dans le reducer
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`https://chefs-backend-amber.vercel.app/userPreference/display_preference`);
-      if (!response.ok) {
-        throw new Error(`Réponse du serveur non valide: ${response.status}`);
-      }  
-      const result = await response.json();
-      //console.log(data);
-      result.data.forEach((item) => {
-        dispatch(add({ id: item._id, typeCuisine: item.typeCuisine }));
-      });
-    } catch (error) {
-      console.error('Erreur lors du chargement des données depuis la base de données', error);
-    }
-  };
+// //REDUCER TYPE CUISINE : FETCH pour récuperer tous les type puis Dispatch pour les mettre dans le reducer
+//   const fetchData = async () => {
+//     try {
+//       const response = await fetch(`http://172.20.10.5:3000/userPreference/display_preference`);
+//       if (!response.ok) {
+//         throw new Error(`Réponse du serveur non valide: ${response.status}`);
+//       }  
+//       const result = await response.json();
+//       //console.log(data);
+//       result.data.forEach((item) => {
+//         dispatch(add({ id: item._id, typeCuisine: item.typeCuisine }));
+//       });
+//     } catch (error) {
+//       console.error('Erreur lors du chargement des données depuis la base de données', error);
+//     }
+//   };
 
-
-  useEffect(()=> {
-    fetchData();
-  },[])
+//   useEffect(()=> {
+//     fetchData();
+//   },[])
   
 
 
@@ -69,50 +68,62 @@ export default function SignInScreen() {
 
   // création signin connexion 
   const handleConnection = () => {
-    if(EMAIL_REGEX.test(emailInput)) {
-      fetch('https://chefs-backend-amber.vercel.app/users/signin', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: emailInput, password: passwordInput }),
-    }).then(response => response.json())
-    .then(data => {
-      console.log(data);
-      if (data.result) {
-        console.log(data);
-        setEmailInput('');
-        setPasswordInput('');
-        
-        const userInfo = {
-          id: data.dataUserConnexion.userProfile._id,
-          email : data.dataUserConnexion.email,
-          token : data.dataUserConnexion.token,
-          userProfile : {
-            nom : data.dataUserConnexion.userProfile.nom,
-            prenom : data.dataUserConnexion.userProfile.prenom,
-            dateOfBirth : data.dataUserConnexion.userProfile.dateOfBirth,
-            adresse : {
-              rue : data.dataUserConnexion.userProfile.adresse.rue,
-              ville : data.dataUserConnexion.userProfile.adresse.ville,
-              codePostal : data.dataUserConnexion.userProfile.adresse.codePostal,
-            },
-            tel : data.dataUserConnexion.userProfile.tel,
-            chef : data.dataUserConnexion.userProfile.chef,
-            orders: data.dataUserConnexion.userProfile.chef.orders,
-            userPreference: data.dataUserConnexion.userProfile.chef.userPreference,
-            }
-          };
-        //console.log(userInfo);
-        dispatch(login(userInfo));
-        //navigation.navigate('HomeTabs', { screen: 'Main' }) ;
-      } 
-    })
+    if (EMAIL_REGEX.test(emailInput)) {
+      fetch('http://172.20.10.5:3000/users/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailInput, password: passwordInput }),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data);
+          if (data.result) {
+            console.log(data);
+            setEmailInput('');
+            setPasswordInput('');
+  
+            const userInfo = {
+              id: data.dataUserConnexion.userProfile._id,
+              email: data.dataUserConnexion.email,
+              token: data.dataUserConnexion.token,
+              userProfile: {
+                nom: data.dataUserConnexion.userProfile.nom,
+                prenom: data.dataUserConnexion.userProfile.prenom,
+                dateOfBirth: data.dataUserConnexion.userProfile.dateOfBirth,
+                adresse: {
+                  rue: data.dataUserConnexion.userProfile.adresse.rue,
+                  ville: data.dataUserConnexion.userProfile.adresse.ville,
+                  codePostal: data.dataUserConnexion.userProfile.adresse.codePostal,
+                },
+                tel: data.dataUserConnexion.userProfile.tel,
+                chef: data.dataUserConnexion.userProfile.chef,
+                orders: data.dataUserConnexion.userProfile.chef.orders,
+                userPreference: data.dataUserConnexion.userProfile.chef.userPreference,
+              },
+            };
+            // console.log(userInfo);
+            dispatch(login(userInfo));
+            // navigation.navigate('HomeTabs', { screen: 'Main' }) ;
+          } else {
+            console.log('Erreur côté serveur:', data.message);
+            // Gérer le cas où data.result n'est pas vrai
+            Alert.alert('Erreur', data.message || 'Erreur côté serveur');
+          }
+        })
+        .catch(error => {
+          console.error('Error during fetch:', error);
+          // Gérer l'erreur ici, par exemple, afficher une alerte à l'utilisateur
+          Alert.alert('Erreur', 'Une erreur est survenue lors de la connexion');
+        });
     } else {
-      Alert.alert(
-        'Erreur',
-        'Votre email n\'est pas validde'
-      )
+      Alert.alert('Erreur', 'Votre email n\'est pas valide');
     }
-  }
+  };
   //console.log(reducerUser);
 
   return (

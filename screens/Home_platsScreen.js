@@ -1,10 +1,44 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View , Image , TouchableOpacity} from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import React from 'react';
+import React, { useEffect,useState } from 'react';
+import { useRoute } from '@react-navigation/native';
 
 export default function OrderScreen() {
 
+
+  // Utilisation de useRoute pour accéder aux paramètres de navigation
+  const route = useRoute();
+  const platId = route.params?.platId;
+  const [platData , setPlatData] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://172.20.10.5:3000/recipes/${platId}`);
+        const data = await response.json();
+  
+
+          const chefResponse = await fetch(`http://172.20.10.5:3000/users/chef/${data.recipe.userChef}`);
+          const chefData = await chefResponse.json();
+  
+          const profilResponse = await fetch(`http://172.20.10.5:3000/users/profil/${chefData.data.userProfil._id}`);
+          const profilData = await profilResponse.json();
+
+          //dataAjouter le nom du chef à l'objet
+          data.recipe.nomDuChef = profilData.data.nom;
+
+  
+        // Met à jour le state avec le tableau de recettes modifié
+        setPlatData(data);
+      } catch (error) {
+        console.error("Erreur lors du traitement des données :", error);
+      }
+    };
+  
+    fetchData();
+  },[] );
+  
   const stars = [];
   for (let i = 0; i < 5; i++) {
     // let style = {};
@@ -22,20 +56,22 @@ export default function OrderScreen() {
     // }
     Note_user.push(<FontAwesome key={i} name='star' size={10}/>);
   }
+
+  
   return (
       <View style={styles.container}>
             <View style={styles.nav_bar_color}></View>
         <View style={styles.container_box_width}>
-             <Text style={[styles.txt_h2, styles.marginTop]}>Nom du Plats</Text>
-             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
+        <Text style={[styles.txt_h2, styles.marginTop]}>{console.log(platData.recipe.nomDuChef)}</Text>
+             {/* <Image source={{ uri: platData.image }} style={styles.photo} /> */}
               <View style={styles.container_description_recette}>
                 <View style={{flexDirection : 'row', justifyContent: 'space-between' , width: '100%'}}>
                       <View style={styles.box_description }>
-                          <Image source={require('../assets/img_plats_categories.png')} style={styles.photo_preferences} />
-                          <Text>Italien</Text>
+                         <Image source={{ uri: platData.image }} style={styles.photo} />
+                         <Text>{platData.type}</Text>
                       </View>     
                       <View style={styles.box_description }>
-                        <Text>Chef Roberto</Text>
+                        <Text>Chef {platData.nomDuChef}</Text>
                       </View>
                 </View>
                 <View style={{flexDirection : 'row' , marginTop : 20}}>

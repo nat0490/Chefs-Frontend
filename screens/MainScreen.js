@@ -4,8 +4,7 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-
-import { faBowlFood, faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import { faBowlFood } from '@fortawesome/free-solid-svg-icons'
 
 const foodIcon = require('../assets/user.png');
 
@@ -19,12 +18,8 @@ export default function MainScreen() {
 // const [selectedChefRecipes, setSelectedChefRecipes] = useState([]);
 
 
-//ATTENTION!! 
-//MODIF FAITE SUR LES USEEFFECT AFIN DEVITER LES MSG DERREURS
-//VERSION PRECEDENTE LAISSE EN COMMENTAIRE
 
 
-/*
 useEffect(() => {
   (async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -35,24 +30,6 @@ useEffect(() => {
 
     let currentLocation = await Location.getCurrentPositionAsync({});
     setLocation(currentLocation);
-  })();
-}, []);*/
-
-//V2 pour enlever les message d'erreur à l'arrivé sur la page (rajout du catch)
-useEffect(() => {
-  (async () => {
-    try {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.error('Permission to access location was denied');
-        return;
-      }
-
-      let currentLocation = await Location.getCurrentPositionAsync({});
-      setLocation(currentLocation);
-    } catch (error) {
-      console.error('Error in location request:', error);
-    }
   })();
 }, []);
 
@@ -79,9 +56,9 @@ useEffect(() => {
 
 
 // Hook useEffect pour charger les adresses des chefs au chargement initial de la page
-/*useEffect(() => {
+useEffect(() => {
   const fetchChefAddresses = async () => {
-    const response = await fetch('http://192.168.1.58:3000/users/chef/userchefs/addresses', {
+    const response = await fetch('http://chefs-backend-amber.vercel.app:3000/users/chef/userchefs/addresses', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -93,30 +70,6 @@ useEffect(() => {
    
 
     setChefAddresses(filteredAddresses);
-  };
-
-  fetchChefAddresses();
-}, []);*/
-
-
-//V2 POUR ENLEVER LES MESSAGE DERREUR A LARRIVE SUR LA PAGE (rajout du catch) + modif adresse (mis celle de vercel)
-
-useEffect(() => {
-  const fetchChefAddresses = async () => {
-    try {
-      const response = await fetch('https://chefs-backend-amber.vercel.app/users/chef/userchefs/addresses', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      const data = await response.json();
-
-      // Filtrer les adresses sans coordonnées
-      const filteredAddresses = data.filter(address => address.coordinates.latitude && address.coordinates.longitude);
-
-      setChefAddresses(filteredAddresses);
-    } catch (error) {
-      console.error('Error fetching chef addresses:', error);
-    }
   };
 
   fetchChefAddresses();
@@ -193,11 +146,9 @@ useEffect(() => {
         </View>
 
 {/*NE PAS EFFACER! MERCI!! Acces à la page setting!! */}
-      <View style={styles.accesSetting}> 
-        <TouchableOpacity onPress={()=> navigation.navigate('Setting')} style={styles.btnSettingAcces}>
-            <FontAwesomeIcon icon={faCircleUser} style={{color: "#5959f0",}} size={50} />
+        <TouchableOpacity onPress={()=> navigation.navigate('Setting')} style={styles.btn_sign_up}>
+            <Text style={styles.buttonText_sign_up}>SETTING SCREEN</Text>
         </TouchableOpacity>
-      </View>
 
         <View style={styles.btnContainer}>
           <TouchableOpacity activeOpacity={0.8} style={styles.Réserve}>
@@ -272,7 +223,6 @@ const styles = StyleSheet.create({
     width: '50%',
     alignSelf: 'center',
     bottom: 20,
-
   },
   Réserve: {
     paddingVertical: 10,
@@ -334,19 +284,21 @@ const styles = StyleSheet.create({
     fontSize: 8,
   },
 //A EFFACER QUAND LA NAVIGATION VERS SETTING PAGE SERA FAITE
+btn_sign_up : {
+  paddingVertical: 10, // 10 units of padding at the top and bottom
+  paddingHorizontal: 25, // A
+  borderRadius: 5,
+  borderWidth: 2,
+  borderColor: '#9292FE',
+  backgroundColor: '#fff',
+  marginTop: 10,
 
+},
 buttonText_sign_up: {
   fontSize : 15,
   color : '#9292FE',
   textAlign: 'center',
 },
-btnSettingAcces: {
-  padding: 10,
-  //backgroundColor: '#fff',
-  },
-accesSetting: {
- maxWidth: '15%'
-  }
 /////////////
 
 
