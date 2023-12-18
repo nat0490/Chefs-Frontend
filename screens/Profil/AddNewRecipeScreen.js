@@ -174,7 +174,7 @@ const showTimePicker = () => {
   const titreMenuTypeCuisine = () => {
     if (value || isFocusT) {
       return (
-        <Text style={[styles.label, isFocusT && { color: '#9292FE' , fontWeight: 'blod', fontSize: 20}]}>
+        <Text style={[styles.label, isFocusT && { color: '#9292FE' , fontWeight: 'bold', fontSize: 20}]}>
           Type de cuisine:
         </Text>
       );
@@ -207,7 +207,7 @@ newlisteType.sort((a, b) => {
 const titreMenuUstensils = () => {
     if ( ustensils || isFocusU) {
       return (
-        <Text style={[styles.label, isFocusU && { color: '#9292FE' , fontWeight: 'blod', fontSize: 20}]}>
+        <Text style={[styles.label, isFocusU && { color: '#9292FE' , fontWeight: 'bold', fontSize: 20}]}>
           Ustensils:
         </Text>
       );
@@ -255,7 +255,7 @@ const afficheUstensils= ustensilsList.map( (oneUstensil, i) => {
 
 //Envoyer les INFO A LA BDD
 const creationRecette = () => {
-  console.log('creation de recette');
+  //console.log('creation de recette');
 //Mettre ustensils aux bons format pour envoyer dans la BDD
   const allUstensils = [];
     ustensilsList.map(e => allUstensils.push(e.value));
@@ -275,8 +275,9 @@ const creationRecette = () => {
         ustensils:allUstensils,
         ingredients: allIngredients,
     }
-    console.log(userChef);
+    //console.log(userChef.id);
 //Poster la recette
+
   fetch(`https://chefs-backend-amber.vercel.app/recipes/newrecipesV2/${userChef.id}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json'},
@@ -284,7 +285,7 @@ const creationRecette = () => {
   })
   .then(res => res.json())
   .then(data => {
-    console.log(data);
+    //console.log(data);
     if (data) {
       setTitle("");
       setImageDish("");
@@ -298,10 +299,10 @@ const creationRecette = () => {
       setIngredientQty("");
       setIngredientUnit("");
       setRecapIngredient(""); 
-      setRecetteValide(!recetteValide);
+      setRecetteValide(!recetteValide); 
     } else {
       console.log('error');
-    }
+    } 
   })
 };
 
@@ -755,7 +756,7 @@ listeUstensils: {
     marginBottom: 10,
   },
 ustensilName: {
-    fontWeight: '600',
+  fontWeight: 'bold',
     fontSize: 16,
     color: '#9292FE',
   },

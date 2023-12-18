@@ -33,6 +33,7 @@ export default function EditProfilScreen() {
 
 //REDUCER RECUPERER EST POUSSER DANS LE HOOK DETAT USER
   const user = useSelector((state) => state.user.value);
+ //console.log(user);
 
   /*
   //console.log(reducerUser);
@@ -279,7 +280,7 @@ export default function EditProfilScreen() {
       </>
   ) : <Text>Oops... Il y a eu un petit problème on dirais</Text> ;
 
-
+  
 //PROFIL USER POUVANT MODIFIER CES INFOS => NAVIGATION ENTRE INFOPROFIL, MODIFIER ADRESSE et MODIFIER EMAIL/PW 
   const profil = user ? (
     <View style={styles.container}> 
@@ -509,7 +510,7 @@ topPage: {
 },
 btnTextBack: {
   fontSize : 30,
-  fontWeight: 300,
+  fontWeight: 'bold',
   color : '#9292FE'
 },
 });
