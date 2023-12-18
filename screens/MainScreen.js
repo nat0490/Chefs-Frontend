@@ -15,30 +15,57 @@ export default function MainScreen() {
   
   const [location, setLocation] = useState(null);
   const [chefAddresses, setChefAddresses] = useState([]);
+  const [ allRecipe, setAllRecipe ] = useState([]);
 //   //  état pour stocker les recettes du chef sélectionné
 // const [selectedChefRecipes, setSelectedChefRecipes] = useState([]);
 
+//console.log(allRecipe)
 
-//ATTENTION!! 
-//MODIF FAITE SUR LES USEEFFECT AFIN DEVITER LES MSG DERREURS
-//VERSION PRECEDENTE LAISSE EN COMMENTAIRE
+//CONSTANTE CHARGER LES ADRESSES
+const fetchChefAddresses = async () => {
+  try {
+    const response = await fetch('https://chefs-backend-amber.vercel.app/users/chef/userchefs/addresses', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response.json();
+    // Filtrer les adresses sans coordonnées
+    const filteredAddresses = data.filter(address => address.coordinates.latitude && address.coordinates.longitude);
+    setChefAddresses(filteredAddresses);
+  } catch (error) {
+    console.error('Error fetching chef addresses:', error);
+  }
+};
 
-
-/*
-useEffect(() => {
-  (async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      console.error('Permission to access location was denied');
-      return;
+//RECUPERER TOUTES LES RECETTES
+const fetchAllRecipe = async () => {
+  try {
+    const response = await fetch(`https://chefs-backend-amber.vercel.app/recipes`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response.json();
+    //console.log(data);
+    if (data.result) {
+      setAllRecipe(data.recipes);
+      console.log("recettes chargées et mise dans le hook d'état: allRecipe")
+    } else {
+      console.log('error lors de la receptions des données')
     }
+  } catch (error) {
+    console.log('Error fetching All Recipe:', error);
+  }
+}
 
-    let currentLocation = await Location.getCurrentPositionAsync({});
-    setLocation(currentLocation);
-  })();
-}, []);*/
+const voirLesDetails = (menu) => {
+  navigation.navigate('Dish', menu);
+};
 
-//V2 pour enlever les message d'erreur à l'arrivé sur la page (rajout du catch)
+
+
+
+
+//AU CHARGEMENT DE LA PAGE: DEMANDE DE POSITION, FETCHCHEFADRESSE, FETCHALLRECIPE
 useEffect(() => {
   (async () => {
     try {
@@ -47,109 +74,31 @@ useEffect(() => {
         console.error('Permission to access location was denied');
         return;
       }
-
       let currentLocation = await Location.getCurrentPositionAsync({});
       setLocation(currentLocation);
     } catch (error) {
       console.error('Error in location request:', error);
     }
   })();
+  fetchChefAddresses();
+  fetchAllRecipe();
 }, []);
 
+//AFFICHAGE DES RECETTES :
+const recipes = allRecipe ? allRecipe.map((dish, i) => {
+  //console.log(dish);
 
-// // // Fonction pour récupérer les recettes du chef sélectionné
-// // const fetchSelectedChefRecipes = async (chefId) => {
-// //   try {
-// //     // Récupérer les recettes du chef via une requête HTTP
-// //     const response = await fetch(`http://192.168.1.58:3000/users/chef/${chefId}/recipes`, {
-// //       method: 'GET',
-// //       headers: { 'Content-Type': 'application/json' },
-// //     });
-// //     if (!response.ok) {
-// //       throw new Error(`HTTP error! Status: ${response.status}`);
-// //     }
-// //     const data = await response.json();
-// //     // Mettre à jour l'état des recettes du chef sélectionné
-// //     setSelectedChefRecipes(data.recipes);
-// //   } catch (error) {
-// //     console.error('Erreur lors de la récupération des recettes du chef :', error);
-// //   }
-// };
+  return  <TouchableOpacity activeOpacity={1} style={styles.box} key={i} onPress={()=> voirLesDetails(dish)}>
+            <Image source={{uri: dish.image}} style={styles.photo} />
+            <Text style={styles.margin_rigth}>{dish.title}</Text>
+            <View style={styles.box_description }>
+              <FontAwesomeIcon icon={faBowlFood}/>
+              <Text >  {dish.type}</Text>
+            </View>
+          </TouchableOpacity>
+}) : "";
 
 
-
-// Hook useEffect pour charger les adresses des chefs au chargement initial de la page
-/*useEffect(() => {
-  const fetchChefAddresses = async () => {
-    const response = await fetch('http://192.168.1.58:3000/users/chef/userchefs/addresses', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const data = await response.json();
-
-    // Filtrer les adresses sans coordonnées
-    const filteredAddresses = data.filter(address => address.coordinates.latitude && address.coordinates.longitude);
-
-   
-
-    setChefAddresses(filteredAddresses);
-  };
-
-  fetchChefAddresses();
-}, []);*/
-
-
-//V2 POUR ENLEVER LES MESSAGE DERREUR A LARRIVE SUR LA PAGE (rajout du catch) + modif adresse (mis celle de vercel)
-
-useEffect(() => {
-  const fetchChefAddresses = async () => {
-    try {
-      const response = await fetch('https://chefs-backend-amber.vercel.app/users/chef/userchefs/addresses', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      const data = await response.json();
-
-      // Filtrer les adresses sans coordonnées
-      const filteredAddresses = data.filter(address => address.coordinates.latitude && address.coordinates.longitude);
-
-      setChefAddresses(filteredAddresses);
-    } catch (error) {
-      console.error('Error fetching chef addresses:', error);
-    }
-  };
-
-  fetchChefAddresses();
-}, []);
-
-
-
-
-// // Fonction pour gérer le clic sur un marqueur de chef
-// const handleChefMarkerPress = (chefId) => {
-//   fetchSelectedChefRecipes(chefId);
-// };
-
-
-     {/* <View style={styles.container_box_width}>
-          <ScrollView contentContainerStyle={styles.containeur_box}>
-           {selectedChefRecipes.map((recipe, index) => (
-            <TouchableOpacity key={index} activeOpacity={1} style={styles.box}>
-            <Image source={{ uri: recipe.image }} style={styles.photo} />
-            <Text style={styles.margin_rigth}>{recipe.title}</Text>
-            <View style={styles.box_description}>
-            <FontAwesomeIcon icon={faBowlFood} />
-            <Text> {recipe.type}</Text>
-           </View>
-           </TouchableOpacity>
-           ))}
-         </ScrollView>
-       </View>
-           */}
-
-           // onPress={() => handleChefMarkerPress(address.chefId)} // Appel de la fonction pour récupérer les recettes du chef au clic
-
-  
 
  return (
     <View style={styles.container}>
@@ -192,7 +141,7 @@ useEffect(() => {
           </MapView>
         </View>
 
-{/*NE PAS EFFACER! MERCI!! Acces à la page setting!! */}
+{/*ACCES PAGE SETTING*/}
       <View style={styles.accesSetting}> 
         <TouchableOpacity onPress={()=> navigation.navigate('Setting')} style={styles.btnSettingAcces}>
             <FontAwesomeIcon icon={faCircleUser} style={{color: "#5959f0",}} size={50} />
@@ -206,42 +155,11 @@ useEffect(() => {
         </View>
         <View style={styles.container_box_width}>
         <View style={styles.containeur_box}>
-          <TouchableOpacity activeOpacity={1} style={styles.box}>
-            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
-              <Text style={styles.margin_rigth}>Nouille</Text>
-              <View style={styles.box_description }>
-              <FontAwesomeIcon icon={faBowlFood}/>
-                <Text >  Italien</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1} style={styles.box}>
-            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
-              <Text style={styles.margin_rigth}>Pasta</Text>
-              <View style={styles.box_description }>
-              <FontAwesomeIcon icon={faBowlFood}/>
-                <Text>  Italien</Text>
-              </View>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1} style={styles.box}>
-              <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
-              <Text style={styles.margin_rigth}>Pizza</Text>
-                <View style={styles.box_description }>
-                <FontAwesomeIcon icon={faBowlFood}/>
-                  <Text >  Italien</Text>
-                </View>
-          </TouchableOpacity>
+
+        {recipes}
+
         </View>
         </View>
-          
-
-          
-
-
-
-
-      
-
-
       </ScrollView>
     </View>
   );
@@ -268,10 +186,11 @@ const styles = StyleSheet.create({
     height: 500,
   },
   btnContainer: {
-    marginVertical: 20,
+    marginVertical: 10,
     width: '50%',
     alignSelf: 'center',
-    bottom: 20,
+    //height: 80,
+    //bottom: 20,
 
   },
   Réserve: {
@@ -288,11 +207,10 @@ const styles = StyleSheet.create({
 
   container_box_width: {
     width: '80%',
-    alignSelf: 'center', // Centre horizontalement
-    
+    alignSelf: 'center', 
     flex: 1,
     alignItems: 'center', // Centre verticalement
-    marginBottom: 20, // Ajoute un espacement en bas
+    marginBottom: 20, 
     justifyContent : 'space-around',
   },
 
@@ -301,8 +219,8 @@ const styles = StyleSheet.create({
     height: 100
   },
   containeur_box: {
-      height : 160,
-      marginTop : 10,
+     // height : 160,
+      //marginTop : 10,
       flexDirection: 'row',
       width: '100%',
       justifyContent : 'space-around',
@@ -312,6 +230,7 @@ const styles = StyleSheet.create({
     width : 100,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius : 10,
+    marginBottom: 10,
     borderWidth: 2,
     borderColor: '#5959F0',
     justifyContent : 'space-between',
@@ -341,11 +260,17 @@ buttonText_sign_up: {
   textAlign: 'center',
 },
 btnSettingAcces: {
-  padding: 10,
+  padding: 5,
   //backgroundColor: '#fff',
   },
 accesSetting: {
- maxWidth: '15%'
+ maxWidth: '15%',
+ position: 'absolute',
+ borderRadius: 50,
+ backgroundColor: '#fff',
+ maxWidth: '100%',
+ marginTop: 5,
+ marginLeft: 5,
   }
 /////////////
 

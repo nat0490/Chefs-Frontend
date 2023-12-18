@@ -55,6 +55,7 @@ import user from './reducers/user';
 import typeCuisine from './reducers/typeCuisine';
 import ustensil from './reducers/ustensils';
 import chef from './reducers/chef';
+import infoPourCommande from './reducers/infoPourCommande';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
@@ -89,7 +90,7 @@ const HomeTabs = () => (
 );
 
 const store = configureStore({
-  reducer: { user, typeCuisine, ustensil, chef },
+  reducer: { user, typeCuisine, ustensil, chef, infoPourCommande },
 })
 
 
@@ -115,6 +116,7 @@ export default function App() {
           <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
           <Stack.Screen name="AddNewRecipe" component={AddNewRecipeScreen} />
           <Stack.Screen name="BookDate" component={BookDateScreen} />
+          <Stack.Screen name="Dish" component={DishScreen} />
           <Stack.Screen name="OrderDetails" component={OrderScreen} />
         </Stack.Navigator>
       </NavigationContainer>

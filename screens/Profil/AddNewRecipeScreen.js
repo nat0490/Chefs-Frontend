@@ -13,13 +13,9 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUstensiles, addUstensilesV2, removeUstensils } from '../../reducers/ustensils';
 import { loginChef, logoutChef } from '../../reducers/chef';
-import ustensil from '../../reducers/ustensils';
-//import CustomDropdown from './chemin/vers/CustomDropdown';
 import ScrollPicker from "react-native-wheel-scrollview-picker";
 
 import { useEffect } from 'react';
-
-
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 

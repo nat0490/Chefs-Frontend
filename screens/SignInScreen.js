@@ -41,13 +41,16 @@ export default function SignInScreen() {
 
 //REDUCER TYPE CUISINE : FETCH pour récuperer tous les type puis Dispatch pour les mettre dans le reducer
   const fetchData = async () => {
+   
     try {
+      //console.log('recuperer type de cuisine');
       const response = await fetch(`https://chefs-backend-amber.vercel.app/userPreference/display_preference`);
+      //console.log(response);
       if (!response.ok) {
         throw new Error(`Réponse du serveur non valide: ${response.status}`);
       }  
       const result = await response.json();
-      //console.log(data);
+      //console.log(result);
       result.data.forEach((item) => {
         dispatch(add({ id: item._id, typeCuisine: item.typeCuisine }));
       });
@@ -55,8 +58,6 @@ export default function SignInScreen() {
       console.error('Erreur lors du chargement des données depuis la base de données', error);
     }
   };
-
-
   useEffect(()=> {
     fetchData();
   },[])
@@ -69,16 +70,18 @@ export default function SignInScreen() {
 
   // création signin connexion 
   const handleConnection = () => {
+    //console.log('handle connection');
     if(EMAIL_REGEX.test(emailInput)) {
       fetch('https://chefs-backend-amber.vercel.app/users/signin', {
+      //fetch('http://192.168.1.106:3000/users/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: emailInput, password: passwordInput }),
     }).then(response => response.json())
     .then(data => {
-      console.log(data);
+      //console.log(data);
       if (data.result) {
-        console.log(data);
+        //console.log(data);
         setEmailInput('');
         setPasswordInput('');
         
@@ -101,18 +104,18 @@ export default function SignInScreen() {
             userPreference: data.dataUserConnexion.userProfile.chef.userPreference,
             }
           };
-        //console.log(userInfo);
+        console.log(userInfo);
         dispatch(login(userInfo));
-        //navigation.navigate('HomeTabs', { screen: 'Main' }) ;
+        navigation.navigate('HomeTabs', { screen: 'Main' }) ;
       } 
-    })
-    } else {
-      Alert.alert(
-        'Erreur',
-        'Votre email n\'est pas validde'
-      )
-    }
+    }) .catch(error => {
+      console.error('Error during signin:', error);
+      Alert.alert('Erreur', 'Une erreur s\'est produite lors de la connexion.');
+    });
+  } else {
+  Alert.alert('Erreur', 'Votre email n\'est pas valide');
   }
+}
   //console.log(reducerUser);
 
   return (
@@ -164,7 +167,7 @@ export default function SignInScreen() {
                   <Text style={styles.buttonText_sign_in}> Mot de passe oublié ?</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
-                  onPress={() => {handleConnection();
+                  onPress={() => {handleConnection()
                   //navigation.navigate('Preference');
                   }}
                   style={styles.btn_sign_up}>
