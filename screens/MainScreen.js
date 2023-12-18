@@ -4,8 +4,7 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-
-import { faBowlFood, faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import { faBowlFood } from '@fortawesome/free-solid-svg-icons'
 
 const foodIcon = require('../assets/user.png');
 
@@ -253,7 +252,16 @@ const styles = StyleSheet.create({
     fontSize: 8,
   },
 //A EFFACER QUAND LA NAVIGATION VERS SETTING PAGE SERA FAITE
+btn_sign_up : {
+  paddingVertical: 10, // 10 units of padding at the top and bottom
+  paddingHorizontal: 25, // A
+  borderRadius: 5,
+  borderWidth: 2,
+  borderColor: '#9292FE',
+  backgroundColor: '#fff',
+  marginTop: 10,
 
+},
 buttonText_sign_up: {
   fontSize : 15,
   color : '#9292FE',

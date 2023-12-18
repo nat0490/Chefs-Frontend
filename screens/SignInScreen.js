@@ -10,10 +10,10 @@ import { StyleSheet,
   Alert,
  } from 'react-native';
  import { useNavigation } from '@react-navigation/native';
- import React, { useEffect, useState } from 'react';
-//import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faApple, faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons'
+ import React, { useState , useEffect } from 'react';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome';
+ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+ import { faApple, faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons'
 
 
 

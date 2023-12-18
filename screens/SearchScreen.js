@@ -11,12 +11,36 @@ export default function SearchScreen() {
 
   const user = useSelector((state) => state.user.value);
 
+  // Il faut faire un fetch pour verifier si l'id de la recette est déja dans notre witchList
+
   // Effectue une requête pour obtenir les recettes depuis le serveur au montage du composant
   useEffect(() => {
-    fetch('http://chefs-backend-amber.vercel.app/recipes')
+    fetch('http://172.20.10.5:3000/recipes') // je recupere toutes les recette
       .then(response => response.json())
       .then(data => {
-        setCards(data.recipes);
+        // Utilisation de Promise.all pour attendre toutes les requêtes a fin de pouvoir mettre  a jour les élément 
+        Promise.all(data.recipes.map((valeur) => {
+          //
+          return fetch(`http://172.20.10.5:3000/users/chef/${valeur.userChef}`) // je recupere le profils de l'user pour avoir sont id et chercher sont nom
+            .then(response => response.json())
+            .then(data1 => {
+              return fetch(`http://172.20.10.5:3000/users/profil/${data1.data.userProfil._id}`)// je recupre le profils user avec le nom et prenom du chef
+                .then(response => response.json())
+                .then(data3 => {
+                  // Retourne l'objet modifié
+                  return {
+                    ...valeur,
+                    nomDuChef: data3.data.nom
+                  };
+                });
+            });
+        }))
+        .then(modifiedRecipes => {
+          // Met à jour le state avec le nouveau tableau de recettes modifié
+          setCards(modifiedRecipes);
+          console.log(modifiedRecipes);
+        });
+        
       });
   }, []);
 
@@ -30,8 +54,9 @@ export default function SearchScreen() {
     if (direction === 'left') {
       console.log('rejeter');
       setRejected([...rejected, card._id]);
+      loadNextCard();
     } else if (direction === 'right') {
-      fetch(`http://chefs-backend-amber.vercel.app/users/profil/addRecipeWishList/${user.id}`, {
+      fetch(`http://172.20.10.5:3000/users/profil/addRecipeWishList/${user.id}`, {
         method: 'PUT', // ou 'POST' selon votre implémentation côté serveur
         headers: {
           'Content-Type': 'application/json',
@@ -59,9 +84,6 @@ export default function SearchScreen() {
     setCurrentCardIndex((prevIndex) => prevIndex + 1);
   };
 
-  const onCardLeftScreen = (card) => {
-   
-  };
 
   const stars = Array.from({ length: 5 }, (_, i) => (
     <FontAwesome key={i} name="star" size={8} />
@@ -78,7 +100,6 @@ export default function SearchScreen() {
             <TinderCard
               key={currentCardIndex}
               onSwipe={(dir) => onSwipe(dir, currentCard)}
-              onCardLeftScreen={() => onCardLeftScreen(currentCard)}
               nestedScrollEnabled={false}  // Désact
             >
               <View style={{ width: '100%' }}>
@@ -87,7 +108,7 @@ export default function SearchScreen() {
                 <View style={styles.container_description_recette}>
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
                     <View style={styles.box_description}>
-                      <Text>{currentCard.type}</Text>
+                      <Text>{currentCard.nomDuChef}</Text>
                     </View>
                     <View style={styles.box_description}>
                       <Text>{currentCard.title}</Text>

@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image , TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 //import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -13,8 +13,9 @@ import { faBowlFood } from '@fortawesome/free-solid-svg-icons'
 
 export default function App() {
 
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [platsData , setPlatsData] = useState([])
 
   const stars = [];
 
@@ -26,22 +27,39 @@ export default function App() {
     //stars.push(<FontAwesome key={i} name='star' size={8}/>);
   }
 
- const handlePressPlats = () =>{
-  navigation.navigate('HomePlat')
- }
+  const handlePressPlats = (id) => {
+    navigation.navigate('HomePlat', { platId: id });
+  }
  const handlePressChefs = () =>{
   navigation.navigate('HomeChefs')
  }
 
+
+ useEffect(() => {
+  fetch('http://172.20.10.5:3000/recipes')
+    .then(response => response.json())
+    .then(data => {
+      setPlatsData([...data.recipes]);
+    });
+}, []);
+
+const diplayPlats = platsData.slice( 0 , 3 ).map((data , i) => (
+  <TouchableOpacity key={i} onPress={() => handlePressPlats(data._id)}  activeOpacity={1} style={styles.box}>
+    <Image source={{ uri: data.image }} style={styles.photo} />
+    <Text style={styles.margin_right}>{data.title}</Text>
+    <View style={styles.box_description}>
+      <FontAwesomeIcon icon={faBowlFood}/>
+      <Text>{data.type}</Text>
+    </View>
+  </TouchableOpacity>
+));
 
  return (
     <View style={styles.container}>
           {/* Barre de navigation colorée */}
       <View style={styles.nav_bar_color}></View>
 
-      {/* Logo */}
-     
-      
+      {/* Logo */}     
       <Image source={require('../assets/logo.png')} style={styles.photo_logo} />
 
       {/* Section avec titre et barre en dessous */}
@@ -71,30 +89,7 @@ export default function App() {
 
         {/* Conteneur des boîtes de recettes */}
         <View style={styles.containeur_box}>
-          <TouchableOpacity onPress={handlePressPlats} activeOpacity={1} style={styles.box}>
-            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
-              <Text style={styles.margin_rigth}>Pizza</Text>
-              <View style={styles.box_description }>
-              <FontAwesomeIcon icon={faBowlFood}/>
-                <Text >  Italien</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1} style={styles.box}>
-            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
-              <Text style={styles.margin_rigth}>Pizza</Text>
-              <View style={styles.box_description }>
-              <FontAwesomeIcon icon={faBowlFood}/>
-                <Text>  Italien</Text>
-              </View>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1} style={styles.box}>
-            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
-              <Text style={styles.margin_rigth}>Pizza</Text>
-                <View style={styles.box_description }>
-                <FontAwesomeIcon icon={faBowlFood}/>
-                  <Text >  Italien</Text>
-                </View>
-          </TouchableOpacity>
+          {diplayPlats}
         </View>
       </View>
 
@@ -171,7 +166,7 @@ export default function App() {
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('CheckProfile')}>
             <Text style={styles.buttonText_sign_up}>CheckProfile</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Main')}>
+          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Search')}>
               <Text style={styles.buttonText_sign_up}>navigation</Text>
           {/* </TouchableOpacity> */}
           </TouchableOpacity>
