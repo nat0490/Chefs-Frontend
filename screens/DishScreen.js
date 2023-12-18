@@ -20,7 +20,7 @@ export default function DishScreen({route}) {
   //const favoriteRecipes = useSelector((state) => state.favorites.value);
 
   //A QUEL MOMENT FAIT-ON LE FETCH POUR RECUPERER LES DONNES?
-  const { userChef, title, image, time, rating, Feedback, type, notes, prix, ustensils, ingredients} = route.params;
+ const { userChef, title, image, time, rating, Feedback, type, notes, prix, ustensils, ingredients} = route.params;
 
   const [nbPeople, setNbPeople] = useState(1);
   //FAVORITE?
@@ -151,7 +151,7 @@ return (
 
 {/* MODIFIER PAR LA PAGE DU CHEF */}
           <TouchableOpacity onPress={()=> navigation.navigate('Sign_up')}>
-            <Text>{userChef}</Text>
+            <Text>{userChef}</Text> 
           </TouchableOpacity>
         </View>
 

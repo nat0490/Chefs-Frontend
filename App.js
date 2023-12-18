@@ -98,6 +98,8 @@ export default function App() {
           <Stack.Screen name="HomeChefs" component={HomeChefScreen} />
           <Stack.Screen name="Terms" component={TermsScreen}/>
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />
+          <Stack.Screen name="Dish" component={DishScreen} />
+           <Stack.Screen name="Search" component={SearchScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
