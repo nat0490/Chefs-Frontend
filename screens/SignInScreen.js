@@ -58,7 +58,7 @@ export default function SignInScreen() {
   // création signin connexion 
   const handleConnection = () => {
     if(EMAIL_REGEX.test(emailInput)) {
-      fetch('http://172.20.10.5:3000/users/signin', {
+      fetch('http://192.168.0.127:3000/users/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: emailInput, password: passwordInput }),
@@ -111,7 +111,7 @@ export default function SignInScreen() {
           <View> 
             {/* Saisie titre */}
             <Text style={{ ...styles.txt_h1, marginLeft: 10 }}>Salut toi !</Text>
-            <Text style={{ ...styles.txt_h1_2, marginLeft: 20 }}>Prêt a passer a la casserole ?</Text>
+            <Text style={{ ...styles.txt_h1_2, marginLeft: 20 }}>Prêt à passer a la casserole ?</Text>
             <StatusBar style="auto" />
           </View>
 
@@ -181,14 +181,14 @@ export default function SignInScreen() {
                 <TouchableOpacity
                 activeOpacity={1}
                 style={styles.btn_sign_in}
-                // ajouter onPress redirection page
+                onPress={() => navigation.navigate('Terms')}
                 >
                   <Text style={styles.buttonText_sign_in}>Termes & conditions</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                 activeOpacity={1}
                 style={styles.btn_sign_up} 
-                // ajouter onPress redirection page  
+                onPress={() => navigation.navigate('Sign_up')}
                 >
                   <Text style={styles.buttonText_sign_up}>Créer un compte</Text>
                 </TouchableOpacity>
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
       textShadowRadius: 4,
       fontFamily: 'Inter',
       fontStyle: 'normal',
-      fontweight: 600,
+      fontWeight: 'bold',
       letterspacing: -1.5,
 },
 
