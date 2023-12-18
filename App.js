@@ -83,7 +83,7 @@ const HomeTabs = () => (
   })}>
     
     <Tab.Screen name="Main" component={MainScreen} />
-    <Tab.Screen name="Search" component={SearchScreen} />
+    {/* <Tab.Screen name="Search" component={SearchScreen} /> */}
     <Tab.Screen name="Wishlist" component={WishlistScreen} /> 
   </Tab.Navigator>
 );
@@ -109,6 +109,7 @@ export default function App() {
           <Stack.Screen name="Preference" component={PreferencesScreen} />
           <Stack.Screen name="HomePlat" component={HomePlatScreen} />
           <Stack.Screen name="HomeChefs" component={HomeChefScreen} />
+          <Stack.Screen name="Search" component={SearchScreen} />
           <Stack.Screen name="Terms" component={TermsScreen}/>
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />
           <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />

@@ -169,7 +169,9 @@ export default function App() {
           
 
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('CheckProfile')}>
-          {/* <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('ConfigureOrderScreen')}> */}
+            <Text style={styles.buttonText_sign_up}>CheckProfile</Text>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Main')}>
               <Text style={styles.buttonText_sign_up}>navigation</Text>
           {/* </TouchableOpacity> */}
           </TouchableOpacity>
