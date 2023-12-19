@@ -166,7 +166,7 @@ const diplayPlats = platsData.slice( 0 , 3 ).map((data , i) => (
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('CheckProfile')}>
             <Text style={styles.buttonText_sign_up}>CheckProfile</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Search')}>
+          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('BookDateScreen')}>
               <Text style={styles.buttonText_sign_up}>navigation</Text>
           {/* </TouchableOpacity> */}
           </TouchableOpacity>
