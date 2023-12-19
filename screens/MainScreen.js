@@ -58,7 +58,7 @@ useEffect(() => {
 // Hook useEffect pour charger les adresses des chefs au chargement initial de la page
 useEffect(() => {
   const fetchChefAddresses = async () => {
-    const response = await fetch('http://192.168.1.58:3000/users/chef/userchefs/addresses', {
+    const response = await fetch('https://chefs-backend-amber.vercel.app/users/chef/userchefs/addresses', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });

@@ -37,6 +37,7 @@ import OrderScreen from './screens/OrderScreen';
 import HomePlatScreen from './screens/Home_platsScreen'
 import HomeChefScreen from './screens/Home_chefsScreen'
 import OrderCheckProfile from './screens/OrderCheckProfile'
+
 //import ProfilScreen from './screens/Profil/ProfilScreen';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -105,7 +106,7 @@ export default function App() {
           <Stack.Screen name="PastOrder" component={PastOrderScreen} />
           <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
           <Stack.Screen name="AddNewRecipe" component={AddNewRecipeScreen} />
-          <Stack.Screen name="Main" component={MainScreen} />
+          <Stack.Screen name="BookDateScreen" component={BookDateScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
