@@ -250,6 +250,13 @@ export default function EditProfilScreen() {
   };
 
 
+
+
+  const myPreferences = user.userProfile.wishList ? user.userProfile.wishList.map((wish, i) => {
+    <View>{wish}</View>
+  }) : "";
+
+
 //INFOS DU USER: AFFICHER CES INFOS EN LE RECUPERANT DANS LE REDUCER
   const afficherLesInfos = user ? (
       <>
@@ -275,6 +282,13 @@ export default function EditProfilScreen() {
           <Text style={styles.inputText}>Téléphone: {user.userProfile.tel}</Text>
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setModifCoordonne(!modifCoordonne)}>
             <Text style={styles.buttonText_sign_in}>Modifier mes coordonnées</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.blocProfil}> 
+          <Text style={styles.inputText}>Mes préférences: {myPreferences}</Text>
+          
+          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setModifCoordonne(!modifCoordonne)}>
+            <Text style={styles.buttonText_sign_in}>Modifier mes préférences</Text>
           </TouchableOpacity>
         </View>
       </>
@@ -474,7 +488,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   blocProfil: {
-    marginTop: 30,
+    //marginTop: 20,
   },
   txt_h1 : {
     color: '#5959F0',

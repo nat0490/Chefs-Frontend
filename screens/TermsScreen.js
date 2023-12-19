@@ -3,13 +3,17 @@ import { StyleSheet, Text, View,TouchableOpacity } from 'react-native'
 import { CheckBox } from 'react-native-elements';
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 export default function App() {
 
+  const navigation = useNavigation();
+
   const [accepteConditions, setAccepteConditions] = useState(false);
   
-  const handleSubmit = () => {
 
+  const handleSubmit = () => {
+    navigation.navigate('HomeTabs', { screen: 'Main' });
   }
 
   return (
@@ -56,7 +60,7 @@ export default function App() {
             </View>
 
             <TouchableOpacity onPress={handleSubmit} style={[styles.button, styles.marginTop]}>
-                      <Text style={{ color:'white'}}>Confirmer</Text>
+                      <Text style={{ color:'red'}}>Confirmer</Text>
             </TouchableOpacity>
           </View>
 
@@ -120,7 +124,7 @@ const styles = StyleSheet.create({
     txt_p_bold: {
       color: '#615DEC',
       fontSize: 16,
-      fontWeight: 'bold',
+      //fontWeight: 600,
     },
 //------------ Police size -------------
     txt_h1_big : {
@@ -132,10 +136,10 @@ const styles = StyleSheet.create({
       textShadowColor: 'rgba(0, 0, 0, 0.25)',
       textShadowOffset: { width: 0, height: 4 },
       textShadowRadius: 4,
-      fontFamily: 'Inter',
+      //fontFamily: 'Inter',
       fontStyle: 'normal',
-      fontweight: 600,
-      letterspacing: -1.5,
+      //fontWeight: 600,
+      //letterspacing: -1.5,
   },
   txt_p_regulard: {
     color: '#5959F0',

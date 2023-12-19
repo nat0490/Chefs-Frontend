@@ -42,7 +42,8 @@ export default function SettingScreen() {
 
   useEffect(()=> {
     setChef(chefStatus);
-    console.log(user);
+    //console.log(user);
+  //CHARGER LE PROFIL CHEF SI IL EXISTE
     fetch(`https://chefs-backend-amber.vercel.app/users/chef/find/${user.id}`)
             .then( res => res.json())
             .then(data => {
@@ -79,7 +80,7 @@ export default function SettingScreen() {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data)
+        //console.log(data)
         if (data.result) {
           const userInfo = {
             id: user.id,

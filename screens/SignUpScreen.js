@@ -3,10 +3,12 @@ import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert , Pressable 
 import React, { useState } from 'react';
 import { CheckBox } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
-import DateTimePikers from "@react-native-community/datetimepicker"
-import FontAwesome from '@expo/vector-icons/FontAwesome'
+import DateTimePikers from "@react-native-community/datetimepicker";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { login, logout} from '../reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import {add, remove} from '../reducers/typeCuisine';
 
 
 export default function SignUpScreen() {
@@ -28,6 +30,34 @@ export default function SignUpScreen() {
   // date piker
   const [date , setDate] = useState(new Date());
   const [voirPikerData , setVoirPikerData] = useState(false);
+
+
+
+//REDUCER TYPE CUISINE : FETCH pour récuperer tous les type puis Dispatch pour les mettre dans le reducer
+const fetchData = async () => {
+  try {
+    //console.log('recuperer type de cuisine');
+    const response = await fetch(`https://chefs-backend-amber.vercel.app/userPreference/display_preference`);
+    //console.log(response);
+    if (!response.ok) {
+      throw new Error(`Réponse du serveur non valide: ${response.status}`);
+    }  
+    const result = await response.json();
+    //console.log(result);
+    console.log('données préférence chargé ')
+    result.data.forEach((item) => {
+      dispatch(add({ id: item._id, typeCuisine: item.typeCuisine }));
+    });
+  } catch (error) {
+    console.error('Erreur lors du chargement des données préférence depuis la base de données', error);
+  }
+};
+
+useEffect(()=> {
+  fetchData();
+},[])
+
+
 
   const toogleDataPiker = () => {
     setVoirPikerData(!voirPikerData)
@@ -101,7 +131,7 @@ console.log('connection');
       })
         .then(response => response.json())
         .then(data => {
-          console.log(data);
+          //console.log(data);
           
           if (data.result) {
             
@@ -115,14 +145,13 @@ console.log('connection');
             setPostalInput('');
             setCityInput('');
             Alert.alert('Vous êtes connecté');
-            navigation.navigate('Preference');
-             //navigation.navigate('EditProfil');
+            
 //PARTIE REDUX: ENVOIE DANS LE REDUCER DES INFO USER
              const userInfo = {
+              id : data.savedUserProfil._id,
               email : data.savedUserConnexion.email,
               token : data.savedUserConnexion.token,
               userProfile : {
-                id : data.savedUserProfil._id,
                 nom : data.savedUserProfil.nom,
                 prenom : data.savedUserProfil.prenom,
                 dateOfBirth : data.savedUserProfil.dateOfBirth,
@@ -133,13 +162,18 @@ console.log('connection');
                 },
                 tel : data.savedUserProfil.tel,
                 chef : data.savedUserProfil.chef,
+                orders: [],
+                userPreference: [],
+                wishList: [],
                 }
               };
-            console.log(userInfo)
+            //console.log(userInfo);
+            console.log('userProfil chargé');
             dispatch(login(userInfo));
-//ENVOIE SUR LA PAGE MAIN ENSUITE (PAS DACCEUIL)
-            //navigation.navigate('HomeTabs', { screen: 'Preference' }) ;
-            navigation.navigate('HomeTabs', { screen: 'Main' }) ;
+//NAVIGATION
+            navigation.navigate('Preference');
+             //navigation.navigate('EditProfil');
+            //navigation.navigate('HomeTabs', { screen: 'Main' }) ;
           } 
         })
         .catch(error => {

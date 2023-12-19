@@ -94,6 +94,8 @@ const besoinUstensils =
     //console.log(prixTotal);
   }; 
 
+ //console.log(_id);
+ //console.log(userChef._id);
   
 const validerPlat = () => {
   //navigation.navigate();

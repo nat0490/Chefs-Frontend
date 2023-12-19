@@ -51,11 +51,12 @@ export default function SignInScreen() {
       }  
       const result = await response.json();
       //console.log(result);
+      console.log('données préférence chargé ')
       result.data.forEach((item) => {
         dispatch(add({ id: item._id, typeCuisine: item.typeCuisine }));
       });
     } catch (error) {
-      console.error('Erreur lors du chargement des données depuis la base de données', error);
+      console.error('Erreur lors du chargement des données préférence depuis la base de données', error);
     }
   };
   useEffect(()=> {
@@ -100,12 +101,14 @@ export default function SignInScreen() {
             },
             tel : data.dataUserConnexion.userProfile.tel,
             chef : data.dataUserConnexion.userProfile.chef,
-            orders: data.dataUserConnexion.userProfile.chef.orders,
-            userPreference: data.dataUserConnexion.userProfile.chef.userPreference,
+            orders: data.dataUserConnexion.userProfile.orders,
+            userPreference: data.dataUserConnexion.userProfile.userPreference,
+            wishList: data.dataUserConnexion.userProfile.wishList,
             }
           };
-        console.log(userInfo);
+        //console.log(userInfo);
         dispatch(login(userInfo));
+        console.log('userProfil chargé');
         navigation.navigate('HomeTabs', { screen: 'Main' }) ;
       } 
     }) .catch(error => {

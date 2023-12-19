@@ -3,6 +3,7 @@ import { StyleSheet,ScrollView, Text, View ,TouchableOpacity, Alert} from 'react
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 
 export default function OrderScreen() {
@@ -25,12 +26,20 @@ export default function OrderScreen() {
     setSelectedIds([...selectedIds, id_preferences]);
   }
 
-  // ID utilisateur fictif (à remplacer par la logique d'authentification)
-  const user = '6578aabacc005455755192fa';
+  // Import des REDUCER
+  const user = useSelector((state) => state.user.value);
+  const typeCuisine = useSelector((state) => state.typeCuisine.value);
+  
+  //console.log(typeCuisine);
+
+
+
+
+ 
 
   // Fonction pour soumettre les préférences sélectionnées
   const handleSubmit = () => {
-    fetch(`http://chefs-backend-amber.vercel.app/users/profil/add-preference/${user}`, {
+    fetch(`http://chefs-backend-amber.vercel.app/users/profil/add-preference/${user.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userPreference: [...selectedIds] }),
@@ -47,23 +56,29 @@ export default function OrderScreen() {
       });
   }
 
-  // Utilisez useEffect pour charger les préférences une seule fois à l'initialisation
-  useEffect(() => {
-    fetch('http://chefs-backend-amber.vercel.app/userPreference/display_preference')
-      .then(response => response.json())
-      .then(data => {
-        setPreferenceData([...data.data]);
-      });
-  }, []);
+  
 
-  // Créez des composants de préférences à partir des données
+  //tris des type par ordre alphabétique
+const newlisteType = [... typeCuisine] 
+newlisteType.sort((a, b) => {
+    const cuisineA = a.cuisine.toUpperCase(); // ignore la casse
+    const cuisineB = b.cuisine.toUpperCase(); // ignore la casse
+    if (cuisineA < cuisineB) {
+      return -1;
+    }
+    if (cuisineA > cuisineB) {
+      return 1;
+    }
+    return 0;
+  });
 
-  // REVOIR COMMENT SA FONCTIONNE 
-  const preferences = preferenceData.map((data, i) => (
+
+  // AFFICHAGE DES PREFERENCES
+  const preferences = newlisteType.map((data, i) => (
     <TouchableOpacity
       key={i}
       onPress={() => {
-        handlePress(data._id);
+        handlePress(data.id);
         const updatedColors = [...activeColors];
         updatedColors[i] = !updatedColors[i];
         setActiveColors(updatedColors);
@@ -81,10 +96,11 @@ export default function OrderScreen() {
           { color: activeColors[i] ? 'white' : '#5959F0' },
         ]}
       >
-        {data.typeCuisine}
+        {data.cuisine}
       </Text>
     </TouchableOpacity>
   ));
+
 
   // Rendu de l'écran de commande
 

@@ -19,7 +19,8 @@ const initialState = {
         tel: null,
         chef: null,
         orders: [],
-        userPreference: []
+        userPreference: [],
+        wishList: [],
       }
 }};
 
@@ -33,7 +34,6 @@ export const userSlice = createSlice({
       state.value.email = action.payload.email;
       state.value.token = action.payload.token;
       userProfile : {
-        state.value.userProfile.id =action.payload.userProfile.id;
         state.value.userProfile.nom =action.payload.userProfile.nom ;
         state.value.userProfile.prenom = action.payload.userProfile.prenom ;
         state.value.userProfile.dateOfBirth = action.payload.userProfile.dateOfBirth ;
@@ -44,8 +44,10 @@ export const userSlice = createSlice({
         };
         state.value.userProfile.tel = action.payload.userProfile.tel ;
         state.value.userProfile.chef = action.payload.userProfile.chef  ;
-        state.value.userProfile.orders = [action.payload.userProfile.orders],
-        state.value.userProfile.userPreference = [action.payload.userProfile.userPreference]
+        state.value.userProfile.orders = action.payload.userProfile.orders ;
+        state.value.userProfile.userPreference = action.payload.userProfile.userPreference ;
+        state.value.userProfile.wishList = action.payload.userProfile.userPreference ;
+
       }
     },
     logout: (state) => {
@@ -63,7 +65,7 @@ export const userSlice = createSlice({
         state.value.userProfile.tel = null ;
         state.value.userProfile.chef = null;
         state.value.userProfile.orders = [];
-        state.value.userProfile.userPreference = [];
+        state.value.userProfile.wishList = [];
       }
     },
   },
