@@ -6,7 +6,8 @@ import {
   View, 
   TextInput, 
   KeyboardAvoidingView,
-  Image 
+  Image,
+  Alert,
 } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -282,7 +283,7 @@ const creationRecette = () => {
   .then(res => res.json())
   .then(data => {
     //console.log(data);
-    if (data) {
+    if (data.result) {
       setTitle("");
       setImageDish("");
       setSelectedTime(new Date());
@@ -297,7 +298,8 @@ const creationRecette = () => {
       setRecapIngredient(""); 
       setRecetteValide(!recetteValide); 
     } else {
-      console.log('error');
+      console.log('error:', data.error);
+      Alert.alert('titre déjà existant pour une recette');
     } 
   })
 };

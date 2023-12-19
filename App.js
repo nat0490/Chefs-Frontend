@@ -34,9 +34,10 @@ import ConfigureOrderScreen from './screens/ConfigureOrderScreen';
 import DishScreen from './screens/DishScreen';
 import MainScreen from './screens/MainScreen';
 import OrderScreen from './screens/OrderScreen';
-import HomePlatScreen from './screens/Home_platsScreen'
-import HomeChefScreen from './screens/Home_chefsScreen'
-import OrderCheckProfile from './screens/OrderCheckProfile'
+import HomePlatScreen from './screens/Home_platsScreen';
+import HomeChefScreen from './screens/Home_chefsScreen';
+import OrderCheckProfile from './screens/OrderCheckProfile';
+import ChefScreen from './screens/ChefScreen';
 
 //import ProfilScreen from './screens/Profil/ProfilScreen';
 
@@ -119,6 +120,7 @@ export default function App() {
           <Stack.Screen name="BookDate" component={BookDateScreen} />
           <Stack.Screen name="Dish" component={DishScreen} />
           <Stack.Screen name="OrderDetails" component={OrderScreen} />
+          <Stack.Screen name="ChefScreen" component={ChefScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

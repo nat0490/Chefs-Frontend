@@ -31,36 +31,36 @@ export default function DishScreen({route}) {
   const [ showIngredients, setShowIngedients] = useState(false);
   const [ showUstensils, setShowUstensils] = useState(false);
   const [ showConvives, setShowConvives] = useState(false);
-/*
-  CETTE RECETTE EST-ELLE DANS LES FAVORIES? POUR AFFICHER OU LE MARQUER SUR LE BOOKMARK
-  useEffect(() => {
-    favoriteRecipes.some( e => e.params.name === name) ? setIsBookmark(true): setIsBookmark(false);
-}, []);
-*/
+
+
+
+
+
+//TEMPS DE PREPARATION
+const newTime = (time) => {
+  const date = new Date(time);
+  const formattedTime = `${date.getHours()} H ${(date.getMinutes() < 10 ? '0' : '') + date.getMinutes()}`;
+  return formattedTime
+};
+
+
+
 //LISTE DES INGREDIENTS
 const allIngredients = ingredients ? ingredients.map((oneIngredient, index) => (
   //console.log(data);
   <View key={index} style={{ 
                       display: 'flex', 
                       flexDirection: 'row', 
-                      justifyContent: 'space-between', 
+                      //justifyContent: 'space-between', 
                       marginLeft: 20, 
                       marginRight: 20, 
-                      marginTop: 20}}>
-    <Text style={{fontSize: 20}}>{oneIngredient.name}</Text> 
-    <Text style={{fontSize: 20}}>{(oneIngredient.quantity) * nbPeople} {oneIngredient.unit}</Text>
+                      marginTop: 5}}>
+    <Text style={{fontSize: 16}}>-  {oneIngredient.name}</Text> 
+    <Text style={{fontSize: 16}}>   {(oneIngredient.quantity) * nbPeople}    {oneIngredient.unit}</Text>
   </View>
 )): null;
 
-//MODIFICATION DU NOMBRE DE PERSONNES
-const handleLess = () => {
-  if(nbPeople > 1) {
-    setNbPeople(nbPeople - 1)
-  }
-}
-const handleMore = () => {
-  setNbPeople(nbPeople + 1);
-}
+
 /*
 const handleBookmark = () => {
   if (!isBookmark) {
@@ -82,7 +82,7 @@ const besoinUstensils =
   ustensils ? ustensils.map((oneUstensil , i ) => (
     //console.log(oneUstensil);
     <View key={i}>
-      <Text>{oneUstensil.nom} {oneUstensil.emoji} </Text>
+      <Text style={{fontSize: 16, marginTop: 5, marginLeft: 5}}>-  {oneUstensil.nom} {oneUstensil.emoji} </Text>
     </View>
   )) : null;
 
@@ -99,12 +99,16 @@ const besoinUstensils =
   
 const validerPlat = () => {
   //navigation.navigate();
-  console.log('bouton pressé!');
+  console.log('plat validé');
   dispatch(addInfo({
     dishId: _id,
     chefId: userChef._id,
   }))
-}; 
+};
+
+const voirProfilChef = (menu) => {
+  navigation.navigate('ChefScreen', menu)
+}
 
 
 
@@ -120,20 +124,6 @@ const stars = [];
 
 
 
-//UTILE DANS LE CODE??
-/* <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={() => setShowConvives(!showConvives)} >
-              <Text style={styles.buttonText_sign_in}>Convives</Text>
-            </TouchableOpacity> 
-            <Text>Convives</Text>
-            <View style={styles.nbmConvives}> 
-              <TouchableOpacity style={{padding: 20}}  onPress={()=>handleLess()}>
-                <Text style={{fontSize: 20,fontWeight: "bold"}} >-</Text>
-              </TouchableOpacity>
-              <Text style={{padding: 20, fontSize: 20}}>{nbPeople}</Text>
-              <TouchableOpacity style={{padding: 20}}  onPress={()=>handleMore()}>
-                <Text style={{fontSize: 20, fontWeight: "bold"}} >+</Text>
-              </TouchableOpacity>
-            </View> */
 
 return (
 
@@ -142,13 +132,15 @@ return (
         <View style={styles.topPage}> 
       
 
-            <View > 
+            <View style={{width: '100%'}}> 
               <View style={styles.positionBackBtn}> 
                 <TouchableOpacity style={styles.backBtnAlone} onPress={()=> navigation.navigate('HomeTabs', { screen: 'Main' })}>
                   <Text style={styles.btnTextBack}>←</Text>
                 </TouchableOpacity>
               </View>
+              <View style={{alignItems: 'center'}}> 
               <Text style={{...styles.txt_h1, marginBottom: 40}}>{title}</Text>
+              </View>
             </View>
             <Image source={{uri: image}} style={styles.imagePlat} />
 
@@ -166,26 +158,30 @@ return (
             <View style={styles.typeCuisine}> 
               <FontAwesomeIcon icon={faBowlRice} size={30}/><Text style={{fontSize: 20}}>    {type}</Text>
             </View>
-            <TouchableOpacity activeOpacity={1} style={{...styles.btn_sign_in, marginRight: 20}} >
+            <TouchableOpacity activeOpacity={1} style={{...styles.btn_sign_in, marginRight: 20}} onPress={() => voirProfilChef(userChef._id)}>
               <Text style={styles.buttonText_sign_in}>Profil du Chef</Text>
             </TouchableOpacity>
           </View>
 
+    
+
           <View style={styles.stars}>{stars}</View>
+
+          <View style={{alignItems: 'flex-end', marginRight: 10, marginTop: -20}}><Text>Temps de préparation: {newTime(time)}</Text></View>
 
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setShowIngedients(!showIngredients)}>
               <Text style={styles.buttonText_sign_in}>Ingredients</Text>
             </TouchableOpacity>
-            { showIngredients? <View><Text>Pour une personne:</Text>{allIngredients}</View> : "" }
+            { showIngredients? <View style={{marginTop: 5}}><Text style={{fontSize: 16, textDecorationLine: 'underline'}}>Pour une personne:</Text>{allIngredients}</View> : "" }
 
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setShowPrice(!showPrice)}>
               <Text style={styles.buttonText_sign_in}>Prix</Text>
             </TouchableOpacity>
             { showPrice ? 
               <View>
-                <Text>Prix par prestation (1 personne): {prix.minimum} €</Text>
-                <Text>Prix par personne supplémentaire: {prix.personneSup} €</Text>
-                <Text>Panier course par personne: {prix.panierCourseParPersonne} €</Text>
+                <Text style={{fontSize: 16, marginTop: 5}}>Prix par prestation (1 personne): <Text style={{fontWeight: 600}}>{prix.minimum} €</Text></Text>
+                <Text style={{fontSize: 16, marginTop: 5}}>Prix par personne supplémentaire: <Text style={{fontWeight: 600}}>{prix.personneSup} €</Text></Text>
+                <Text style={{fontSize: 16, marginTop: 5}}>Panier course par personne: <Text style={{fontWeight: 600}}>{prix.panierCourseParPersonne} €</Text></Text>
               </View> : "" }
 
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={() => setShowUstensils(!showUstensils)}>
@@ -246,7 +242,7 @@ const styles = StyleSheet.create({
 
 //TOP PAGE
 backBtnAlone: {
-  width: '20%',
+  width: '15%',
   marginTop: 20,
   paddingBottom: 5, // 10 units of padding at the top and bottom
   paddingHorizontal: 15, // A
@@ -255,7 +251,8 @@ backBtnAlone: {
   borderColor: '#9292FE',
   backgroundColor: '#fff',
   //marginRight: 100,
-  marginBottom: 20,
+  marginBottom: 5,
+  marginLeft: 20,
 },
 btnTextBack: {
   fontSize : 30,
@@ -264,7 +261,8 @@ btnTextBack: {
 },
 positionBackBtn: {
   width: '100%',
-  alignItems:'flex-start',
+  //alignItems:'flex-start',
+  marginLeft: 0,
 },
 //IMAGE
 imagePlat: {

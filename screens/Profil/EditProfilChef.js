@@ -327,7 +327,7 @@ topPage: {
     paddingHorizontal: 10,
     color: '#9292FE',
     textAlignVertical: 'center',
-    marginTop: 10,
+    //marginTop: 10,
   },
   container_box_width:{
     margin: 0,
