@@ -3,6 +3,9 @@ import { StyleSheet, Text, View , Image , TouchableOpacity, ScrollView} from 're
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBowlFood, faCircleUser, faFaceLaugh, faStar, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+
 
 
 export default function ChefScreen(route) {
@@ -11,10 +14,10 @@ export default function ChefScreen(route) {
     const chefId = route.route.params;
     //console.log(chefId);
 
-    const [ chefProfil, setChefProfil ] = useState(null);
+    const [ chefProfil, setChefProfil ] = useState("");
     const [ chefRecipe, setChefRecipe ] = useState(null);
 
-    //console.log(chefRecipe);
+    //console.log(chefProfil);
 
 //RECUPERER LES INFO DU CHEF + LES METTRES DANS LES HOOK
     const fetchInfoChef = async() => {
@@ -42,36 +45,32 @@ export default function ChefScreen(route) {
     },[]);
 
 
-    //NOTE DUN PLAT
-    //const toutesLesNotes = []
-    // chefRecipe.map(recipe => {
-        // toutesLesNotes.push(recipe.note);
-        //const noteMoyenne = toutesLesNotes ?  toutesLesNotes.reduce((a,b)=> a +b, 0)/toutesLesNotes.length : "";
-    //}) 
-    //A UTILISER POUR LA COULEUR DES ETOILES
-
-  const stars = [];
-  for (let i = 0; i < 5; i++) {
-    // let style = {};
-    // if (i < props.voteAverage - 1) {
-    //   style = { 'color': '#f1c40f' };
-    // }
-    stars.push(<FontAwesome key={i} name='star' size={8}/>);
-  }
-
   const Note_user = [];
   for (let i = 0; i < 5; i++) {
     // let style = {};
     // if (i < props.voteAverage - 1) {
     //   style = { 'color': '#f1c40f' };
     // }
-    Note_user.push(<FontAwesome key={i} name='star' size={10}/>);
+    Note_user.push(<FontAwesome key={i} name='star' size={10} color='#B8B8B8'/>);
   }
 
 
-  const boxDish = chefRecipe ? chefRecipe.map((dish,i) => {
-  return <View>
-    <TouchableOpacity key={i} activeOpacity={1} style={styles.box}>
+  const boxDish = chefRecipe ? chefRecipe.map((dish, i) => {
+    const noteMoyenne = dish.notes ?  (dish.notes.reduce((a,b)=> a +b, 0)/dish.notes.length).toFixed(1) : "";
+    const stars = [];
+      for (let i = 0; i < 5; i++) {
+        let style = {};
+        if (i < noteMoyenne - 1) {
+          style = '#9292FE'
+        } else {
+          style = '#B8B8B8'
+        }
+        stars.push(<FontAwesomeIcon key={i} icon={faStar} name='star' size={12} color={style}/>);
+      }
+
+    return (
+      <View key={dish.id}>
+        <TouchableOpacity key={i} activeOpacity={1} style={styles.box}>
         <Image source={{uri: dish.image}}  style={styles.photo_plats} />
             <Text style={styles.margin_rigth}>{dish.title}</Text>
             <View style={styles.box_description }>
@@ -81,25 +80,46 @@ export default function ChefScreen(route) {
             <View style={styles.box_description }>
             {stars}
         </View>
-        </TouchableOpacity></View>}) : "";
+        </TouchableOpacity>
+      </View>
+    );
+  }) : null;
 
+
+  
 
   return (
       <View style={styles.container}>
             <View style={styles.nav_bar_color}></View>
+           
             
         <View style={styles.container_box_width}>
             
             <View style={{width:'100%', alignItems:'center'}}><Text style={styles.txt_h1}>Notre chef {chefProfil? chefProfil.userProfil.prenom : ""}</Text></View>
 
-            <ScrollView> 
+            <ScrollView > 
 
             <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
 
+                <View style={styles.boxMonHistoire}>
+                  <View style={{width: '100%', alignItems:'center'}}> 
+                    <Text style={styles.txt_h2}>Mon histoire</Text>
+                  </View>
+                  { chefProfil && chefProfil.spécialisation ?  <Text style={{marginBottom: 5}}><Text style={{fontWeight: 600}}>Ma spécialisation: </Text>{chefProfil.spécialisation}</Text> : null }
+                  { chefProfil && chefProfil.experience ? <Text style={{marginBottom: 5}}><Text style={{fontWeight: 600}}>Mon experience: </Text>{chefProfil.experience}</Text> : null }
+                  { chefProfil && chefProfil.passion ? <Text style={{marginBottom: 5}}><Text style={{fontWeight: 600}}>Ma/es passion(s): </Text>{chefProfil.passion}</Text> : null}
+                  { chefProfil && chefProfil.services ?  <Text style={{marginBottom: 5}}><Text style={{fontWeight: 600}}>Mes services: </Text>{chefProfil.services}</Text> : null }
+                </View>
+
                 <View style={styles.containeur_box}>
+                  <View style={{width: '100%', alignItems:'center'}}> 
+                    <Text style={styles.txt_h2}>Mes plats</Text>
+                  </View>
                     {boxDish}
                 </View>
-            
+
+
+{/* A CHANGER QUAND IL Y AURA DES VRAIS FEEDBACK */}
                 <View style={[styles.container_commentaire, {marginTop: 10}]}>
                     <Text style={styles.txt_h2}>Nos retours</Text>
                     <View style={{backgroundColor:'#9292FE47' , width: '100%'}}>
@@ -158,6 +178,7 @@ export default function ChefScreen(route) {
              
 
         </View>
+        
       </View>
   );
 }
@@ -244,8 +265,8 @@ const styles = StyleSheet.create({
   txt_h2 : {
     color: '#5959F0',
     fontSize: 20,
-    marginBottom : 10,
-},
+    marginBottom : 10, 
+  },
 
 photo: {
   width:"100%",
@@ -376,5 +397,14 @@ backBtnAlone: {
     //alignItems:'flex-start',
     marginLeft: -30,
   },
+//HISTOIRE DU CHEF
+boxMonHistoire: {
+  backgroundColor: "rgba(89,89,240, 0.2)",
+  marginTop: 10,
+  paddingTop: 10,
+  paddingBottom: 20,
+  paddingHorizontal: 20,
+  borderRadius: 10,
+}
 
 });

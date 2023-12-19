@@ -61,9 +61,14 @@ import infoPourCommande from './reducers/infoPourCommande';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
+
+
 //const navigation = useNavigation();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+  
+
+
 
 
 const HomeTabs = () => (
@@ -89,7 +94,10 @@ const HomeTabs = () => (
     {/* <Tab.Screen name="Search" component={SearchScreen} /> */}
     <Tab.Screen name="Wishlist" component={WishlistScreen} /> 
   </Tab.Navigator>
-);
+); 
+
+
+
 
 const store = configureStore({
   reducer: { user, typeCuisine, ustensil, chef, infoPourCommande },
@@ -100,6 +108,7 @@ const store = configureStore({
 export default function App() {
   return (
     <Provider store={store}> 
+   
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={HomeScreen} />
@@ -118,11 +127,18 @@ export default function App() {
           <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
           <Stack.Screen name="AddNewRecipe" component={AddNewRecipeScreen} />
           <Stack.Screen name="BookDate" component={BookDateScreen} />
-          <Stack.Screen name="Dish" component={DishScreen} />
-          <Stack.Screen name="OrderDetails" component={OrderScreen} />
-          <Stack.Screen name="ChefScreen" component={ChefScreen} />
+          <Stack.Screen name="Dish" component={DishScreen} options={{ tabBarVisible: true }}/>
+          <Stack.Screen name="OrderDetails" component={OrderScreen}  />
+          <Stack.Screen name="ChefScreen" component={ChefScreen} options={{ tabBarVisible: true }}/>
         </Stack.Navigator>
       </NavigationContainer>
+      
     </Provider>
   );
 };
+
+
+
+
+
+

@@ -16,6 +16,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBowlRice, faBowlFood, faCircleUser, faStar } from '@fortawesome/free-solid-svg-icons';
 import { addInfo, removeInfo} from '../reducers/infoPourCommande';
 
+
+
+
 export default function DishScreen({route}) {
 
   const dispatch = useDispatch(); 
@@ -32,8 +35,7 @@ export default function DishScreen({route}) {
   const [ showUstensils, setShowUstensils] = useState(false);
   const [ showConvives, setShowConvives] = useState(false);
 
-
-
+  
 
 
 //TEMPS DE PREPARATION
@@ -73,9 +75,6 @@ const handleBookmark = () => {
   } 
 }
 */
-//NOTE MOYENNE
-//var total = [0, 1, 2, 3].reduce((a, b) => a + b, 0);
-const noteMoyenne = notes ?  notes.reduce((a,b)=> a +b, 0)/notes.length : "";
 
 //USTENSILS
 const besoinUstensils = 
@@ -98,12 +97,16 @@ const besoinUstensils =
  //console.log(userChef._id);
   
 const validerPlat = () => {
-  //navigation.navigate();
+  try {
+    //navigation.navigate();
   console.log('plat validé');
   dispatch(addInfo({
     dishId: _id,
     chefId: userChef._id,
-  }))
+  }));
+} catch (error) {
+  console.error("Une erreur s'est produite :", error);
+}
 };
 
 const voirProfilChef = (menu) => {
@@ -112,17 +115,23 @@ const voirProfilChef = (menu) => {
 
 
 
-//{ notes.length > 0 ? <Text>note: {noteMoyenne}</Text> : "" }
+
+//NOTE MOYENNE
+const noteMoyenne = notes ?  (notes.reduce((a,b)=> a +b, 0)/notes.length).toFixed(2) : "";
+//console.log(notes);
+//console.log(noteMoyenne);
+
+//ETOILES DE NOTES
 const stars = [];
   for (let i = 0; i < 5; i++) {
-    // let style = {};
-    // if (i < props.voteAverage - 1) {
-    //   style = { 'color': '#f1c40f' };
-    // }
-    stars.push(<FontAwesomeIcon key={i} icon={faStar} name='star' size={16} color='#B8B8B8'/>);
+     let style = {};
+     if (i < noteMoyenne - 1) {
+       style = '#9292FE'
+     } else {
+      style = '#B8B8B8'
+    }
+    stars.push(<FontAwesomeIcon key={i} icon={faStar} name='star' size={16} color={style}/>);
   }
-
-
 
 
 return (
@@ -133,13 +142,14 @@ return (
       
 
             <View style={{width: '100%'}}> 
+            {/*
               <View style={styles.positionBackBtn}> 
                 <TouchableOpacity style={styles.backBtnAlone} onPress={()=> navigation.navigate('HomeTabs', { screen: 'Main' })}>
                   <Text style={styles.btnTextBack}>←</Text>
                 </TouchableOpacity>
-              </View>
+</View> */}
               <View style={{alignItems: 'center'}}> 
-              <Text style={{...styles.txt_h1, marginBottom: 40}}>{title}</Text>
+              <Text style={{...styles.txt_h1, marginBottom: 40, marginTop: 40}}>{title}</Text>
               </View>
             </View>
             <Image source={{uri: image}} style={styles.imagePlat} />
@@ -174,9 +184,11 @@ return (
             </TouchableOpacity>
             { showIngredients? <View style={{marginTop: 5}}><Text style={{fontSize: 16, textDecorationLine: 'underline'}}>Pour une personne:</Text>{allIngredients}</View> : "" }
 
-            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setShowPrice(!showPrice)}>
-              <Text style={styles.buttonText_sign_in}>Prix</Text>
-            </TouchableOpacity>
+            <View style={{width: '100%', alignItems: 'center'}}>
+              <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setShowPrice(!showPrice)}>
+                <Text style={styles.buttonText_sign_in}>Prix</Text>
+              </TouchableOpacity>
+            </View>
             { showPrice ? 
               <View>
                 <Text style={{fontSize: 16, marginTop: 5}}>Prix par prestation (1 personne): <Text style={{fontWeight: 600}}>{prix.minimum} €</Text></Text>
@@ -184,9 +196,11 @@ return (
                 <Text style={{fontSize: 16, marginTop: 5}}>Panier course par personne: <Text style={{fontWeight: 600}}>{prix.panierCourseParPersonne} €</Text></Text>
               </View> : "" }
 
-            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={() => setShowUstensils(!showUstensils)}>
-              <Text style={styles.buttonText_sign_in}>Ustensils</Text>
-            </TouchableOpacity>
+            <View style={{width: '100%', alignItems: 'flex-end'}}>
+              <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={() => setShowUstensils(!showUstensils)}>
+                <Text style={styles.buttonText_sign_in}>Ustensils</Text>
+              </TouchableOpacity>
+            </View>  
             { showUstensils ? <View>{besoinUstensils}</View> : "" }
 
            
@@ -279,7 +293,7 @@ imagePlat: {
 //BLOC INFOS RECETTE
 box: {
   width: '80%', 
-  maxHeight: '35%',
+  maxHeight: '40%',
   backgroundColor: "rgba(89,89,240, 0.2)",
   borderRadius: 10,
   marginBottom: 10,
@@ -307,6 +321,7 @@ btn_sign_in : {
   backgroundColor: '#9292FE',
   marginTop: 10,
   maxWidth: '30%',
+  width: 200,
 },
 buttonText_sign_in :  {
   fontSize : 15,
