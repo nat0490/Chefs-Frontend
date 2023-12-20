@@ -3,14 +3,11 @@ import { StyleSheet,ScrollView, Text, View ,TouchableOpacity, Alert} from 'react
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-<<<<<<< HEAD
-import { useSelector } from 'react-redux';
 
 
-=======
+
 import { useDispatch , useSelector} from 'react-redux';
 import { login, logout} from '../reducers/user';
->>>>>>> christof
 export default function OrderScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -34,7 +31,7 @@ export default function OrderScreen() {
     setSelectedIds([...selectedIds, id_preferences]);
   }
 
-<<<<<<< HEAD
+  /*
   // Import des REDUCER
   const user = useSelector((state) => state.user.value);
   const typeCuisine = useSelector((state) => state.typeCuisine.value);
@@ -49,16 +46,14 @@ export default function OrderScreen() {
   // Fonction pour soumettre les préférences sélectionnées
   const handleSubmit = () => {
     fetch(`https://chefs-backend-amber.vercel.app/users/profil/add-preference/${user.id}`, {
-=======
   // ID utilisateur fictif (à remplacer par la logique d'authentification)
 
-
+*/
   // Fonction pour soumettre les préférences sélectionnées
   const handleSubmit = () => {
     console.log(selectedIds)
     const users = '6581ef0d794e6f6851a09cec';
     fetch(`http://chefs-backend-amber.vercel.app/users/profil/add-preference/${users}`, {
->>>>>>> christof
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userPreference: [...selectedIds] }),
@@ -79,8 +74,7 @@ export default function OrderScreen() {
       });
   }
 
-<<<<<<< HEAD
-  
+  /*
 
   //tris des type par ordre alphabétique
 const newlisteType = [... typeCuisine] 
@@ -106,8 +100,7 @@ newlisteType.sort((a, b) => {
         const updatedColors = [...activeColors];
         updatedColors[i] = !updatedColors[i];
         setActiveColors(updatedColors);
-=======
-  // Utilisez useEffect pour charger les préférences une seule fois à l'initialisation
+  // Utilisez useEffect pour charger les préférences une seule fois à l'initialisation*/
   useEffect(() => {
     fetch('http://chefs-backend-amber.vercel.app/userPreference/display_preference')
       .then(response => response.json())
@@ -153,7 +146,6 @@ if (dataPreferences.length > 1) {
         updatedColors[i] = !updatedColors[i]; // Inverse la valeur sur l'index de ma preference
         setActiveColors(updatedColors); // Je met a jour mon tableau modifier 
         handlePress(data._id); // Recupere l'id de ma preference au clic 
->>>>>>> christof
       }}
       activeOpacity={1}
       style={[
@@ -203,11 +195,6 @@ if (dataPreferences.length > 1) {
       
     }
 
-<<<<<<< HEAD
-
-=======
- 
->>>>>>> christof
   // Rendu de l'écran de commande
 
     return (

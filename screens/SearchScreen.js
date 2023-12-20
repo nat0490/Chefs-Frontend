@@ -20,12 +20,8 @@ export default function SearchScreen() {
       .then(data => {
         // Utilisation de Promise.all pour attendre toutes les requêtes a fin de pouvoir mettre  a jour les élément 
         Promise.all(data.recipes.map((valeur) => {
-<<<<<<< HEAD
           //
           return fetch(`https://chefs-backend-amber.vercel.app/users/chef/${valeur.userChef}`) // je recupere le profils de l'user pour avoir sont id et chercher sont nom
-=======
-          return fetch(`http://172.20.10.5:3000/users/chef/${valeur.userChef}`) // je recupere le profils de l'user pour avoir sont id et chercher sont nom
->>>>>>> christof
             .then(response => response.json())
             .then(data1 => {
               return fetch(`https://chefs-backend-amber.vercel.app/users/profil/${data1.data.userProfil._id}`)// je recupre le profils user avec le nom et prenom du chef
