@@ -166,7 +166,7 @@ const diplayChefs = chefData ? chefData.slice( 0 , 3 ).map((data , i) => (
           </TouchableOpacity>
           
 
-          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('CheckProfile')}>
+          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('OrderDetails')}>
             <Text style={styles.buttonText_sign_up}>CheckProfile</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('BookDate')}>
