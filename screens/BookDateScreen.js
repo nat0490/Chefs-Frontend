@@ -3,7 +3,9 @@ import { View, StyleSheet, Button, Text, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars'; // Importation du composant de calendrier
 import DateTimePicker from '@react-native-community/datetimepicker'; // Importation du sélecteur de date/heure
 // import { useSelector } from 'react-redux';
-import {addDate} from '../reducers/infoPourCommande'
+import { useNavigation } from '@react-navigation/native';
+import {addDate} from '../reducers/infoPourCommande';
+import { Feather } from '@expo/vector-icons';
 
 export default function BookDateScreen() {
   // États pour gérer les données et l'interface

@@ -22,8 +22,10 @@ export default function OrderScreen() {
           console.log(data.recipe)
           setPlatData(data.recipe);
         }
-        const response = await fetch(`https://chefs-backend-amber.vercel.app/recipes/${platId}`);
-        const data = await response.json();
+
+ //ATTENTION, VERIFIER CES 2 LIGNES (nom identique que sur les lignes 19 et 20)       
+        const response2 = await fetch(`https://chefs-backend-amber.vercel.app/recipes/${platId}`);
+        const data2 = await response.json();
          
 
           const chefResponse = await fetch(`https://chefs-backend-amber.vercel.app/users/chef/${data.recipe.userChef}`);

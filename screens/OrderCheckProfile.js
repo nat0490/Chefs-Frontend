@@ -13,16 +13,26 @@ import { View,
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBowlFood } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
+
+
 export default function OrderScreen() {
 
   const navigation = useNavigation();
 
+//REDUCER INFO ORDER
+  const infoPourCommande = useSelector((state) => state.infoPourCommande.value);
+
+ 
+
+
+
   // stock info du chef 
   const [chefInfo, setChefInfo] = useState({});
-  const [chefId, setChefId] = useState('657f1e697bd0e0c4c6054e71');
+  const [chefId, setChefId] = useState(infoPourCommande.chefId);
+  console.log(chefId);
 
   // managing the comments 
   const [commentaireVisible, setCommentaireVisible] = useState(true); //

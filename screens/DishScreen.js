@@ -81,6 +81,7 @@ const besoinUstensils =
 const validerPlat = () => {
   try {
     //navigation.navigate();
+    navigation.navigate('CheckProfile')
   console.log('plat validé');
   dispatch(addInfo({
     dishId: _id,
@@ -189,7 +190,7 @@ return (
 
           </View>
           </ScrollView>
-          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('CheckProfile')} >
+          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => validerPlat()} >
             <Text style={styles.buttonText_sign_up}>Je réserve mon plat!</Text>
         </TouchableOpacity>
         </View>
