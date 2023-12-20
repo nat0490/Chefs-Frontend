@@ -115,7 +115,12 @@ const handleSubmitRegister = () => {
 //VERIF MOTS DE PASSE MASQUE POUR FACILITER NOS TEST
 console.log('connection');
   if (verifierEmail() /*&& verifierMotDePasse()*/) {
+<<<<<<< HEAD
       //fetch('https://chefs-backend-amber.vercel.app/users/signup', {
+=======
+    console.log('connection');
+      //fetch('http://172.20.10.5:3000/users/signup', {
+>>>>>>> christof
       fetch('https://chefs-backend-amber.vercel.app/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -133,10 +138,13 @@ console.log('connection');
       })
         .then(response => response.json())
         .then(data => {
+<<<<<<< HEAD
           //console.log(data);
           
+=======
+          console.log(data);
+>>>>>>> christof
           if (data.result) {
-            
             setPasswordInput('');
             setEmailInput('');
             setNameInput('');
@@ -147,7 +155,11 @@ console.log('connection');
             setPostalInput('');
             setCityInput('');
             Alert.alert('Vous êtes connecté');
+<<<<<<< HEAD
             
+=======
+             //navigation.navigate('EditProfil');
+>>>>>>> christof
 //PARTIE REDUX: ENVOIE DANS LE REDUCER DES INFO USER
              const userInfo = {
               id : data.savedUserProfil._id,
@@ -172,9 +184,15 @@ console.log('connection');
             //console.log(userInfo);
             console.log('userProfil chargé');
             dispatch(login(userInfo));
+<<<<<<< HEAD
 //NAVIGATION
             navigation.navigate('Preference');
              //navigation.navigate('EditProfil');
+=======
+            navigation.navigate('Preference');
+//ENVOIE SUR LA PAGE MAIN ENSUITE (PAS DACCEUIL)
+            //navigation.navigate('HomeTabs', { screen: 'Preference' }) ;
+>>>>>>> christof
             //navigation.navigate('HomeTabs', { screen: 'Main' }) ;
           } 
         })
@@ -197,7 +215,6 @@ console.log('connection');
       <View style={styles.containeur_fleche}>
         <FontAwesome name='arrow-left' size={22}  />
       </View>
-
       <View style={styles.containeur_navigation_view}> 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View style={styles.detailContainer}>
