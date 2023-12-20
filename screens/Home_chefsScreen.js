@@ -15,7 +15,7 @@ export default function OrderScreen() {
 
     (async () => {
        try {
-         const response = await fetch(`http://172.20.10.5:3000/users/chef/${chefId}`);
+         const response = await fetch(`https://chefs-backend-amber.vercel.app/users/chef/${chefId}`);
          const data = await response.json();
          if(data.result) {
           console.log(data)

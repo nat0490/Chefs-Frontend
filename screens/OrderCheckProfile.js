@@ -43,7 +43,7 @@ export default function OrderScreen() {
 
   // useEffect to upload the informations about the chefs when click on recipes when ordering 
   useEffect(() => {
-    fetch(`http://10.12.58.200:3000/users/chef/${chefId}`)
+    fetch(`https://chefs-backend-amber.vercel.app/users/chef/${chefId}`)
     fetch(`https://chefs-backend-amber.vercel.app/users/chef/${chefId}`)
       .then(response => response.json())
       .then(data => {

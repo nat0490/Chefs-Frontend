@@ -53,7 +53,7 @@ export default function OrderScreen() {
   const handleSubmit = () => {
     console.log(selectedIds)
     const users = '6581ef0d794e6f6851a09cec';
-    fetch(`http://chefs-backend-amber.vercel.app/users/profil/add-preference/${users}`, {
+    fetch(`https://chefs-backend-amber.vercel.app/users/profil/add-preference/${users}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userPreference: [...selectedIds] }),
@@ -102,7 +102,7 @@ newlisteType.sort((a, b) => {
         setActiveColors(updatedColors);
   // Utilisez useEffect pour charger les préférences une seule fois à l'initialisation*/
   useEffect(() => {
-    fetch('http://chefs-backend-amber.vercel.app/userPreference/display_preference')
+    fetch('https://chefs-backend-amber.vercel.app/userPreference/display_preference')
       .then(response => response.json())
       .then(data => {
         setPreferenceData([...data.data]);

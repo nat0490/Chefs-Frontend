@@ -37,6 +37,7 @@ import HomePlatScreen from './screens/Home_platsScreen';
 import HomeChefScreen from './screens/Home_chefsScreen';
 import OrderCheckProfile from './screens/OrderCheckProfile';
 import ChefScreen from './screens/ChefScreen';
+import PaymentScreen from './screens/PaymentScreen';
 
 //import ProfilScreen from './screens/Profil/ProfilScreen';
 
@@ -141,7 +142,7 @@ const MainStack = () => (
     <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
     <Stack.Screen name="BookDate" component={BookDateScreen} />
     <Stack.Screen name="Dish" component={DishScreen} options={{ tabBarVisible: true }}/>
-    <Stack.Screen name="OrderDetails" component={OrderScreen}  />
+    
     <Stack.Screen name="ChefScreen" component={ChefScreen} options={{ tabBarVisible: true }}/>
   </Stack.Navigator>
 );
@@ -203,12 +204,17 @@ export default function App() {
           {/*ACCES APRES CONNECTION */}
           <Stack.Screen name="HomeTabs" component={HomeTabs} />
           <Stack.Screen name="Search" component={SearchScreen} />
+          
           {/*PARTIE EDIT PROFIL */}
           <Stack.Screen name="Setting" component={SettingScreen} options={{ tabBarVisible: false }} />
           <Stack.Screen name="EditProfil" component={EditProfilScreen} options={{ tabBarVisible: false }} />
           <Stack.Screen name="EditProfilChef" component={EditProfilChefScreen} options={{ tabBarVisible: false }} />
           <Stack.Screen name="AddNewRecipe" component={AddNewRecipeScreen} options={{ tabBarVisible: false }} />
           <Stack.Screen name="PastOrder" component={PastOrderScreen} options={{ tabBarVisible: false }} />
+          <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
+          <Stack.Screen name="OrderDetails" component={OrderScreen}  />
+
+      
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -33,7 +33,7 @@ export default function OrderScreen() {
   
         // Met à jour le state avec le tableau de recettes modifié
         setPlatData(data); */
-        const response = await fetch(`http://172.20.10.5:3000/recipes/displayRecipes/${platId}`);
+        const response = await fetch(`https://chefs-backend-amber.vercel.app/recipes/displayRecipes/${platId}`);
         const data = await response.json();
         if(data.result) {
           console.log(data.recipe)

@@ -20,7 +20,7 @@ export default function BookDateScreen() {
   // Fonction asynchrone pour récupérer les disponibilités du chef depuis l'API
   async function fetchChefAvailability() {
     try {
-      const response = await fetch(`http://192.168.1.63:3000/userChefAvailability/${chefId}`); // Requête pour obtenir les disponibilités du chef
+      const response = await fetch(`https://chefs-backend-amber.vercel.app/userChefAvailability/${chefId}`); // Requête pour obtenir les disponibilités du chef
 
       if (!response.ok) {
         throw new Error('Erreur de réseau ou serveur');
