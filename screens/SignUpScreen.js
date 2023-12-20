@@ -59,10 +59,13 @@ useEffect(()=> {
 },[])
 
 
+const handleReturnLastPage = () => {
+  navigation.navigate('Home');
+}
 
-  const toogleDataPiker = () => {
+const toogleDataPiker = () => {
     setVoirPikerData(!voirPikerData)
-  }
+}
 
   const confirmeIosDate = () => {
     setDateOfBirthInput(date.toDateString())
@@ -76,6 +79,7 @@ useEffect(()=> {
         if(Platform.OS === 'android'){
           toogleDataPiker()
           setDateOfBirthInput(currentDate.toDateString());
+          
         }
       }else{
         toogleDataPiker()
@@ -193,7 +197,7 @@ console.log('connection');
       
       {/* Fleche revenir sur la page précédente  */}
       <View style={styles.containeur_fleche}>
-        <FontAwesome name='arrow-left' size={22}  />
+        <FontAwesome onPress={handleReturnLastPage} name='arrow-left' size={22}  />
       </View>
       <View style={styles.containeur_navigation_view}> 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -344,7 +348,7 @@ console.log('connection');
           
 
       {/* Bouton de connexion */}
-      <TouchableOpacity  onPress={handleSubmitRegister}style={[styles.button, { marginTop: 40}]} >
+      <TouchableOpacity  onPress={handleSubmitRegister} style={[styles.button, { marginTop: 40}]} >
         <Text style={styles.buttonText}>Welcome!</Text>
       </TouchableOpacity>
 

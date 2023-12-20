@@ -9,14 +9,13 @@ import { View,
     TouchableOpacity,
     Alert,
     Platform,
-    YellowBox
 } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBowlFood } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-
+import { Feather } from '@expo/vector-icons';
 export default function OrderScreen() {
 
   const navigation = useNavigation();
@@ -43,7 +42,6 @@ export default function OrderScreen() {
 
   // useEffect to upload the informations about the chefs when click on recipes when ordering 
   useEffect(() => {
-    fetch(`http://10.12.58.200:3000/users/chef/${chefId}`)
     fetch(`https://chefs-backend-amber.vercel.app/users/chef/${chefId}`)
       .then(response => response.json())
       .then(data => {
@@ -60,7 +58,8 @@ export default function OrderScreen() {
         ))
         setRecipeList(recipes)
       });
-  }, [setChefId]);
+  }, 
+  [setChefId]);
 
 
     // managing the comments 
@@ -84,9 +83,9 @@ export default function OrderScreen() {
         {/* Top of the page */}
           <View style={styles.topHead}>
             <View>
-            <View style={styles.containeur_fleche} onPress={() => navigation.goBack()}>
-              <FontAwesome name='arrow-left' size={22} onPress={() => navigation.goBack()} />
-            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('HomePlat')} style={styles.backButton}>
+        <Feather name="chevron-left" size={24} color="black" />
+      </TouchableOpacity>
           </View>
             <View>
             {/* Ternary operator : if object is truthy, we access property name  */}
@@ -118,7 +117,7 @@ export default function OrderScreen() {
                 <Text style={styles.boxDescp}>Un petit mot de ton chef :</Text>
                   <Text style={[styles.txt_p_regular_small]}>{chefInfo ? chefInfo.experience : 'Loading...'}</Text>
               </View>
-                  </View>
+            </View>
 
 
 
@@ -132,25 +131,23 @@ export default function OrderScreen() {
                       </View>
 
                       <View style={styles.middleSectionBox}>
-                        <TouchableOpacity  activeOpacity={1}>
-                              <Text style={styles.txt_box_recipes}>{recipeList}</Text>
-                          </TouchableOpacity>
+                        <Text style={{fontSize: 15}}>{recipeList} </Text>
                       </View>
-                      
                     </View>
-
+                      
                     {/*  right part  */}
                     <View style={styles.middleSection_right}>
-                      <Text style={[styles.txt_h2, {marginLeft: 15, marginBottom: 10}]}> User's compliments</Text>
-                      <View style={styles.compliments}>
-                      <Text style={styles.firstCompliment}>{chefInfo ? chefInfo.userCompliment : 'Loading...'}</Text>
-                      <Text style={styles.secondCompliment}> xxx </Text>
-                      <Text style={styles.firstCompliment}> yyy </Text>
-                      <Text style={styles.secondCompliment}> zzzz</Text>
+                      <Text style={[styles.txt_h2, { marginLeft: 15, marginBottom: 10 }]}>User's compliments</Text>
+                      <View style={styles.complimentsBox}>
+                        {chefInfo && chefInfo.userCompliment
+                          ? chefInfo.userCompliment.map((compliment, index) => (
+                              <Text key={index} style={{ fontSize: 12 }}>{compliment}</Text>
+                            ))
+                          : <Text> 'Loading...' </Text>}
                       </View>
                     </View>
-                  </View>
 
+                    </View>
 
 
                   {/* --- BOTTOM SECTION --- */}
@@ -171,7 +168,7 @@ export default function OrderScreen() {
                   </TouchableOpacity>
 
               <StatusBar style="auto" />
-        </View>
+      </View>
     </KeyboardAvoidingView>
   );
 }
@@ -204,10 +201,14 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
 
-    containeur_fleche: {
-    width: "80%",
-    marginTop: 20,
-    marginBottom: 10,
+    backButton: {
+      borderWidth: 1,
+      borderColor: 'black',
+      padding: 10,
+      borderRadius: 5,
+      marginBottom: 10,
+      width: '10%',
+
     },
 
     chefNameTitle: {
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
       fontSize: 20,
       paddingLeft: 20,
       paddingTop: 40,
-      fontWeight: '700',
+      // fontWeight: 700,
     },
 
    // Police 
@@ -233,19 +234,19 @@ const styles = StyleSheet.create({
   txt_p_regular: {
     color: '#5959F0',
     fontSize: 12,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
 },
 
 txt_p_regular_small: {
   color: 'black',
   fontSize: 12,
-  fontWeight: 'lighter',
+  // fontWeight: 'lighter',
 },
 
 txt_p_regular_small_top: {
   color: '#5959F0',
   fontSize: 12,
-  fontWeight: 'lighter',
+  // fontWeight: 'lighter',
 },
       // --- TOP SECTION --- 
 
@@ -261,29 +262,24 @@ txt_p_regular_small_top: {
         width : '40%',
         borderBottomLeftRadius: 10,
         borderBottomRightRadius : 10,
-        paddingTop: 10,
         paddingBottom: 30,
       },
 
-      photo:{
-        width : "90%",
-        height: '80%',
-        borderRadius: '20',
-      },
 
       box_description: {
         alignItems: 'flex-start',
         paddingLeft: 10,
+        paddingTop: 0,
       },
 
       box2: {
         width: '50%',
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
-        borderWidth: 1,
-        borderRadius: 15, // Au lieu de borderRadius: '15'
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         borderColor: '#5959F0',
-        backgroundColor: 'rgba(146, 146, 254, 0.19)',
+        backgroundColor: 'rgba(146, 146, 254, 0.25)',
         alignItems: 'center',
         justifyContent: 'flex-start',
         marginBottom: 20,
@@ -295,14 +291,15 @@ txt_p_regular_small_top: {
         paddingBottom: 10,
         fontSize: 12,
         color: '#5959F0',
-        fontWeight: '600',
+        // fontWeight: 600,
       },
       
 
   photo:{
+    marginTop: 20,
     width : "90%",
-    height: '60%',
-    borderRadius: '20',
+    height: '70%',
+    borderRadius: 20,
   },
 
 
@@ -319,16 +316,16 @@ txt_p_regular_small_top: {
     width: '40%',
     borderBottomLeftRadius: 10,
     borderBottomRightRadius : 10,
-    borderRadius: '15',
+    borderRadius: 15,
     borderColor: '#5959F0',
-    backgroundColor: 'rgba(146, 146, 254, 0.19)',
+    backgroundColor: 'rgba(146, 146, 254, 0.20)',
   },
 
   tendance: {
     paddingLeft: 10,
     paddingTop: 5,
     flexDirection: 'row', 
-    alignItems: 'center',
+    alignItems: 'center',  
   },
 
   txt_box : {
@@ -345,69 +342,46 @@ txt_p_regular_small_top: {
     paddingRight: 10,
 },
 
-txt_box_recipes : {
-  color: '#5959F0',
-  fontSize: 15,
-  fontWeight: 'bold',
-},
-
-containeur_box_recipe: {
-  height : '20%',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-},
   
-  
-
-          // right part 
   middleSection_right: {
     width: '55%',
     borderColor: '#5959F0',        
-    paddingLeft: 10,
+    marginLeft: 10,
+    alignItems: 'center', 
   },
 
   txt_h2 : {
     color: '#5959F0',
     fontSize: 15,
-    fontWeight: 'bold',
+    // fontWeight: 600,
 },
-
-compliments : {
+complimentsBox: {
+  width: '100%',
+  height: '100%',
+  textAlignVertical: 'center',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginLeft: 30,
+  marginRight: 10,
   marginTop: 10,
-  padding: 5,
+  borderBottomLeftRadius: 30,
+  borderBottomRightRadius: 30,
+  borderTopLeftRadius: 30,
+  borderTopRightRadius: 30,
+  backgroundColor: 'rgba(146, 146, 254, 0.15)',
+  height: 40,
+  width: '100%',
+  paddingHorizontal: 10,
+  
 },
 
-firstCompliment : {
-  height: 20,
-  width: '100%',
-  borderColor: '#9292FE',
-  borderRadius: 10,
-  borderWidth: 1,
-  paddingHorizontal: 10,
-  marginBottom: 20,
-  marginLeft: 15,
-  fontSize: 12,
-  textAlign: 'center',
-},
-
-secondCompliment : {
-  height: 20,
-  width: '100%',
-  borderColor: '#9292FE',
-  borderRadius: 10,
-  borderWidth: 1,
-  paddingHorizontal: 10,
-  marginBottom: 20,
-  fontSize: 12,
-  textAlign: 'center',
-},
 
 // --- BOTTOM SECTION ---
 
 bottom_boxSection: {
   flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  justifyContent: 'center',
+  alignItems: 'center',
 },
 
 bottom_box: {

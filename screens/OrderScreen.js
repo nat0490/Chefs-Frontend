@@ -5,7 +5,8 @@ import { StyleSheet, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Te
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useNavigation } from '@react-navigation/native';
-import FontAwesome from '@expo/vector-icons/FontAwesome'
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import {addDate} from '../reducers/infoPourCommande';
 
 export default function OrderScreen() {
   const navigation = useNavigation();
@@ -23,10 +24,14 @@ export default function OrderScreen() {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+// const [chefId, setChefId] = useState('658019be85ac5cd2de446d8e');
+const [ totalAmount, setTotalAmount ] = useState([]);
 
-    // call function when presses button confirm address
   const handleAddressConfirmation = async () => {
-    setConfirmedAddress(userAddress); // updating variables when confirming user's input
+    setConfirmedAddress(userAddress); // updating variables when confirm user's input
+
+    
+
 
     try { // code might throw exceptions 
       // make the function waits until we have a Promise
@@ -46,7 +51,6 @@ export default function OrderScreen() {
     }
   };
 
-
      // managing the comments 
      const handleComment = (text) => { // calling the function when text input chages 
       setCommentaire(text);
@@ -57,56 +61,75 @@ export default function OrderScreen() {
       }
     }
 
+    // managing button to confirm order handleConfirmation
+    const handleConfirmation = () =>{
+      navigation.navigate('BookDate')
+     };
+
+     useEffect(() => {
+      const chefId = '658019be85ac5cd2de446d8e'
+     fetch(`https://chefs-backend-amber.vercel.app/recipes/${chefId}`)
+       .then(response => response.json())
+       .then(data => {
+        console.log(data.recipe.prix)
+         setTotalAmount(data.recipe.prix);
+       })
+     }, []);
+
+
+      
   return (
     <KeyboardAvoidingView  behavior="padding">
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.nav_bar_color}></View>
       <View style={styles.container}>
+          {/* header section */}
         <View style={styles.topHead}>
           <View style={styles.containeur_fleche}>
             <FontAwesome name='arrow-left' size={22} />
-            <Text style={{marginLeft: 70 }}>Order details</Text>
+            <Text style={styles.orderTitle}>Order details</Text>
         </View>
       </View>
 
-
           {/* --- TOP SECTION --- */}
-        <View style={styles.mapContainer}>
-          <MapView
-            style={styles.map}
-            initialRegion={mapRegion}
-          >
-            {confirmedAddress && (
-              <Marker
-                coordinate={{
-                  latitude: userCoordinates?.latitude || mapRegion.latitude,
-                  longitude: userCoordinates?.longitude || mapRegion.longitude,
-                }}
-                title="Ton addresse"
-                description={confirmedAddress}
-              />
-            )}
-          </MapView>
-        </View>
-
+        <View style={styles.page}>
+          <View style={styles.mapContainer}>
+            <MapView
+              style={styles.map}
+              initialRegion={mapRegion}
+            >
+              {confirmedAddress && (
+                <Marker
+                  coordinate={{
+                    latitude: userCoordinates?.latitude || mapRegion.latitude,
+                    longitude: userCoordinates?.longitude || mapRegion.longitude,
+                  }}
+                  title="Ton addresse"
+                  description={confirmedAddress}
+                />
+              )}
+            </MapView>
+          </View>
+          </View>
 
             {/* addresses */}
         <View style={styles.containerAdresse}> 
-          <View>
+          <View style={styles.containerConfirm}>
             <View>
               <TextInput
                 placeholder="Entrez votre adresse"
                 onChangeText={(address) => setUserAddress(address)}
                 value={userAddress}
+                style={styles.fullWidthInput}
               />
             </View>
             <View>
               <TouchableOpacity
                 onPress={handleAddressConfirmation}
                 activeOpacity={1}
-                style={styles.boxAddress}
+                style={styles.confirmButton}
               >
-                <Text style={{fontSize: 10}}>Confirme ton addresse</Text>
+                <Text style={{ fontSize: 12, color: 'white' }} >Confirme ton addresse</Text>
               </TouchableOpacity>
               </View>
           </View>
@@ -114,7 +137,7 @@ export default function OrderScreen() {
 
         {/* ---- MIDDLE SECTION ---- */}
         <View style={styles.bottom_boxSection}>
-          <View> 
+          <View style={styles.bottom_box}> 
             <TextInput
               style={styles.commentaire}
               placeholder="Ajoute un commentaire pour ton chef (allergens, besoins spéciaux, etc"
@@ -131,36 +154,42 @@ export default function OrderScreen() {
               marginVertical: 5, 
             }}
           />
+
+          {/* ---- BOTTOM SECTION ---- */}
         <View style={styles.section_box}>
-        <View style={styles.box_titre}>
-            {/*<FontAwesome name='heart' size={22}/> */}
+        <View style={{ margin: 10}}>
             <Text style={styles.txt_h1}>Voir les détails de ma commande :</Text>
         </View>
-        <View
-            style={{
-              borderBottomColor: '#9292FE',
-              borderBottomWidth: 2,
-              width : 260,
-              marginVertical: 5,
-            }}
-          />
 
-        <View>
-          <Text>Je valide ! </Text>
+        
+        <Text style={{ margin: 10}}>{confirmedAddress} à {addDate}</Text>
+        <View style={styles.recap}>
+          <View style={styles.recapColumn}>
+            <Text>Total</Text>
         </View>
+      <View style={styles.recapColumn}>
+          <Text>{totalAmount.minimum} € pour 2 personnes</Text> 
       </View>
+      </View>
+
+          {/* Bouton de connexion */}
+        <TouchableOpacity  onPress={handleConfirmation} style={[styles.button, { marginTop: 20}]} >
+          <Text style={styles.buttonText}>Je valide !</Text>
+          </TouchableOpacity>
+    </View>
     </View>
       <StatusBar style="auto" />
       </ScrollView>
     </KeyboardAvoidingView>
   );
-}
+     }
 
 const styles = StyleSheet.create({
   
   scrollContainer: {
-    flexGrow: 1,
+    flexGrow: 0.8,
     justifyContent: 'space-between',
+    backgroundColor: 'rgba(146, 146, 254, 0.15)',
   },
   
   nav_bar_color: {
@@ -174,40 +203,47 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     marginLeft: '10%',
-    marginRight: '10%',
+    marginRight: '10%', 
+    
   },
 
   topHead: {
-    backgroundColor: 'yellow',
+    width: '100%',
     flexDirection: 'row',
+    alignItems: 'center',
   },
 
   containeur_fleche: {
-    flex: 1,
-    marginTop: 20,
-    marginBottom: 10,
+    width: "80%",
   },
 
   orderTitle: {
     color: '#5959F0',
     fontSize: 20,
+    paddingLeft: 60,
     fontWeight: '700',
-    flex: 1,
-    alignItems: "flex-start",
-    paddingBottom: 10,
+    marginBottom: 10,
   },
+
 
   // ---- TOP SECTION ----
 
-  // map 
+  ContainMap: {
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+
   mapContainer: {
-    marginVertical: 0,
     alignItems: 'center',
     marginBottom: 10,
   },
+
   map: {
     width: '100%',
-    height: 300,
+    height: 250,
+    backgroundColor: 'rgba(146, 146, 254, 0.25)',
   },
 
   // addresses
@@ -215,28 +251,35 @@ const styles = StyleSheet.create({
   containerAdresse: {
     alignItems: 'center',
     justifyContent: 'space-between', 
-    backgroundColor: 'blue',
   },
 
-  boxAddress: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: '#9292FE',
-    backgroundColor: '#fff',
+  containerConfirm: {
+    justifyContent: 'space-between',  
+    alignItems: 'center',
   },
 
-    // --- MIDDLE SECTION --- 
-
-  bottom_boxSection: { 
-    height: '10%',
-    backgroundColor: 'red',
+  fullWidthInput: {
+  width: 300,
+  margin: 3,
+  borderBottomWidth: 1,  // Use borderBottomWidth instead of borderWidth
+  borderColor: '#9292FE',  // Set the border color
+  paddingVertical: 8,  // Adjust vertical padding for better appearance
+  paddingHorizontal: 0, 
   },
-  
-  bottom_box: {
-    height: 60, // Ajustez la hauteur selon vos besoins (ou toute autre valeur fixe)
+
+  confirmButton: {
+    backgroundColor: '#9292FE',
     marginTop: 10,
+    padding: 10,
+    borderRadius: 50,  // Makes it round
+    alignItems: 'center',
+    justifyContent: 'center', 
+  },
+
+  bottom_box: {
+    width:'100%',
+    height: '70%',
+    marginTop: 20,
     backgroundColor: 'rgba(146, 146, 254, 0.19)',
     borderWidth: 0.5,
     borderColor: 'rgba(189, 189, 189, 0.00)',
@@ -249,16 +292,26 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
   },
 
+    // --- MIDDLE SECTION --- 
 
-  section_box: {
-    marginTop: 20,
-    alignItems :  'center',
+  bottom_boxSection: { 
+    height: 80,
+    marginTop: 10,
   },
 
-  box_titre: {
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent: 'space-around'
+  section_box: {
+    alignItems: 'center',
+    paddingVertical: 10,
+    height: 200,
+  },
+
+  buttonText: {
+      paddingVertical: 10, // 10 units of padding at the top and bottom
+      paddingHorizontal: 25, // A
+      borderRadius: 5,
+      borderWidth: 2,
+      borderColor: '#9292FE',
+      backgroundColor: '#fff',
   },
 
   txt_h1: {
@@ -266,4 +319,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   
+  basketDetail: {
+    backgroundColor: 'red',
+    flexDirection: 'row',
+  },
+
+  recap: {
+    borderBottomColor: '#9292FE',
+    borderBottomWidth: 2,
+    width: 300,
+    marginVertical: 5,
+    flexDirection: 'row',
+  },
+
+  recapColumn: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+
 });
