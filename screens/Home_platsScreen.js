@@ -16,31 +16,23 @@ export default function OrderScreen() {
   useEffect(() => {
    (async () => {
       try {
-<<<<<<< HEAD
         const response = await fetch(`https://chefs-backend-amber.vercel.app/recipes/${platId}`);
         const data = await response.json();
-  
+         
 
           const chefResponse = await fetch(`https://chefs-backend-amber.vercel.app/users/chef/${data.recipe.userChef}`);
           const chefData = await chefResponse.json();
-  
+          let b = console.log(chefData.data.userProfil._id)
           const profilResponse = await fetch(`https://chefs-backend-amber.vercel.app/users/profil/${chefData.data.userProfil._id}`);
           const profilData = await profilResponse.json();
-
+          console.log(profilData)
           //dataAjouter le nom du chef à l'objet
-          data.recipe.nomDuChef = profilData.data.nom;
+          data.recipe.nomDuChef = profilData.data.userProfil.nom;
 
   
         // Met à jour le state avec le tableau de recettes modifié
         setPlatData(data);
-=======
-        const response = await fetch(`http://172.20.10.5:3000/recipes/displayRecipes/${platId}`);
-        const data = await response.json();
-        if(data.result) {
-          console.log(data.recipe)
-          setPlatData(data.recipe);
-        }
->>>>>>> christof
+        console.log(data)
       } catch (error) {
         console.error("Erreur lors du traitement des données :", error);
       }

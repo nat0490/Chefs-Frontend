@@ -60,10 +60,13 @@ useEffect(()=> {
 },[])
 
 
+const handleReturnLastPage = () => {
+  navigation.navigate('Home');
+}
 
-  const toogleDataPiker = () => {
+const toogleDataPiker = () => {
     setVoirPikerData(!voirPikerData)
-  }
+}
 
   const confirmeIosDate = () => {
     setDateOfBirthInput(date.toDateString())
@@ -77,6 +80,7 @@ useEffect(()=> {
         if(Platform.OS === 'android'){
           toogleDataPiker()
           setDateOfBirthInput(currentDate.toDateString());
+          
         }
       }else{
         toogleDataPiker()
@@ -115,12 +119,7 @@ const handleSubmitRegister = () => {
 //VERIF MOTS DE PASSE MASQUE POUR FACILITER NOS TEST
 console.log('connection');
   if (verifierEmail() /*&& verifierMotDePasse()*/) {
-<<<<<<< HEAD
       //fetch('https://chefs-backend-amber.vercel.app/users/signup', {
-=======
-    console.log('connection');
-      //fetch('http://172.20.10.5:3000/users/signup', {
->>>>>>> 28a9393b233ed12e81a04cb062b4d13955f19a69
       fetch('https://chefs-backend-amber.vercel.app/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -199,7 +198,7 @@ console.log('connection');
       
       {/* Fleche revenir sur la page précédente  */}
       <View style={styles.containeur_fleche}>
-        <FontAwesome name='arrow-left' size={22}  />
+        <FontAwesome onPress={handleReturnLastPage} name='arrow-left' size={22}  />
       </View>
       <View style={styles.containeur_navigation_view}> 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -350,7 +349,7 @@ console.log('connection');
           
 
       {/* Bouton de connexion */}
-      <TouchableOpacity  onPress={handleSubmitRegister}style={[styles.button, { marginTop: 40}]} >
+      <TouchableOpacity  onPress={handleSubmitRegister} style={[styles.button, { marginTop: 40}]} >
         <Text style={styles.buttonText}>Welcome!</Text>
       </TouchableOpacity>
 

@@ -45,10 +45,11 @@ export const userSlice = createSlice({
         state.value.userProfile.tel = action.payload.userProfile.tel ;
         state.value.userProfile.chef = action.payload.userProfile.chef  ;
         state.value.userProfile.orders = action.payload.userProfile.orders ;
-        state.value.userProfile.userPreference = action.payload.userProfile.userPreference ;
         state.value.userProfile.wishList = action.payload.userProfile.userPreference ;
-
       }
+    },
+    updatePreference : (state, action) => {
+      state.value.userProfile.userPreference = action.payload.userPreference ;
     },
     logout: (state) => {
       state.value.id = null;
@@ -71,7 +72,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout,updatePreference  } = userSlice.actions;
 export default userSlice.reducer;
 
 /*
