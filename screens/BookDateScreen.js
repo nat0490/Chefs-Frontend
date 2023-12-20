@@ -3,6 +3,10 @@ import { View, StyleSheet, Button, Text, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars'; // Importation du composant de calendrier
 import DateTimePicker from '@react-native-community/datetimepicker'; // Importation du sélecteur de date/heure
 // import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { Feather } from '@expo/vector-icons';
+
+
 export default function BookDateScreen() {
   // États pour gérer les données et l'interface
   const [chefAvailability, setChefAvailability] = useState([]); // Disponibilités du chef
@@ -10,7 +14,7 @@ export default function BookDateScreen() {
   const [selectedTime, setSelectedTime] = useState(new Date()); // Heure sélectionnée
   const [showTimePicker, setShowTimePicker] = useState(false); // Affichage du sélecteur d'heure
   const [selectedReservation, setSelectedReservation] = useState(null); // Réservation sélectionnée
-
+  const navigation = useNavigation();
   
  // const chefId = useSelector((state) => state.infoPourCommande.value.chefId);
 
@@ -112,7 +116,10 @@ export default function BookDateScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.nav_bar_color}></View>
-      <View style={styles.container_box_width}>
+      <TouchableOpacity onPress={() => navigation.navigate('CheckProfile')} style={styles.backButton}>
+        <Feather name="chevron-left" size={24} color="black" />
+      </TouchableOpacity>
+      <View style={styles.containerCalendar}>
         <Calendar 
           markedDates={{
             ...markedDates,
@@ -127,6 +134,8 @@ export default function BookDateScreen() {
             }
           }}
         />
+
+        
          <View style={styles.container_btn_bottom}> 
 
                <TouchableOpacity
@@ -174,26 +183,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+   
   },
-  container_box_width: {
-    width: '80%',
+  containerCalendar: {
     flex: 1,
+    justifyContent: 'center',
   },
   nav_bar_color: {
     backgroundColor: '#9292FE',
     width: '100%',
     height: 65,
+    
+  },
+
+
+ backButton: {
+    borderWidth: 1,
+    borderColor: 'black',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+    width: '10%',
+    
   },
   
  
 
   btn_heure: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-    backgroundColor: '#9292FE',
     
+    backgroundColor: '#9292FE',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginBottom: 25,
   },
 
   buttonText_heure :  {
@@ -213,21 +235,19 @@ const styles = StyleSheet.create({
   },
 
   btn_Reservation: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 5,
     backgroundColor: '#9292FE',
-    
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginBottom: 25,
   },
 
   reservationDetails:{
     backgroundColor: '#9292FE',
-    height: 40,
-    marginTop: 20,
-    borderColor: '#9292FE',
-    borderRadius:10,
-    borderWidth: 1,
-    justifyContent: 'center',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginBottom: 25,
   },
 
   detailText: {

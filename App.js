@@ -139,8 +139,8 @@ export default function App() {
 const MainStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Main" component={MainScreen} />
-    <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
-    <Stack.Screen name="BookDate" component={BookDateScreen} />
+    
+    
     <Stack.Screen name="Dish" component={DishScreen} options={{ tabBarVisible: true }}/>
     
     <Stack.Screen name="ChefScreen" component={ChefScreen} options={{ tabBarVisible: true }}/>
@@ -213,8 +213,9 @@ export default function App() {
           <Stack.Screen name="PastOrder" component={PastOrderScreen} options={{ tabBarVisible: false }} />
           <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
           <Stack.Screen name="OrderDetails" component={OrderScreen}  />
-
-      
+          <Stack.Screen name="BookDate" component={BookDateScreen} />
+          <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
+           
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
