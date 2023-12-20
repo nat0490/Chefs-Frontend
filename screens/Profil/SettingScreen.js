@@ -28,24 +28,20 @@ export default function SettingScreen() {
   
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const vercelURL = 'https://chefs-backend-amber.vercel.app';
 
     const user = useSelector((state) => state.user.value);
     const chefStatus = useSelector((state) => state.user.value.userProfile.chef);
     const userChef = useSelector((state) => state.chef.value);
     //console.log(userChef);
-    //console.log(user.id);
 
     const [ chef, setChef ] = useState(false);
-  
-
-console.log(user)
 
   useEffect(()=> {
     setChef(chefStatus);
-    //console.log(user);
   //CHARGER LE PROFIL CHEF SI IL EXISTE
   if (userChef.id === null){ 
-    fetch(`https://chefs-backend-amber.vercel.app/users/chef/find/${user.id}`)
+    fetch(`${vercelURL}/users/chef/find/${user.id}`)
             .then( res => res.json())
             .then(data => {
                 if (data.result) {
@@ -72,8 +68,8 @@ console.log(user)
 }},[chefStatus, user.id]);
 
   const changeStatusChef = () => {
-    console.log(user.id);
-    fetch(`https://chefs-backend-amber.vercel.app/users/profil/${user.id}/update-chef`, {
+    //console.log(user.id);
+    fetch(`${vercelURL}/users/profil/${user.id}/update-chef`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify(),
@@ -104,8 +100,6 @@ console.log(user)
           //console.log(userInfo);
           dispatch(logout());
           dispatch(login(userInfo));
-          //setModifEmailPw(!modifEmailPw);
-          //setEmail("");
         }
       })
       .catch(error => {
@@ -171,17 +165,10 @@ console.log(user)
                     <Text style={styles.menuAction}> <FontAwesomeIcon icon={faUtensils} style={{color: "#5959f0",}} />  Devenir un chef</Text>
                   </TouchableOpacity>
                   }
-                
-                  {/*
-                  AJOUTER PLUS TARD LE LOGOUT ICI 
-                dispatch(logout()) ;
-                */}
                 <TouchableOpacity>
                     <Text style={styles.menuAction} onPress={()=> logoutApp()}> <FontAwesomeIcon icon={faRightFromBracket} style={{color: "#5959f0",}}/>  Se déconnecter</Text>
                 </TouchableOpacity>
               </View>
-
-
         
         </View>
       <StatusBar style="auto" />

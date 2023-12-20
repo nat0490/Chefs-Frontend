@@ -1,9 +1,5 @@
 //import 'react-native-gesture-handler';
 import * as React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-   
-
 //Navigation
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -38,7 +34,6 @@ import HomeChefScreen from './screens/Home_chefsScreen';
 import OrderCheckProfile from './screens/OrderCheckProfile';
 import ChefScreen from './screens/ChefScreen';
 
-//import ProfilScreen from './screens/Profil/ProfilScreen';
 
 //import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -55,84 +50,12 @@ import typeCuisine from './reducers/typeCuisine';
 import ustensil from './reducers/ustensils';
 import chef from './reducers/chef';
 import infoPourCommande from './reducers/infoPourCommande';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+
 
 //const navigation = useNavigation();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-  
 
-/*
-
-
-const HomeTabs = () => (
-  <Tab.Navigator screenOptions={({ route }) => ({
-    tabBarIcon: () => {
-      let iconName = '';
-      if (route.name === 'Main') {
-        iconName = faHouseChimney;
-      } else if (route.name === 'Search') {
-        iconName = faBowlFood;
-      } else if (route.name === 'Wishlist') {
-        iconName = faHeart;
-      }
-      return <FontAwesomeIcon icon={iconName} style={{color: "#5959f0",}} /> ;
-      //<FontAwesome name={iconName} size={size} color={color} />;
-    },
-    tabBarActiveTintColor: '#e8be4b',
-    tabBarInactiveTintColor: '#b2b2b2',
-    headerShown: false,
-  })}>
-    
-    <Tab.Screen name="Main" component={MainScreen} />
-    {/* <Tab.Screen name="Search" component={SearchScreen} /> 
-    <Tab.Screen name="Wishlist" component={WishlistScreen} /> 
-  </Tab.Navigator>
-); 
-
-
-
-
-const store = configureStore({
-  reducer: { user, typeCuisine, ustensil, chef, infoPourCommande },
-})
-
-
-
-export default function App() {
-  return (
-    <Provider store={store}> 
-   
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="EditProfil" component={EditProfilScreen} />
-          <Stack.Screen name="EditProfilChef" component={EditProfilChefScreen} />
-          <Stack.Screen name="HomeTabs" component={HomeTabs} />
-          <Stack.Screen name="Setting" component={SettingScreen} />
-          <Stack.Screen name="Sign_in" component={SignInScreen} />
-          <Stack.Screen name="Sign_up" component={SignUpScreen} />
-          <Stack.Screen name="Preference" component={PreferencesScreen} />
-          <Stack.Screen name="HomePlat" component={HomePlatScreen} />
-          <Stack.Screen name="HomeChefs" component={HomeChefScreen} />
-          <Stack.Screen name="Search" component={SearchScreen} />
-          <Stack.Screen name="Terms" component={TermsScreen}/>
-          <Stack.Screen name="PastOrder" component={PastOrderScreen} />
-          <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
-          <Stack.Screen name="AddNewRecipe" component={AddNewRecipeScreen} />
-          <Stack.Screen name="BookDate" component={BookDateScreen} />
-          <Stack.Screen name="Dish" component={DishScreen} options={{ tabBarVisible: true }}/>
-          <Stack.Screen name="OrderDetails" component={OrderScreen}  />
-          <Stack.Screen name="ChefScreen" component={ChefScreen} options={{ tabBarVisible: true }}/>
-        </Stack.Navigator>
-      </NavigationContainer>
-      
-    </Provider>
-  );
-};
-
-*/
 
 // Écran principal de la tabBar
 const MainStack = () => (
@@ -147,11 +70,12 @@ const MainStack = () => (
 );
 
 // Écran de la tabBar "Wishlist"
+/*
 const WishlistStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Wishlist" component={WishlistScreen} />
   </Stack.Navigator>
-);
+);*/
 
 
 
@@ -173,7 +97,7 @@ const HomeTabs = () => (
   })}>
     {/* Associez chaque onglet à sa pile de navigation respective */}
     <Tab.Screen name="MainStack" component={MainStack} />
-    <Tab.Screen name="Wishlist" component={WishlistStack} />
+    <Tab.Screen name="Wishlist" component={WishlistScreen} />
   </Tab.Navigator>
 );
 

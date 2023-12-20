@@ -63,19 +63,6 @@ const allIngredients = ingredients ? ingredients.map((oneIngredient, index) => (
 )): null;
 
 
-/*
-const handleBookmark = () => {
-  if (!isBookmark) {
-    dispatch(addRecipeToFavorite(route));
-    setIsBookmark(!isBookmark);
-    console.log(route);
-  } else {
-    dispatch(removeRecipeToFavorite(route));
-    setIsBookmark(!isBookmark)
-  } 
-}
-*/
-
 //USTENSILS
 const besoinUstensils = 
   ustensils ? ustensils.map((oneUstensil , i ) => (
@@ -86,12 +73,7 @@ const besoinUstensils =
   )) : null;
 
 
-//PRIX
-  let prixTotal = 0;
-  if (prix) {
-    prixTotal = prix.minimum + ((prix.personneSup - 1) + prix.panierCourseParPersonne)*nbPeople;
-    //console.log(prixTotal);
-  }; 
+
 
  //console.log(_id);
  //console.log(userChef._id);
@@ -112,8 +94,6 @@ const validerPlat = () => {
 const voirProfilChef = (menu) => {
   navigation.navigate('ChefScreen', menu)
 }
-
-
 
 
 //NOTE MOYENNE

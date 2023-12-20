@@ -10,13 +10,15 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { login, logout} from '../../reducers/user';
-//import user from '../../reducers/user';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faGear, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { Dropdown } from 'react-native-element-dropdown';
+import AntDesign from '@expo/vector-icons/AntDesign';
+
 
 
 export default function EditProfilScreen() {
-
 //HOOK DETAT
-  //const [ user, setUser ] =useState(null);
   const [ modifCoordonne, setModifCoordonne ] = useState(false);
   const [ modifEmailPw, setModifEmailPw ] = useState(false);
   const [ newRue, setNewRue ] = useState("");
@@ -26,33 +28,93 @@ export default function EditProfilScreen() {
   const [ newEmail, setNewEmail ] = useState("");
   const [ newPw, setNewPw ] = useState("");
   const [ forgetPw, setForgetPw] = useState(false);
-  
+  const [ showPreferences, setShowPreferences ] = useState(false);
+  const [ userPreferences, setUserPreferences] = useState([]);
+  const [ removeRegisterPreference, setRemoveRegisterPreference ] = useState([]);
+  const [ newPreferences, setNewPreferences] = useState([]);
+  const [ isFocus, setIsFocus] = useState(false);
+  const [ scrollOffset, setScrollOffset] = useState(40);
   
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const vercelURL = 'https://chefs-backend-amber.vercel.app';
 
-//REDUCER RECUPERER EST POUSSER DANS LE HOOK DETAT USER
   const user = useSelector((state) => state.user.value);
- //console.log(user);
+  const typeCuisine = useSelector((state) => state.typeCuisine.value);
+  //console.log(userPreferences);
 
-  /*
-  //console.log(reducerUser);
+//POUR RECUPERER LES INFOS DUN USER ET METTRE CES PREFERENCES DANS USERPREFERENCE
+  const fetchUserPreferences = async () => {
+    try {
+      const response = await fetch(`${vercelURL}/users/profil/${user.id}`);
+      const data = await response.json();
+      if (data.result) {
+        setUserPreferences([]);
+        setUserPreferences(data.data.userPreference);
+      } else {
+        console.error('Erreur lors du chargement des préférences utilisateur:', data.message);
+      }
+    } catch (error) {
+      console.error('Erreur fetchUserPreferences:', error);
+    }
+  };
+
   useEffect(() => {
-    setUser(reducerUser);
-  },[reducerUser]); 
-  //console.log(user);
-*/
+    if (showPreferences) {
+      fetchUserPreferences();
+    }
+  }, [showPreferences, user.id]);
+ 
+
+//METTRE A JOUR LES PREFERENCES USER
+//FONCTION DE BASE
+const updatePreferences = async (preferences, endpoint, key, successMessage) => {
+  if (preferences.length > 0) {
+    try {
+      for (const preference of preferences) {
+        //console.log(preference);
+        const response = await fetch(`${vercelURL}/users/profil/${endpoint}/${user.id}`, {
+          //const response = await fetch(`http://192.168.1.106:3000/users/profil/${endpoint}/${user.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userPreference: preference[key] })
+        });
+        const data = await response.json();
+        // console.log(data);
+        if (data.result) {
+          console.log(successMessage);
+        } else {
+          console.log(data.message);
+        }
+      }
+    } catch (error) {
+      console.error(`Erreur fetchUpdateUserPreferences (${endpoint}):`, error);
+    }
+  }
+};
+//FONCTION UTILISE EN FONCTION DES CRITERE: une pour supprimer les pref de la BDD, l'autre pour ajouter des nouvelles
+const fetchUpdateUserPreferences = async () => {
+  await updatePreferences(removeRegisterPreference, 'remove-preference', '_id', 'Préférences retirées de la BDD');
+  await updatePreferences(newPreferences, 'add-preference', 'value', 'Nouvelles préférences ajoutées');
+};
+  
+//Bouton valider mes changements de préférences
+const validerChangementPref = () => {
+  fetchUpdateUserPreferences();
+  setNewPreferences([]);
+  setShowPreferences(!showPreferences);
+  setScrollOffset(showPreferences ? 40 : -100);
+}
   
 //Changer de numéro 
   const changeTel = () => {
     const newValueTel = newTel ? newTel: user.tel ;
     //const pattern = /^\+(?:[0-9] ?){6,14}[0-9]$/;
-//A DECOMENTER!!
-    //const TEL_REGEX = /^0[0-9]{9}$/;
-    if (newValueTel !== null /*&& TEL_REGEX.test(newValueTel)*/) {
+    const TEL_REGEX = /^0[0-9]{9}$/;
+    if (newValueTel !== null && TEL_REGEX.test(newValueTel)) {
       setModifCoordonne(!modifCoordonne);
       if(user) {
-        fetch(`https://chefs-backend-amber.vercel.app/users/profil/${user.userProfile.id}/update-tel`, {
+        fetch(`${vercelURL}/users/profil/${user.id}/update-tel`, {
         //fetch(`http://192.168.1.106:3000/users/profil/579c585c03077192e6dea33/update-tel`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json'},
@@ -63,10 +125,10 @@ export default function EditProfilScreen() {
             //console.log(data);
             if(data.result) {
               const userInfo = {
+                id : user.id,
                 email : user.email,
                 token : user.token,
                 userProfile : {
-                  id : user.userProfile.id,
                   nom : user.userProfile.nom,
                   prenom : user.userProfile.prenom,
                   dateOfBirth : user.userProfile.dateOfBirth,
@@ -77,6 +139,9 @@ export default function EditProfilScreen() {
                   }, 
                   tel : newValueTel,
                   chef : user.userProfile.chef,
+                  orders: user.userProfile.orders,
+                  userPreference: user.userProfile.userPreference,
+                  wishList: user.userProfile.wishList,
                   }
                 };
               //console.log(userInfo)
@@ -84,7 +149,6 @@ export default function EditProfilScreen() {
               dispatch(login(userInfo));
               setModifCoordonne(!modifCoordonne);
               setNewTel("");
-              
             } else { 
              console.log(data.message);
             } 
@@ -113,7 +177,7 @@ export default function EditProfilScreen() {
     };
     if (user) {
       //console.log(user.userProfile.id);
-      fetch(`https://chefs-backend-amber.vercel.app/users/profil/${user.userProfile.id}/update-adresse`, {
+      fetch(`${vercelURL}/users/profil/${user.userProfile.id}/update-adresse`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(newAdresse),
@@ -123,16 +187,19 @@ export default function EditProfilScreen() {
           //console.log(data);
           if(data.result) {
             const userInfo = {
+              id : user.id,
               email : user.email,
               token : user.token,
               userProfile : {
-                id : user.userProfile.id,
                 nom : user.userProfile.nom,
                 prenom : user.userProfile.prenom,
                 dateOfBirth : user.userProfile.dateOfBirth,
-                adresse : newAdresse ,
-                tel : user.userProfile.tel,
+                adresse : newAdresse, 
+                tel : newValueTel,
                 chef : user.userProfile.chef,
+                orders: user.userProfile.orders,
+                userPreference: user.userProfile.userPreference,
+                wishList: user.userProfile.wishList,
                 }
               };
             console.log(userInfo)
@@ -152,7 +219,6 @@ export default function EditProfilScreen() {
       } else {
         console.log('no userConnexion ')
       }
-    
   };
 
 //Changer Email
@@ -162,7 +228,7 @@ export default function EditProfilScreen() {
     if (newValueEmail !== null && EMAIL_REGEX.test(newValueEmail)) {
       if(user) {
         //console.log(user.token);
-        fetch(`https://chefs-backend-amber.vercel.app/users/${user.token}/update-email`, {
+        fetch(`${vercelURL}/users/${user.token}/update-email`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify({newEmail: newValueEmail}),
@@ -172,10 +238,10 @@ export default function EditProfilScreen() {
             //console.log(data);
             if(data.result) {
               const userInfo = {
+                id : user.id,
                 email : newValueEmail,
                 token : user.token,
                 userProfile : {
-                  id : user.userProfile.id,
                   nom : user.userProfile.nom,
                   prenom : user.userProfile.prenom,
                   dateOfBirth : user.userProfile.dateOfBirth,
@@ -183,9 +249,12 @@ export default function EditProfilScreen() {
                     rue : user.userProfile.adresse.rue,
                     ville : user.userProfile.adresse.ville,
                     codePostal : user.userProfile.adresse.codePostal,
-                  },
-                  tel : user.userProfile.tel,
+                  }, 
+                  tel : newValueTel,
                   chef : user.userProfile.chef,
+                  orders: user.userProfile.orders,
+                  userPreference: user.userProfile.userPreference,
+                  wishList: user.userProfile.wishList,
                   }
                 };
               console.log(userInfo)
@@ -219,7 +288,7 @@ export default function EditProfilScreen() {
     const PW_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     if (newValuePW !== null && PW_REGEX.test(newValuePW)) {
       if(user) {
-        fetch(`https://chefs-backend-amber.vercel.app/users/${user.token}/update-password`, {
+        fetch(`${vercelURL}/users/${user.token}/update-password`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify({newPassword: newValuePW}),
@@ -249,24 +318,94 @@ export default function EditProfilScreen() {
     }
   };
 
+//TOUTES LES PREFERENCES
+  //TRIS PAR ORDRE ALPHABETIQUE
+  const newlisteType = [... typeCuisine] 
+  newlisteType.sort((a, b) => {
+    const cuisineA = a.cuisine.toUpperCase(); // ignore la casse
+    const cuisineB = b.cuisine.toUpperCase(); // ignore la casse
+    if (cuisineA < cuisineB) {
+      return -1;
+    }
+    if (cuisineA > cuisineB) {
+      return 1;
+    }
+    return 0;
+  });
+  const dataTypeCuisine = newlisteType.map((cuisine) => (
+    {label: cuisine.cuisine, value : cuisine.id}
+  ));
 
+//UPDATE PREFERENCE DANS LA BDD
+const updatePreferenceBDD = (pref) => {
+  setRemoveRegisterPreference([...removeRegisterPreference, pref]);
+  setUserPreferences(userPreferences.filter(e => e.typeCuisine !== pref.typeCuisine));
+}
 
+//USER PREFERENCES
+  const myPreferences = userPreferences.length > 0 ? userPreferences.map((pref, i) => {
+  return <View key={i}>
+          <TouchableOpacity style={styles.btnType} onPress={()=> updatePreferenceBDD(pref)}>
+            <Text style={styles.textBtnType}>{pref.typeCuisine}</Text>
+          </TouchableOpacity></View> }) : null;
 
-  const myPreferences = user.userProfile.wishList ? user.userProfile.wishList.map((wish, i) => {
-    <View>{wish}</View>
-  }) : "";
-
+//PREFERENCES AJOUTE
+const addPreferences = newPreferences.length > 0 ? newPreferences.map((pref, i) => {
+  return <View key={i}>
+          <TouchableOpacity style={styles.btnType} onPress={()=> setNewPreferences(newPreferences.filter(e => e.value !== pref.value))}>
+            <Text style={styles.textBtnType}>{pref.label}</Text>
+          </TouchableOpacity></View> }) : null;
+       
+const choixPreference = userPreferences ?
+  <View> 
+    <Text style={styles.txt_h2}>Mes préférences:</Text>
+    <View style={styles.typeSelected}>{myPreferences}{addPreferences}</View>
+    <Text style={styles.txt_h2}>Toutes les préférences:</Text>
+    <View style={{width: '100%', marginBottom: 10}}> 
+                  <View style={styles.dropdownLine}> 
+                    <Dropdown
+                      style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      //iconStyle={styles.iconStyle}
+                      data={dataTypeCuisine}
+                      search
+                      maxHeight={300}
+                      labelField="label"
+                      valueField="value"
+                      placeholder={!isFocus ? 'Catégorie' : '...'}
+                      searchPlaceholder="Search..."
+                      value={newPreferences}
+                      onFocus={() => setIsFocus(true)}
+                      onBlur={() => setIsFocus(false)}
+                      onChange={item => {
+                          setNewPreferences([ ...newPreferences, item]);
+                          setIsFocus(false);
+                      }}
+                    renderLeftIcon={() => (
+                      <AntDesign
+                        style={styles.icon}
+                        color={isFocus ? 'blue' : 'black'}
+                        name='arrowright'
+                        size={18}
+                      />
+                    )}
+                  />
+          </View>
+        </View>
+  </View> : null ;
 
 //INFOS DU USER: AFFICHER CES INFOS EN LE RECUPERANT DANS LE REDUCER
   const afficherLesInfos = user ? (
       <>
-          <View style={styles.topPage}> 
+          <View style={{...styles.topPage, marginBottom: -30, marginTop: scrollOffset}}> 
             <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Setting' )}>
               <Text style={styles.btnTextBack}>←</Text>
             </TouchableOpacity>
             <Text style={styles.txt_h1}>Profil</Text>
           </View>
-        <View style={styles.blocProfil}> 
+        <View style={{...styles.blocProfil,}}> 
           <Text style={styles.inputText}>Nom: {user.userProfile.nom}</Text>
           <Text style={styles.inputText}>Prenom: {user.userProfile.prenom}</Text>
         {/*} <Text style={styles.inputText}>Date de naissance:  { userProfil.dateOfBirth? userProfil.dateOfBirth.toLocaleDateString() : "../../...." }</Text> */}
@@ -284,13 +423,22 @@ export default function EditProfilScreen() {
             <Text style={styles.buttonText_sign_in}>Modifier mes coordonnées</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.blocProfil}> 
-          <Text style={styles.inputText}>Mes préférences: {myPreferences}</Text>
-          
-          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setModifCoordonne(!modifCoordonne)}>
-            <Text style={styles.buttonText_sign_in}>Modifier mes préférences</Text>
-          </TouchableOpacity>
-        </View>
+           
+{/*PARTIE PREFERENCES */}           
+            { showPreferences?  
+                <> 
+                <View> 
+                  <TouchableOpacity activeOpacity={1} style={{...styles.btn_sign_up, flexDirection: 'row', justifyContent: 'space-around'}} onPress={()=> validerChangementPref()} >
+                    <Text style={styles.buttonText_sign_up}>Valider mes changements</Text><FontAwesomeIcon icon={faThumbsUp} style={{color: "#5959f0",}} />
+                  </TouchableOpacity>
+                </View>{choixPreference}
+                </> : 
+              <View> 
+                <TouchableOpacity activeOpacity={1} style={{...styles.btn_sign_up, flexDirection: 'row', justifyContent: 'space-around'}} onPress={()=> {setShowPreferences(!showPreferences), setScrollOffset(showPreferences ? 40 : -100);}} >
+                  <FontAwesomeIcon icon={faGear} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Gerer mes préférences culinaire</Text>
+                </TouchableOpacity>
+              </View>}
+        
       </>
   ) : <Text>Oops... Il y a eu un petit problème on dirais</Text> ;
 
@@ -303,19 +451,21 @@ export default function EditProfilScreen() {
 /*MODIFIER LE PW ou EMAIL*/
        forgetPw ? 
 /*PAGE MOTS DE PASSE OUBLIE*/
-        <>
-            <View> 
-              <TouchableOpacity style={styles.backBtn} onPress={()=> {setForgetPw(!forgetPw)}}>
+        <View style={{width: '100%'}}>
+            <View > 
+              <TouchableOpacity style={styles.backBtnAlone} onPress={()=> {setForgetPw(!forgetPw)}}>
                 <Text style={styles.btnTextBack}>←</Text>
               </TouchableOpacity>
-              <Text style={styles.txt_h1}>Mots de passe oublié?</Text>
+              <Text style={{...styles.txt_h1, marginBottom: 50}}>Mots de passe oublié?</Text>
             </View>
-            <Text>Veuillez rentrer votre adresse email ci-dessous et nous vous enverons les instructions</Text>
-            <Text style={styles.inputText}>Email</Text>
-            <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in}>
+            <Text style={{fontSize: 18}}>Veuillez saisir le code envoyé sur le 06******** afin de pouvoir réinitialiser votre mots de passe</Text>
+            <View style={{marginVertical: 30}}>
+            <Text style={styles.inputText}>Code</Text>
+            </View>
+            <TouchableOpacity activeOpacity={1} style={{...styles.btn_sign_in, marginTop: 20}}>
               <Text style={styles.buttonText_sign_in}>Valider</Text>
             </TouchableOpacity>
-        </> :
+        </View> :
 /*PAGE MODIF MOTS DE PASSE & EMAIL*/
             <> 
               <View > 
@@ -351,12 +501,12 @@ export default function EditProfilScreen() {
               </View>
               </> : modifCoordonne ?
 /*MODIFIER LES COORDONNES */
-              <View> 
+              <View style={{width: '100%'}}> 
                 <View> 
                   <TouchableOpacity style={styles.backBtnAlone} onPress={()=> setModifCoordonne(!modifCoordonne)}>
                     <Text style={styles.btnTextBack}>←</Text>
                   </TouchableOpacity>
-                  <Text style={styles.txt_h1}>Modifier coordonnées</Text>
+                  <Text style={{...styles.txt_h1, paddingHorizontal: 60, marginBottom: 30}}>Modifier coordonnées</Text>
                 </View>
                 <View> 
                 <TextInput 
@@ -399,7 +549,7 @@ export default function EditProfilScreen() {
   return (
       <View style={styles.container}>
       <View style={styles.nav_bar_color}></View>
-        
+      
         { user ? profil : (
           <View style={styles.container}>
             <Text>Oops... Il y a eu un petit problème on dirais</Text>
@@ -519,12 +669,71 @@ topPage: {
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-around',
-  marginTop: 20,
   paddingRight: 100,
 },
 btnTextBack: {
   fontSize : 30,
   fontWeight: 'bold',
   color : '#9292FE'
+},
+//BOUTON TYPE DE CUISINE
+btnType: {
+  paddingVertical: 10, // 10 units of padding at the top and bottom
+  paddingHorizontal: 10, // A
+  borderRadius: 5,
+  margin: 5,
+  backgroundColor: '#9292FE',
+},
+photo_preferences :{
+  width: 15,
+  height: 15
+},
+textBtnType: {
+  fontSize : 15,
+  color : '#fff'
+},
+typeSelected: {
+  flexDirection:'row',
+  flexWrap: 'wrap',
+  justifyContent: 'center',
+},
+txt_h2 : {
+  color: '#5959F0',
+  fontSize: 20,
+},
+//DROPDOWNINPUT
+placeholderStyle: {
+  fontSize: 16,
+},
+selectedTextStyle: {
+  fontSize: 16,
+},
+iconStyle: {
+  width: 20,
+  height: 20,
+},
+inputSearchStyle: {
+  height: 30,
+  fontSize: 16,
+},
+icon: {
+  marginRight: 5,
+  color: '#9292FE'
+},
+dropdown: {
+  height: 40,
+  width: '50%',
+  borderColor: '#9292FE',
+  borderWidth: 1,
+  borderRadius: 8,
+  paddingHorizontal: 8,
+},
+dropdownLine: {
+  marginLeft: 10,
+  marginTop: 5,
+  marginRight: 50,
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
 },
 });

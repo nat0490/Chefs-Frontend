@@ -47,7 +47,6 @@ const fetchData = async () => {
     console.log('données préférence chargé ')
     dispatch(remove());
     result.data.forEach((item) => {
-      
       dispatch(add({ id: item._id, typeCuisine: item.typeCuisine }));
     });
   } catch (error) {

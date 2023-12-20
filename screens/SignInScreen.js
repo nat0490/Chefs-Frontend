@@ -50,7 +50,9 @@ export default function SignInScreen() {
       }  
       const result = await response.json();
       //console.log(result);
+      dispatch(remove());
       result.data.forEach((item) => {
+        
         dispatch(add({ id: item._id, typeCuisine: item.typeCuisine }));
       });
     } catch (error) {
@@ -99,11 +101,12 @@ export default function SignInScreen() {
             },
             tel : data.dataUserConnexion.userProfile.tel,
             chef : data.dataUserConnexion.userProfile.chef,
-            orders: data.dataUserConnexion.userProfile.chef.orders,
-            userPreference: data.dataUserConnexion.userProfile.chef.userPreference,
+            orders: data.dataUserConnexion.userProfile.orders,
+            userPreference: data.dataUserConnexion.userProfile.userPreference,
+            wishList: data.dataUserConnexion.userProfile.wishList,
             }
           };
-        console.log(userInfo);
+        //console.log(userInfo);
         dispatch(login(userInfo));
         navigation.navigate('HomeTabs', { screen: 'Main' }) ;
       } 

@@ -8,11 +8,13 @@ import {
   KeyboardAvoidingView,
   Image,
   Alert,
+  ScrollView
 } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUstensiles, addUstensilesV2, removeUstensils } from '../../reducers/ustensils';
+import { addUstensilesV2, removeUstensils } from '../../reducers/ustensils';
+import {add, remove} from '../../reducers/typeCuisine';
 import { loginChef, logoutChef } from '../../reducers/chef';
 import ScrollPicker from "react-native-wheel-scrollview-picker";
 
@@ -23,24 +25,22 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 //FONTAWESOME
 //import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCheck, faBowlFood, faCircleUser } from '@fortawesome/free-solid-svg-icons'
+import { faBowlFood, faCircleUser } from '@fortawesome/free-solid-svg-icons'
 
 
 
 
 export default function AddNewRecipeScreen() {
-
     const navigation = useNavigation();
     const dispatch = useDispatch();
-
+    const vercelURL = 'https://chefs-backend-amber.vercel.app';
+//REDUCER
     const user = useSelector((state) => state.user.value);
     const typeCuisine = useSelector((state) => state.typeCuisine.value);
     const ustensilsReducer = useSelector((state) => state.ustensil.value);
     const userChef = useSelector((state) => state.chef.value);
     //console.log(userChef);
-    //const chefId = useSelector((state) => state.chef.value);
-    //console.log(ustensilsReducer);
-
+//HOOK DETAT
     const [ title, setTitle] = useState("");
     const [ imageDish, setImageDish] = useState("");
     const [ selectedTime, setSelectedTime] = useState(new Date());
@@ -53,18 +53,32 @@ export default function AddNewRecipeScreen() {
     const [ isFocusU, setIsFocusU] = useState(false);
     const [ ustensilsList, setUstensilsList] = useState([]);
     const [ ingredientName, setIngredientName] = useState("");
-    const [ ingredientQty, setIngredientQty] = useState("");
-    const [ ingredientUnit, setIngredientUnit] = useState("");
+    const [ ingredientQty, setIngredientQty ] = useState("");
+    const [ ingredientUnit, setIngredientUnit ] = useState("");
     const [ recapIngredient, setRecapIngredient] = useState("");
-  
-    const [voirPickerTime, setVoirPickerTime] = useState(false);
-    const [timeSelectedByUser, setTimeSelectedByUser] = useState(false);
+    const [ voirPickerTime, setVoirPickerTime ] = useState(false);
+    const [ timeSelectedByUser, setTimeSelectedByUser] = useState(false);
     const [ recetteValide, setRecetteValide ] = useState(false);
-    const [value, setValue] = useState(null);
-
+   
   
-    useEffect(() => {
-      fetch(`https://chefs-backend-amber.vercel.app/users/chef/find/${user.id}`)
+//Recupère les ustensils de la BDD et les mets dans le reducer
+const fetchDataAllUstensils = async () => {
+      try {
+          const response = await fetch(`${vercelURL}/ustensils/all`);
+            if (!response.ok) {
+              throw new Error(`Réponse du serveur non valide: ${response.status}`);
+            }  
+          const data = await response.json();
+            //console.log(data.ustensils);
+          dispatch(addUstensilesV2(data.ustensils));
+          } catch (error) {
+            console.error('Erreur lors du chargement des données depuis la base de données', error);
+          }
+        };
+
+useEffect(() => {
+      fetchDataAllUstensils();
+      fetch(`${vercelURL}/users/chef/find/${user.id}`)
             .then( res => res.json())
             .then(data => {
                 if (data.result) {
@@ -86,33 +100,7 @@ export default function AddNewRecipeScreen() {
                 }
             })
     },[recetteValide]);
-
-
-
-//Recupère les ustensils de la BDD et les mets dans le reducer
-    const fetchData = async () => {
-        try {
-            const response = await fetch(`https://chefs-backend-amber.vercel.app/ustensils/all`);
-              if (!response.ok) {
-                throw new Error(`Réponse du serveur non valide: ${response.status}`);
-              }  
-            const data = await response.json();
-              //console.log(data.ustensils);
-            dispatch(addUstensilesV2(data.ustensils));
-              //data.ustensils.forEach((item) => {
-                //dispatch(addUstensiles({ nom: item.nom, emoji: item.emoji }));
-              //});
-            } catch (error) {
-              console.error('Erreur lors du chargement des données depuis la base de données', error);
-            }
-          };
-    useEffect(()=> {
-      fetchData();
-    },[])
-        
-        
-
-      
+ 
 //TEMPS DE PREPARATION AVEC PICKER
 const showTimePicker = () => {
     setVoirPickerTime(true);
@@ -165,11 +153,10 @@ const showTimePicker = () => {
       </View>
   ;
 
-
 //LISTE PREFERENCE
 //Customiser le titre
   const titreMenuTypeCuisine = () => {
-    if (value || isFocusT) {
+    if (isFocusT) {
       return (
         <Text style={[styles.label, isFocusT && { color: '#9292FE' , fontWeight: 'bold', fontSize: 20}]}>
           Type de cuisine:
@@ -191,13 +178,9 @@ newlisteType.sort((a, b) => {
     }
     return 0;
   });
-//console.log(newliste);
-//dataPour le menu déroulant
   const dataTypeCuisine = newlisteType.map((cuisine) => (
      {label: cuisine.cuisine, value : cuisine.cuisine}
  ));
-
-
 
 //LISTE USTENSILS
 //Customiser le titre
@@ -237,18 +220,12 @@ newlisteUstensils.sort((a, b) => {
     }
  }, [ustensils])
 
- 
-
-
-
 
 //AFFICHER USTENSILS SELECTIONNE
 //console.log(ustensilsList);
 const afficheUstensils= ustensilsList.map( (oneUstensil, i) => {
   return <Text key={i} style={styles.ustensilName}> {oneUstensil.label} </Text>
 })
-
-
 
 //Envoyer les INFO A LA BDD
 const creationRecette = () => {
@@ -274,8 +251,7 @@ const creationRecette = () => {
     }
     //console.log(userChef.id);
 //Poster la recette
-
-  fetch(`https://chefs-backend-amber.vercel.app/recipes/newrecipesV2/${userChef.id}`, {
+  fetch(`${vercelURL}/recipes/newrecipesV2/${userChef.id}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json'},
     body: JSON.stringify(newDish),
@@ -304,7 +280,6 @@ const creationRecette = () => {
   })
 };
 
-
 //INGREDIENTS
 const ajouterIngredient = () => {
   if (ingredientName && ingredientQty && ingredientUnit) {
@@ -323,14 +298,10 @@ const ajouterIngredient = () => {
 };
 
 
-
-
-
-
-
   return (
-    <KeyboardAvoidingView style={styles.container} >
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container} >
     <View style={styles.nav_bar_color}></View>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.container_box_width}>
 
 { recetteValide ? 
@@ -362,6 +333,7 @@ const ajouterIngredient = () => {
             </View>
         </View>
 {/*INPUT TITRE ET IMAGE */}
+      <View> 
         <TextInput 
             style={styles.input} 
             placeholder="Titre"
@@ -372,7 +344,7 @@ const ajouterIngredient = () => {
             placeholder="Source image"
             onChangeText={(value) => setImageDish(value)} 
             value={imageDish}/>
-
+      </View>
 {/*INPUT TIME POUR LE TEMPS DE PREPARATION AVEC DATAPICKER */}
 {  !voirPickerTime ? 
       <View style={styles.timeInput}>
@@ -431,7 +403,7 @@ const ajouterIngredient = () => {
     </View>
 
 {/*SECTION PRIX*/}
-        <Text>Prix:</Text>
+        <Text style={{marginTop: 15, marginLeft: 20, marginBottom: 5, fontSize: 18, textDecorationLine: 'underline'}}>Prix:</Text>
         <View style={styles.box}> 
         <TextInput 
             style={styles.input} 
@@ -454,8 +426,10 @@ const ajouterIngredient = () => {
         </View>
 
 {/*SECTION USTENSIL */}
-<View style={styles.listeUstensils}><Text>Selectionné: {afficheUstensils}</Text></View>
-<View >
+<View style={styles.listeUstensils}>
+  <Text style={{marginTop: 15, marginLeft: 20, marginBottom: 5, fontSize: 18, textDecorationLine: 'underline'}}>Selectionné: {afficheUstensils}</Text>
+</View>
+  <View >
         {titreMenuUstensils()}
         <Dropdown
             style={[styles.dropdown, isFocusU && { borderColor: 'blue' }]}
@@ -489,7 +463,7 @@ const ajouterIngredient = () => {
     </View>
 
 {/*PARTIE INGREDIENT*/}
-        <Text>Ingredients:</Text>
+        <Text style={{marginTop: 15, marginLeft: 20, marginBottom: 5, fontSize: 18, textDecorationLine: 'underline'}}>Ingredients:</Text>
         <View style={styles.ingredientInput}> 
         <TextInput 
             style={[styles.input, styles.ingredientInputItem]} 
@@ -512,6 +486,7 @@ const ajouterIngredient = () => {
         </TouchableOpacity>
       </View>
 
+{/*AFFICHE LES INGREDIENTS SELECTIONNES */}
       { recapIngredient ? recapIngredient.map((ingredient, index) => (
         <View key={index} style={styles.ingredientItem}>
           <Text>- {ingredient.nom}  </Text>
@@ -528,6 +503,8 @@ const ajouterIngredient = () => {
       }
 
         </View>
+        <StatusBar style="auto" />
+        </ScrollView>
     </KeyboardAvoidingView> 
   );
 }
@@ -699,6 +676,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-around',
       alignItems: 'center',
+      marginVertical: 20,
     },
     
     box: {
@@ -786,6 +764,11 @@ ustensilName: {
     marginTop: 20,
     fontSize: 50,
     color: '#9292FE',
-  }
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    width:'100%',
+    //justifyContent: 'center',
+  },
           
 });
