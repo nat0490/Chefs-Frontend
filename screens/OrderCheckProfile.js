@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBowlFood } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-
+import { Feather } from '@expo/vector-icons';
 export default function OrderScreen() {
 
   const navigation = useNavigation();
@@ -83,9 +83,9 @@ export default function OrderScreen() {
         {/* Top of the page */}
           <View style={styles.topHead}>
             <View>
-            <View style={styles.containeur_fleche} onPress={() => navigation.goBack()}>
-              <FontAwesome name='arrow-left' size={22} onPress={() => navigation.goBack()} />
-            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('HomePlat')} style={styles.backButton}>
+        <Feather name="chevron-left" size={24} color="black" />
+      </TouchableOpacity>
           </View>
             <View>
             {/* Ternary operator : if object is truthy, we access property name  */}
@@ -141,7 +141,7 @@ export default function OrderScreen() {
                       <View style={styles.complimentsBox}>
                         {chefInfo && chefInfo.userCompliment
                           ? chefInfo.userCompliment.map((compliment, index) => (
-                              <Text key={index} style={{ fontSize: 12, fontWeight: '' }}>{compliment}</Text>
+                              <Text key={index} style={{ fontSize: 12 }}>{compliment}</Text>
                             ))
                           : <Text> 'Loading...' </Text>}
                       </View>
@@ -201,10 +201,14 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
 
-    containeur_fleche: {
-    width: "80%",
-    marginTop: 20,
-    marginBottom: 10,
+    backButton: {
+      borderWidth: 1,
+      borderColor: 'black',
+      padding: 10,
+      borderRadius: 5,
+      marginBottom: 10,
+      width: '10%',
+
     },
 
     chefNameTitle: {
@@ -212,7 +216,7 @@ const styles = StyleSheet.create({
       fontSize: 20,
       paddingLeft: 20,
       paddingTop: 40,
-      fontWeight: '700',
+      // fontWeight: 700,
     },
 
    // Police 
@@ -230,19 +234,19 @@ const styles = StyleSheet.create({
   txt_p_regular: {
     color: '#5959F0',
     fontSize: 12,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
 },
 
 txt_p_regular_small: {
   color: 'black',
   fontSize: 12,
-  fontWeight: 'lighter',
+  // fontWeight: 'lighter',
 },
 
 txt_p_regular_small_top: {
   color: '#5959F0',
   fontSize: 12,
-  fontWeight: 'lighter',
+  // fontWeight: 'lighter',
 },
       // --- TOP SECTION --- 
 
@@ -287,7 +291,7 @@ txt_p_regular_small_top: {
         paddingBottom: 10,
         fontSize: 12,
         color: '#5959F0',
-        fontWeight: '600',
+        // fontWeight: 600,
       },
       
 
@@ -295,7 +299,7 @@ txt_p_regular_small_top: {
     marginTop: 20,
     width : "90%",
     height: '70%',
-    borderRadius: '20',
+    borderRadius: 20,
   },
 
 
@@ -312,7 +316,7 @@ txt_p_regular_small_top: {
     width: '40%',
     borderBottomLeftRadius: 10,
     borderBottomRightRadius : 10,
-    borderRadius: '15',
+    borderRadius: 15,
     borderColor: '#5959F0',
     backgroundColor: 'rgba(146, 146, 254, 0.20)',
   },
@@ -349,7 +353,7 @@ txt_p_regular_small_top: {
   txt_h2 : {
     color: '#5959F0',
     fontSize: 15,
-    fontWeight: 600,
+    // fontWeight: 600,
 },
 complimentsBox: {
   width: '100%',
