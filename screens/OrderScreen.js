@@ -5,7 +5,8 @@ import { StyleSheet, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Te
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useNavigation } from '@react-navigation/native';
-import FontAwesome from '@expo/vector-icons/FontAwesome'
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import {addDate} from '../reducers/infoPourCommande';
 
 export default function OrderScreen() {
   const navigation = useNavigation();
@@ -23,15 +24,13 @@ export default function OrderScreen() {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+// const [chefId, setChefId] = useState('658019be85ac5cd2de446d8e');
+const [ totalAmount, setTotalAmount ] = useState([]);
 
-    // call function when presses button confirm address
   const handleAddressConfirmation = async () => {
-    setConfirmedAddress(userAddress); // updating variables when confirming user's input
+    setConfirmedAddress(userAddress); // updating variables when confirm user's input
 
-    // stock number of persons booked
-  const [chefId, setChefId] = useState('658019be85ac5cd2de446d8e');
-  const [ totalAmount, setTotalAmount ] = useState(0);
-  const [ nbPers, setNbPers ] = useState(0);
+    
 
 
     try { // code might throw exceptions 
@@ -68,18 +67,13 @@ export default function OrderScreen() {
      };
 
      useEffect(() => {
-      fetch(`http://localhost:3000/recipes/${chefId}`)
-      .then(response => response.json())
-      .then(data => {
-        setTotalAmount(data.prix);
-
-        const person = data.person && data.person.map((person, index) => {
-          <TouchableOpacity key={index} activeOpacity={1}>
-            <Text>{person.prix}</Text>
-          </TouchableOpacity>
-        })
-        setNbPers(nbPers)
-      }); 
+      const chefId = '658019be85ac5cd2de446d8e'
+     fetch(`https://chefs-backend-amber.vercel.app/recipes/${chefId}`)
+       .then(response => response.json())
+       .then(data => {
+        console.log(data.recipe.prix)
+         setTotalAmount(data.recipe.prix);
+       })
      }, []);
 
 
@@ -160,23 +154,22 @@ export default function OrderScreen() {
               marginVertical: 5, 
             }}
           />
+
+          {/* ---- BOTTOM SECTION ---- */}
         <View style={styles.section_box}>
-        <View >
-            {/*<FontAwesome name='heart' size={22}/> */}
+        <View style={{ margin: 10}}>
             <Text style={styles.txt_h1}>Voir les détails de ma commande :</Text>
         </View>
-        <View
-            style={{
-              borderBottomColor: '#9292FE',
-              borderBottomWidth: 2,
-              width : 260,
-              marginVertical: 5,
-            }}
-          />
 
-        <View>
-          <Text>{nbPers} </Text>
+        
+        <Text style={{ margin: 10}}>{confirmedAddress} à {addDate}</Text>
+        <View style={styles.recap}>
+          <View style={styles.recapColumn}>
+            <Text>Total</Text>
         </View>
+      <View style={styles.recapColumn}>
+          <Text>{totalAmount.minimum} € pour 2 personnes</Text> 
+      </View>
       </View>
 
           {/* Bouton de connexion */}
@@ -184,16 +177,17 @@ export default function OrderScreen() {
           <Text style={styles.buttonText}>Je valide !</Text>
           </TouchableOpacity>
     </View>
+    </View>
       <StatusBar style="auto" />
       </ScrollView>
     </KeyboardAvoidingView>
   );
-}
+     }
 
 const styles = StyleSheet.create({
   
   scrollContainer: {
-    flexGrow: 1,
+    flexGrow: 0.8,
     justifyContent: 'space-between',
     backgroundColor: 'rgba(146, 146, 254, 0.15)',
   },
@@ -209,7 +203,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     marginLeft: '10%',
-    marginRight: '10%',
+    marginRight: '10%', 
     
   },
 
@@ -307,14 +301,17 @@ const styles = StyleSheet.create({
 
   section_box: {
     alignItems: 'center',
-    paddingVertical: 20,
-    height: 230,
+    paddingVertical: 10,
+    height: 200,
   },
 
   buttonText: {
-    color: '#9292FE',
-    fontSize: 16,
-    textAlign: 'center',
+      paddingVertical: 10, // 10 units of padding at the top and bottom
+      paddingHorizontal: 25, // A
+      borderRadius: 5,
+      borderWidth: 2,
+      borderColor: '#9292FE',
+      backgroundColor: '#fff',
   },
 
   txt_h1: {
@@ -322,4 +319,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   
+  basketDetail: {
+    backgroundColor: 'red',
+    flexDirection: 'row',
+  },
+
+  recap: {
+    borderBottomColor: '#9292FE',
+    borderBottomWidth: 2,
+    width: 300,
+    marginVertical: 5,
+    flexDirection: 'row',
+  },
+
+  recapColumn: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+
 });

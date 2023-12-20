@@ -3,6 +3,8 @@ import { View, StyleSheet, Button, Text, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars'; // Importation du composant de calendrier
 import DateTimePicker from '@react-native-community/datetimepicker'; // Importation du sélecteur de date/heure
 // import { useSelector } from 'react-redux';
+import {addDate} from '../reducers/infoPourCommande'
+
 export default function BookDateScreen() {
   // États pour gérer les données et l'interface
   const [chefAvailability, setChefAvailability] = useState([]); // Disponibilités du chef
@@ -70,7 +72,7 @@ export default function BookDateScreen() {
 
         const data = await response.json(); // Récupération de la réponse
         console.log('Réponse du serveur pour la réservation :', data); // Affichage de la réponse du serveur
-
+        dispatch(addDate({date : formattedDate}))
         setSelectedReservation(selectedDate); // Mise à jour de la réservation sélectionnée
       }
     } catch (error) {
