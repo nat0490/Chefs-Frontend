@@ -41,39 +41,22 @@ export default function OrderScreen() {
   // // Fonction pour soumettre les préférences sélectionnées
   // const handleSubmit = () => {
   //   fetch(`https://chefs-backend-amber.vercel.app/users/profil/add-preference/${user.id}`, {
-
   // // ID utilisateur fictif (à remplacer par la logique d'authentification)
 
 
   // Fonction pour soumettre les préférences sélectionnées
   const handleSubmit = () => {
-    console.log(selectedIds)
-    const users = '6581ef0d794e6f6851a09cec';
-    fetch(`http://chefs-backend-amber.vercel.app/users/profil/add-preference/${users}`, {
-
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userPreference: [...selectedIds] }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(`ceci est la  data ${data}`)
-        dispatch(login({ userPreference : [...selectedIds]}))
-        setSelectedIds([]);
-        setActiveColors([]);
-        setPreferenceData([]);
-        console.log(`ceci est la  data ${data}`)
+        dispatch(updatePreference({ userPreference : [...selectedIds]}))
+         setSelectedIds([]);
+         setActiveColors([]);
+         setPreferenceData([]);
         Alert.alert('Parfait, nous avons ajouté vos informations à vos préférences');
         navigation.navigate('Terms');
-      })
-      .catch(error => {
-        console.error("Error:", error);
-      });
   }
 
   
 
-  //tris des type par ordre alphabétique
+//   //tris des type par ordre alphabétique
 // const newlisteType = [... typeCuisine] 
 // newlisteType.sort((a, b) => {
 //     const cuisineA = a.cuisine.toUpperCase(); // ignore la casse
@@ -88,34 +71,62 @@ export default function OrderScreen() {
 //   });
 
 
-  // AFFICHAGE DES PREFERENCES
-  const preferences = newlisteType.map((data, i) => (
-    <TouchableOpacity
-      key={i}
-      onPress={() => {
-        handlePress(data.id);
-        const updatedColors = [...activeColors];
-        updatedColors[i] = !updatedColors[i];
-        setActiveColors(updatedColors);
-      }}
-      activeOpacity={1}
-      style={[
-        styles.btn_sign_up,
-        { backgroundColor: activeColors[i] ? '#5959F0' : 'white' },
-      ]}
-    >
-      <FontAwesome name='arrow-left' size={22} />
-      <Text
-        style={[
-          styles.buttonText_sign_up,
-          { color: activeColors[i] ? 'white' : '#5959F0' },
-        ]}
-      >
-        {data.cuisine}
-      </Text>
-    </TouchableOpacity>
-  ));
-} else{
+//   // AFFICHAGE DES PREFERENCES
+//   const preferences = newlisteType.map((data, i) => (
+//     <TouchableOpacity
+//       key={i}
+//       onPress={() => {
+//         handlePress(data.id);
+//         const updatedColors = [...activeColors];
+//         updatedColors[i] = !updatedColors[i];
+//         setActiveColors(updatedColors);
+// Utilisez useEffect pour charger les préférences une seule fois à l'initialisation
+const dataPreferences = user.userProfile.userPreference
+
+// Utilisez useEffect pour charger les préférences une seule fois à l'initialisation
+useFocusEffect(
+  React.useCallback(() => {
+    fetch('http://chefs-backend-amber.vercel.app/userPreference/display_preference')
+    .then(response => response.json())
+    .then(data => {
+      setPreferenceData([...data.data]);
+      console.log('je charge mes données ', data.data);
+    });
+  
+}, [])); 
+
+ let preferences 
+
+// Utilisez useEffect pour charger les préférences lorsque je revient sur ma page 
+useEffect(() => {
+  if(dataPreferences.length > 0){
+    // Je compare les id de ma db avec 
+    const resultIndexes = dataPreferences.map((reducerItem) => {
+      console.log("reducerItem._id:", reducerItem);
+      const index = preferenceData.findIndex((prefItem) => {
+        console.log("prefItem._id:", prefItem._id);
+        return prefItem._id === reducerItem;
+      });
+    
+      return index;
+    });
+
+    const updatedColors = []
+  
+    for (let i = 0; i < preferenceData.length; i++) {
+      if (resultIndexes.includes(i)) {
+        updatedColors[i] = true;
+      }else{
+        updatedColors[i] = false;
+      }
+    }
+
+      console.log("updatedColors:", updatedColors);
+      setActiveColors(updatedColors);
+  }
+}, [preferenceData]);
+
+
    // Je map sur ma reponse pour afficher toutes les preferences de ma db 
        preferences = preferenceData.map((data, i) => (
         <TouchableOpacity
@@ -147,7 +158,7 @@ export default function OrderScreen() {
         </TouchableOpacity>
       ));
       
-    }
+
 
   // Rendu de l'écran de commande
 
