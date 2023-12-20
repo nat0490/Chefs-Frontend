@@ -7,7 +7,6 @@ const initialState = {
       email: null,
       token: null,
       userProfile: {
-        id: null,
         nom: null,
         prenom: null,
         dateOfBirth: null,

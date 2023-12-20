@@ -41,7 +41,6 @@ export default function SignInScreen() {
 
 //REDUCER TYPE CUISINE : FETCH pour récuperer tous les type puis Dispatch pour les mettre dans le reducer
   const fetchData = async () => {
-   
     try {
       //console.log('recuperer type de cuisine');
       const response = await fetch(`https://chefs-backend-amber.vercel.app/userPreference/display_preference`);
@@ -54,7 +53,6 @@ export default function SignInScreen() {
       console.log('données préférence chargé ')
       dispatch(remove());
       result.data.forEach((item) => {
-        
         dispatch(add({ id: item._id, typeCuisine: item.typeCuisine }));
       });
     } catch (error) {

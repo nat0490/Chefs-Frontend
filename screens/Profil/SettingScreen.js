@@ -7,7 +7,7 @@ import { loginChef, logoutChef } from '../../reducers/chef';
 import { removeUstensils} from '../../reducers/ustensils';
 import { remove } from '../../reducers/typeCuisine';
 //FONTAWESOME
-import { FontAwesome } from '@expo/vector-icons';
+//import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { 
   faUser, 
@@ -38,16 +38,16 @@ export default function SettingScreen() {
     const [ chef, setChef ] = useState(false);
   
 
-
+console.log(user)
 
   useEffect(()=> {
     setChef(chefStatus);
     //console.log(user);
   //CHARGER LE PROFIL CHEF SI IL EXISTE
+  if (userChef.id === null){ 
     fetch(`https://chefs-backend-amber.vercel.app/users/chef/find/${user.id}`)
             .then( res => res.json())
             .then(data => {
-             
                 if (data.result) {
                   //console.log(data);
                     const infoChef = {
@@ -69,7 +69,7 @@ export default function SettingScreen() {
             .catch(error => {
               console.error('Error fetching chef data:', error);
             });
-  },[chefStatus, user.id]);
+}},[chefStatus, user.id]);
 
   const changeStatusChef = () => {
     console.log(user.id);

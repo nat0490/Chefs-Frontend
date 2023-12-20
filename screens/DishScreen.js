@@ -166,7 +166,7 @@ return (
         
           <View style={styles.typeChef}> 
             <View style={styles.typeCuisine}> 
-              <FontAwesomeIcon icon={faBowlRice} size={30}/><Text style={{fontSize: 20}}>    {type}</Text>
+            <Image source={require('../assets/img_plats_categories.png') } style={styles.photo_preferences} /><Text style={{fontSize: 20}}>  {type}</Text>
             </View>
             <TouchableOpacity activeOpacity={1} style={{...styles.btn_sign_in, marginRight: 20}} onPress={() => voirProfilChef(userChef._id)}>
               <Text style={styles.buttonText_sign_in}>Profil du Chef</Text>
@@ -322,6 +322,10 @@ btn_sign_in : {
   marginTop: 10,
   maxWidth: '30%',
   width: 200,
+},
+photo_preferences :{
+  width: 30,
+  height: 30
 },
 buttonText_sign_in :  {
   fontSize : 15,

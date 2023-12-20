@@ -74,8 +74,8 @@ export default function ChefScreen(route) {
         <Image source={{uri: dish.image}}  style={styles.photo_plats} />
             <Text style={styles.margin_rigth}>{dish.title}</Text>
             <View style={styles.box_description }>
-            <Image source={require('../assets/img_plats_categories.png')} style={styles.photo_preferences} />
-            <Text style={styles.txt_preferences}>{dish.type}</Text>
+            <Image source={require('../assets/img_plats_categories.png') } style={styles.photo_preferences} />
+            <Text style={styles.txt_preferences}>  {dish.type}</Text>
             </View>
             <View style={styles.box_description }>
             {stars}
@@ -111,12 +111,20 @@ export default function ChefScreen(route) {
                   { chefProfil && chefProfil.services ?  <Text style={{marginBottom: 5}}><Text style={{fontWeight: 600}}>Mes services: </Text>{chefProfil.services}</Text> : null }
                 </View>
 
-                <View style={styles.containeur_box}>
-                  <View style={{width: '100%', alignItems:'center'}}> 
+                <View style={{width: '100%', alignItems:'center'}}> 
                     <Text style={styles.txt_h2}>Mes plats</Text>
                   </View>
+                  <ScrollView horizontal> 
+                <View style={styles.containeur_box}>
+                 
+                  
+                 
                     {boxDish}
+                    
+                  
                 </View>
+                </ScrollView>
+                
 
 
 {/* A CHANGER QUAND IL Y AURA DES VRAIS FEEDBACK */}
@@ -231,6 +239,7 @@ const styles = StyleSheet.create({
   },
   box : {
     width : 100,
+    height: 200,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius : 10,
     borderWidth: 2,
@@ -238,6 +247,7 @@ const styles = StyleSheet.create({
     justifyContent : 'space-between',
     flexDirection: 'column',
     marginBottom: 5,
+    marginRight: 5,
   },
   box_description : {
     flexDirection: 'row',
@@ -249,11 +259,11 @@ const styles = StyleSheet.create({
     marginLeft : 5,
   },
   photo_preferences :{
-    width: 10,
-    height: 10
+    width: 15,
+    height: 15
   },
   txt_preferences : {
-    fontSize: 8,
+    fontSize: 10,
   },
   container_description_recette: {
     width: "100%",

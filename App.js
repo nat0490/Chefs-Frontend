@@ -14,7 +14,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 //For LOG
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
-import LoginScreen from './screens/LoginScreen';
 import PreferencesScreen from './screens/PreferencesScreen'
 import TermsScreen from './screens/TermsScreen'
 //For Home
@@ -44,8 +43,6 @@ import ChefScreen from './screens/ChefScreen';
 //import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { 
-  faHouse, 
-  faBowlFood, 
   faHeart, 
   faHouseChimney,
 } from '@fortawesome/free-solid-svg-icons'
@@ -61,14 +58,12 @@ import infoPourCommande from './reducers/infoPourCommande';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
-
-
 //const navigation = useNavigation();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
   
 
-
+/*
 
 
 const HomeTabs = () => (
@@ -91,7 +86,7 @@ const HomeTabs = () => (
   })}>
     
     <Tab.Screen name="Main" component={MainScreen} />
-    {/* <Tab.Screen name="Search" component={SearchScreen} /> */}
+    {/* <Tab.Screen name="Search" component={SearchScreen} /> 
     <Tab.Screen name="Wishlist" component={WishlistScreen} /> 
   </Tab.Navigator>
 ); 
@@ -136,6 +131,89 @@ export default function App() {
     </Provider>
   );
 };
+
+*/
+
+// Écran principal de la tabBar
+const MainStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Main" component={MainScreen} />
+    <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
+    <Stack.Screen name="BookDate" component={BookDateScreen} />
+    <Stack.Screen name="Dish" component={DishScreen} options={{ tabBarVisible: true }}/>
+    <Stack.Screen name="OrderDetails" component={OrderScreen}  />
+    <Stack.Screen name="ChefScreen" component={ChefScreen} options={{ tabBarVisible: true }}/>
+  </Stack.Navigator>
+);
+
+// Écran de la tabBar "Wishlist"
+const WishlistStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Wishlist" component={WishlistScreen} />
+  </Stack.Navigator>
+);
+
+
+
+// Écran principal des onglets
+const HomeTabs = () => (
+  <Tab.Navigator screenOptions={({ route }) => ({
+    tabBarIcon: () => {
+      let iconName = '';
+      if (route.name === 'MainStack') {
+        iconName = faHouseChimney;
+      } else if (route.name === 'Wishlist') {
+        iconName = faHeart;
+      }
+      return <FontAwesomeIcon icon={iconName} style={{ color: "#5959f0" }} />;
+    },
+    tabBarActiveTintColor: '#e8be4b',
+    tabBarInactiveTintColor: '#b2b2b2',
+    headerShown: false,
+  })}>
+    {/* Associez chaque onglet à sa pile de navigation respective */}
+    <Tab.Screen name="MainStack" component={MainStack} />
+    <Tab.Screen name="Wishlist" component={WishlistStack} />
+  </Tab.Navigator>
+);
+
+
+const store = configureStore({
+  reducer: { user, typeCuisine, ustensil, chef, infoPourCommande },
+})
+
+
+
+
+export default function App() {
+ 
+  return (
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {/*PAGE DACCEUIL */}
+          <Stack.Screen name="Home" component={HomeScreen} />
+          {/* PARTIE LOGIN/ ACCES AVANT CONNECTION */}
+          <Stack.Screen name="Sign_in" component={SignInScreen} />
+          <Stack.Screen name="Sign_up" component={SignUpScreen} />
+          <Stack.Screen name="Preference" component={PreferencesScreen} />
+          <Stack.Screen name="HomePlat" component={HomePlatScreen} />
+          <Stack.Screen name="HomeChefs" component={HomeChefScreen} />
+          <Stack.Screen name="Terms" component={TermsScreen}/>
+          {/*ACCES APRES CONNECTION */}
+          <Stack.Screen name="HomeTabs" component={HomeTabs} />
+          <Stack.Screen name="Search" component={SearchScreen} />
+          {/*PARTIE EDIT PROFIL */}
+          <Stack.Screen name="Setting" component={SettingScreen} options={{ tabBarVisible: false }} />
+          <Stack.Screen name="EditProfil" component={EditProfilScreen} options={{ tabBarVisible: false }} />
+          <Stack.Screen name="EditProfilChef" component={EditProfilChefScreen} options={{ tabBarVisible: false }} />
+          <Stack.Screen name="AddNewRecipe" component={AddNewRecipeScreen} options={{ tabBarVisible: false }} />
+          <Stack.Screen name="PastOrder" component={PastOrderScreen} options={{ tabBarVisible: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
+  );
+}
 
 
 

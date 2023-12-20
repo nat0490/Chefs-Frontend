@@ -66,7 +66,7 @@ const fetchAllRecipe = async () => {
     //console.log(data);
     if (data.result) {
       setAllRecipe(data.recipes);
-      console.log("recettes chargées et mise dans le hook d'état: allRecipe")
+      console.log("recettes chargées dans allRecipe")
     } else {
       console.log('error lors de la receptions des données')
     }
@@ -127,7 +127,7 @@ const stars = [];
             <Image source={{uri: dish.image}} style={styles.photo} />
             <Text style={styles.margin_rigth}>{dish.title}</Text>
             <View style={styles.box_description }>
-              <FontAwesomeIcon icon={faBowlFood}/>
+            <Image source={require('../assets/img_plats_categories.png') } style={styles.photo_preferences} />
               <Text >  {dish.type}</Text>
             </View>
             <Text style={{marginBottom: 10, marginLeft: 20}}>{stars}</Text>
@@ -159,7 +159,7 @@ const stars = [];
             <Image source={{uri: dish.image}} style={styles.photo} />
             <Text style={styles.margin_rigth}>{dish.title}</Text>
             <View style={styles.box_description }>
-              <FontAwesomeIcon icon={faBowlFood}/>
+            <Image source={require('../assets/img_plats_categories.png') } style={styles.photo_preferences} />
               <Text >  {dish.type}</Text>
             </View>
             <Text style={{marginBottom: 10, marginLeft: 20}}>{stars}</Text>
@@ -188,7 +188,7 @@ allRecipe
           <Image source={{uri: dish.image}} style={styles.photo} />
           <Text style={styles.margin_rigth}>{dish.title}</Text>
           <View style={styles.box_description }>
-            <FontAwesomeIcon icon={faBowlFood}/>
+          <Image source={require('../assets/img_plats_categories.png') } style={styles.photo_preferences} />
             <Text >  {dish.type}</Text>
           </View>
           <Text style={{marginBottom: 10, marginLeft: 20}}>{stars}</Text>
@@ -369,7 +369,7 @@ const allType = filtreCatégorie? filtreCatégorie.map((type, i) => {
             </View>
           )) : ( recipes && recipes.length > 0 ? (recipes) : (
                     <View>
-                      <Text style={{marginTop: 20}}>Aucune recette disponible</Text>
+                      <Text style={{marginTop: 20}}>Chargement en cours</Text>
                     </View>
                   )
                 )}
@@ -588,6 +588,10 @@ btnType: {
   borderRadius: 5,
   margin: 5,
   backgroundColor: '#9292FE',
+},
+photo_preferences :{
+  width: 15,
+  height: 15
 },
 textBtnType: {
   fontSize : 15,
