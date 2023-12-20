@@ -2,19 +2,15 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet,ScrollView, Text, View ,TouchableOpacity, Alert} from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation , useFocusEffect  } from '@react-navigation/native';
+import { useSelector , useDispatch} from 'react-redux';
+import { updatePreference} from '../reducers/user'
 
-
-
-import { useDispatch , useSelector} from 'react-redux';
-import { login, logout} from '../reducers/user';
 export default function OrderScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+    // Import des REDUCER
   const user = useSelector((state) => state.user.value);
-
-  // État pour suivre si le bouton a été cliqué
-  const [buttonClicked, setButtonClicked] = useState(false);
 
   // État pour stocker les données de préférence
   const [preferenceData, setPreferenceData] = useState([]);
@@ -31,39 +27,30 @@ export default function OrderScreen() {
     setSelectedIds([...selectedIds, id_preferences]);
   }
 
-<<<<<<< HEAD
-  /*
-=======
->>>>>>> Toms
-  // Import des REDUCER
-  // const user = useSelector((state) => state.user.value);
+
+
   // const typeCuisine = useSelector((state) => state.typeCuisine.value);
   
-  // //console.log(typeCuisine);
-
+  //console.log(typeCuisine);
+  
 
 
 
  
 
-<<<<<<< HEAD
-  // Fonction pour soumettre les préférences sélectionnées
-  const handleSubmit = () => {
-    fetch(`https://chefs-backend-amber.vercel.app/users/profil/add-preference/${user.id}`, {
-  // ID utilisateur fictif (à remplacer par la logique d'authentification)
-=======
   // // Fonction pour soumettre les préférences sélectionnées
   // const handleSubmit = () => {
   //   fetch(`https://chefs-backend-amber.vercel.app/users/profil/add-preference/${user.id}`, {
-  // // ID utilisateur fictif (à remplacer par la logique d'authentification)
->>>>>>> Toms
 
-*/
+  // // ID utilisateur fictif (à remplacer par la logique d'authentification)
+
+
   // Fonction pour soumettre les préférences sélectionnées
   const handleSubmit = () => {
     console.log(selectedIds)
     const users = '6581ef0d794e6f6851a09cec';
     fetch(`http://chefs-backend-amber.vercel.app/users/profil/add-preference/${users}`, {
+
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userPreference: [...selectedIds] }),
@@ -84,13 +71,9 @@ export default function OrderScreen() {
       });
   }
 
-<<<<<<< HEAD
-  /*
-=======
   
->>>>>>> Toms
 
-//   //tris des type par ordre alphabétique
+  //tris des type par ordre alphabétique
 // const newlisteType = [... typeCuisine] 
 // newlisteType.sort((a, b) => {
 //     const cuisineA = a.cuisine.toUpperCase(); // ignore la casse
@@ -105,61 +88,15 @@ export default function OrderScreen() {
 //   });
 
 
-//   // AFFICHAGE DES PREFERENCES
-//   const preferences = newlisteType.map((data, i) => (
-//     <TouchableOpacity
-//       key={i}
-//       onPress={() => {
-//         handlePress(data.id);
-//         const updatedColors = [...activeColors];
-//         updatedColors[i] = !updatedColors[i];
-//         setActiveColors(updatedColors);
-  // Utilisez useEffect pour charger les préférences une seule fois à l'initialisation
-  useEffect(() => {
-    fetch('https://chefs-backend-amber.vercel.app/userPreference/display_preference')
-      .then(response => response.json())
-      .then(data => {
-        setPreferenceData([...data.data]);
-  
-      });
-  }, []);
-
-  let preferences 
-
-  const dataPreferences = user.userProfile.userPreference
-  console.log(dataPreferences.length)
-// Si déja des preferences sa veux dire qu'il revient sur la page alors je teste celle qui sont dans sont reducer pour y ajouter les couleur 
-useEffect(() => {
-  if (dataPreferences.length > 1) {
-  
-    // Utilisation de map pour obtenir un tableau d'indexes
-    const resultIndexes = dataPreferences.map((reducerItem) => {
-      // Utilisation de findIndex pour trouver l'index correspondant dans preferenceData
-      return preferenceData.findIndex((prefItem) => prefItem._id === reducerItem._id);
-    });
-
-    const updatedColors = [...activeColors]; // Je récupère mon tableau de false
-
-    for (let i = 0; i < resultIndexes.length; i++) {
-      updatedColors[resultIndexes[i]] = true; // Inverse la valeur sur l'index de ma préférence
-    }
-
-    setActiveColors(updatedColors);
-  }
-}, [dataPreferences, preferenceData]);
-
-
-
-if (dataPreferences.length > 1) {
-  preferences = preferenceData.map((data, i) => (
+  // AFFICHAGE DES PREFERENCES
+  const preferences = newlisteType.map((data, i) => (
     <TouchableOpacity
       key={i}
       onPress={() => {
-        console.log("bitch")
-        const updatedColors = [...activeColors]; // Je recupere mon tableau de false 
-        updatedColors[i] = !updatedColors[i]; // Inverse la valeur sur l'index de ma preference
-        setActiveColors(updatedColors); // Je met a jour mon tableau modifier 
-        handlePress(data._id); // Recupere l'id de ma preference au clic 
+        handlePress(data.id);
+        const updatedColors = [...activeColors];
+        updatedColors[i] = !updatedColors[i];
+        setActiveColors(updatedColors);
       }}
       activeOpacity={1}
       style={[
@@ -184,9 +121,12 @@ if (dataPreferences.length > 1) {
         <TouchableOpacity
           key={i}
           onPress={() => {
+            console.log("Clicked on preference:", data.typeCuisine);
+            console.log("Before handlePress, activeColors:", activeColors);
             handlePress(data._id); // Recupere l'id de ma preference au clic 
             const updatedColors = [...activeColors]; // Je recupere mon tableau de false 
             updatedColors[i] = !updatedColors[i]; // Inverse la valeur sur l'index de ma preferences
+            console.log("After handlePress, updatedColors:", updatedColors)
             setActiveColors(updatedColors); // Je met a jour mon tableau modifier 
           }}
           activeOpacity={1}
@@ -216,12 +156,7 @@ if (dataPreferences.length > 1) {
         <View style={styles.nav_bar_color}></View>
         <View style={styles.container_box_width}>
   
-  
-            {/* Fleche revenir sur la page précédente  */}
-            <View style={styles.containeur_fleche}>
-              <FontAwesome name='arrow-left' size={22}  />
-            </View>
-  
+      
   
             {/* Box de navigation */}
             <View style={styles.containeur_navigation_view}> 
@@ -307,7 +242,7 @@ const styles = StyleSheet.create({
      // Navigation View Styles
      containeur_navigation_view: {
       width: "100%",
-      marginTop: 20,
+      marginTop: 60,
       marginBottom: 20,
     },
   
