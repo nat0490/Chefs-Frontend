@@ -44,7 +44,11 @@ for (let i = 0; i < 5; i++) {
     });
 
 // Fetch pour récuperer les chef
+<<<<<<< HEAD
     fetch('https://chefs-backend-amber.vercel.app/users/chef')
+=======
+    fetch('https://chefs-backend-amber.vercel.app/recipes')
+>>>>>>> Toms
     .then(response => response.json())
     .then(data => {
       setChefData([...data.data]);
@@ -169,7 +173,11 @@ const diplayChefs = chefData ? chefData.slice( 0 , 3 ).map((data , i) => (
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('OrderDetails')}>
             <Text style={styles.buttonText_sign_up}>CheckProfile</Text>
           </TouchableOpacity>
+<<<<<<< HEAD
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('PaymentScreen')}>
+=======
+          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('OrderCheckProfile')}>
+>>>>>>> Toms
               <Text style={styles.buttonText_sign_up}>navigation</Text>
           {/* </TouchableOpacity> */}
           </TouchableOpacity>

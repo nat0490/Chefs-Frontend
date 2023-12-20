@@ -31,29 +31,39 @@ export default function OrderScreen() {
     setSelectedIds([...selectedIds, id_preferences]);
   }
 
+<<<<<<< HEAD
   /*
+=======
+>>>>>>> Toms
   // Import des REDUCER
-  const user = useSelector((state) => state.user.value);
-  const typeCuisine = useSelector((state) => state.typeCuisine.value);
+  // const user = useSelector((state) => state.user.value);
+  // const typeCuisine = useSelector((state) => state.typeCuisine.value);
   
-  //console.log(typeCuisine);
+  // //console.log(typeCuisine);
 
 
 
 
  
 
+<<<<<<< HEAD
   // Fonction pour soumettre les préférences sélectionnées
   const handleSubmit = () => {
     fetch(`https://chefs-backend-amber.vercel.app/users/profil/add-preference/${user.id}`, {
   // ID utilisateur fictif (à remplacer par la logique d'authentification)
+=======
+  // // Fonction pour soumettre les préférences sélectionnées
+  // const handleSubmit = () => {
+  //   fetch(`https://chefs-backend-amber.vercel.app/users/profil/add-preference/${user.id}`, {
+  // // ID utilisateur fictif (à remplacer par la logique d'authentification)
+>>>>>>> Toms
 
 */
   // Fonction pour soumettre les préférences sélectionnées
   const handleSubmit = () => {
     console.log(selectedIds)
     const users = '6581ef0d794e6f6851a09cec';
-    fetch(`https://chefs-backend-amber.vercel.app/users/profil/add-preference/${users}`, {
+    fetch(`http://chefs-backend-amber.vercel.app/users/profil/add-preference/${users}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userPreference: [...selectedIds] }),
@@ -74,33 +84,37 @@ export default function OrderScreen() {
       });
   }
 
+<<<<<<< HEAD
   /*
+=======
+  
+>>>>>>> Toms
 
-  //tris des type par ordre alphabétique
-const newlisteType = [... typeCuisine] 
-newlisteType.sort((a, b) => {
-    const cuisineA = a.cuisine.toUpperCase(); // ignore la casse
-    const cuisineB = b.cuisine.toUpperCase(); // ignore la casse
-    if (cuisineA < cuisineB) {
-      return -1;
-    }
-    if (cuisineA > cuisineB) {
-      return 1;
-    }
-    return 0;
-  });
+//   //tris des type par ordre alphabétique
+// const newlisteType = [... typeCuisine] 
+// newlisteType.sort((a, b) => {
+//     const cuisineA = a.cuisine.toUpperCase(); // ignore la casse
+//     const cuisineB = b.cuisine.toUpperCase(); // ignore la casse
+//     if (cuisineA < cuisineB) {
+//       return -1;
+//     }
+//     if (cuisineA > cuisineB) {
+//       return 1;
+//     }
+//     return 0;
+//   });
 
 
-  // AFFICHAGE DES PREFERENCES
-  const preferences = newlisteType.map((data, i) => (
-    <TouchableOpacity
-      key={i}
-      onPress={() => {
-        handlePress(data.id);
-        const updatedColors = [...activeColors];
-        updatedColors[i] = !updatedColors[i];
-        setActiveColors(updatedColors);
-  // Utilisez useEffect pour charger les préférences une seule fois à l'initialisation*/
+//   // AFFICHAGE DES PREFERENCES
+//   const preferences = newlisteType.map((data, i) => (
+//     <TouchableOpacity
+//       key={i}
+//       onPress={() => {
+//         handlePress(data.id);
+//         const updatedColors = [...activeColors];
+//         updatedColors[i] = !updatedColors[i];
+//         setActiveColors(updatedColors);
+  // Utilisez useEffect pour charger les préférences une seule fois à l'initialisation
   useEffect(() => {
     fetch('https://chefs-backend-amber.vercel.app/userPreference/display_preference')
       .then(response => response.json())

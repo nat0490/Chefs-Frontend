@@ -28,6 +28,12 @@ export default function OrderScreen() {
   const handleAddressConfirmation = async () => {
     setConfirmedAddress(userAddress); // updating variables when confirming user's input
 
+    // stock number of persons booked
+  const [chefId, setChefId] = useState('658019be85ac5cd2de446d8e');
+  const [ totalAmount, setTotalAmount ] = useState(0);
+  const [ nbPers, setNbPers ] = useState(0);
+
+
     try { // code might throw exceptions 
       // make the function waits until we have a Promise
       const response = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${userAddress}`);
@@ -46,7 +52,6 @@ export default function OrderScreen() {
     }
   };
 
-
      // managing the comments 
      const handleComment = (text) => { // calling the function when text input chages 
       setCommentaire(text);
@@ -57,56 +62,80 @@ export default function OrderScreen() {
       }
     }
 
+    // managing button to confirm order handleConfirmation
+    const handleConfirmation = () =>{
+      navigation.navigate('BookDate')
+     };
+
+     useEffect(() => {
+      fetch(`http://localhost:3000/recipes/${chefId}`)
+      .then(response => response.json())
+      .then(data => {
+        setTotalAmount(data.prix);
+
+        const person = data.person && data.person.map((person, index) => {
+          <TouchableOpacity key={index} activeOpacity={1}>
+            <Text>{person.prix}</Text>
+          </TouchableOpacity>
+        })
+        setNbPers(nbPers)
+      }); 
+     }, []);
+
+
+      
   return (
     <KeyboardAvoidingView  behavior="padding">
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.nav_bar_color}></View>
       <View style={styles.container}>
+          {/* header section */}
         <View style={styles.topHead}>
           <View style={styles.containeur_fleche}>
             <FontAwesome name='arrow-left' size={22} />
-            <Text style={{marginLeft: 70 }}>Order details</Text>
+            <Text style={styles.orderTitle}>Order details</Text>
         </View>
       </View>
 
-
           {/* --- TOP SECTION --- */}
-        <View style={styles.mapContainer}>
-          <MapView
-            style={styles.map}
-            initialRegion={mapRegion}
-          >
-            {confirmedAddress && (
-              <Marker
-                coordinate={{
-                  latitude: userCoordinates?.latitude || mapRegion.latitude,
-                  longitude: userCoordinates?.longitude || mapRegion.longitude,
-                }}
-                title="Ton addresse"
-                description={confirmedAddress}
-              />
-            )}
-          </MapView>
-        </View>
-
+        <View style={styles.page}>
+          <View style={styles.mapContainer}>
+            <MapView
+              style={styles.map}
+              initialRegion={mapRegion}
+            >
+              {confirmedAddress && (
+                <Marker
+                  coordinate={{
+                    latitude: userCoordinates?.latitude || mapRegion.latitude,
+                    longitude: userCoordinates?.longitude || mapRegion.longitude,
+                  }}
+                  title="Ton addresse"
+                  description={confirmedAddress}
+                />
+              )}
+            </MapView>
+          </View>
+          </View>
 
             {/* addresses */}
         <View style={styles.containerAdresse}> 
-          <View>
+          <View style={styles.containerConfirm}>
             <View>
               <TextInput
                 placeholder="Entrez votre adresse"
                 onChangeText={(address) => setUserAddress(address)}
                 value={userAddress}
+                style={styles.fullWidthInput}
               />
             </View>
             <View>
               <TouchableOpacity
                 onPress={handleAddressConfirmation}
                 activeOpacity={1}
-                style={styles.boxAddress}
+                style={styles.confirmButton}
               >
-                <Text style={{fontSize: 10}}>Confirme ton addresse</Text>
+                <Text style={{ fontSize: 12, color: 'white' }} >Confirme ton addresse</Text>
               </TouchableOpacity>
               </View>
           </View>
@@ -114,7 +143,7 @@ export default function OrderScreen() {
 
         {/* ---- MIDDLE SECTION ---- */}
         <View style={styles.bottom_boxSection}>
-          <View> 
+          <View style={styles.bottom_box}> 
             <TextInput
               style={styles.commentaire}
               placeholder="Ajoute un commentaire pour ton chef (allergens, besoins spéciaux, etc"
@@ -132,7 +161,7 @@ export default function OrderScreen() {
             }}
           />
         <View style={styles.section_box}>
-        <View style={styles.box_titre}>
+        <View >
             {/*<FontAwesome name='heart' size={22}/> */}
             <Text style={styles.txt_h1}>Voir les détails de ma commande :</Text>
         </View>
@@ -146,9 +175,14 @@ export default function OrderScreen() {
           />
 
         <View>
-          <Text>Je valide ! </Text>
+          <Text>{nbPers} </Text>
         </View>
       </View>
+
+          {/* Bouton de connexion */}
+        <TouchableOpacity  onPress={handleConfirmation} style={[styles.button, { marginTop: 20}]} >
+          <Text style={styles.buttonText}>Je valide !</Text>
+          </TouchableOpacity>
     </View>
       <StatusBar style="auto" />
       </ScrollView>
@@ -161,6 +195,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'space-between',
+    backgroundColor: 'rgba(146, 146, 254, 0.15)',
   },
   
   nav_bar_color: {
@@ -175,39 +210,46 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: '10%',
     marginRight: '10%',
+    
   },
 
   topHead: {
-    backgroundColor: 'yellow',
+    width: '100%',
     flexDirection: 'row',
+    alignItems: 'center',
   },
 
   containeur_fleche: {
-    flex: 1,
-    marginTop: 20,
-    marginBottom: 10,
+    width: "80%",
   },
 
   orderTitle: {
     color: '#5959F0',
     fontSize: 20,
+    paddingLeft: 60,
     fontWeight: '700',
-    flex: 1,
-    alignItems: "flex-start",
-    paddingBottom: 10,
+    marginBottom: 10,
   },
+
 
   // ---- TOP SECTION ----
 
-  // map 
+  ContainMap: {
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+
   mapContainer: {
-    marginVertical: 0,
     alignItems: 'center',
     marginBottom: 10,
   },
+
   map: {
     width: '100%',
-    height: 300,
+    height: 250,
+    backgroundColor: 'rgba(146, 146, 254, 0.25)',
   },
 
   // addresses
@@ -215,28 +257,35 @@ const styles = StyleSheet.create({
   containerAdresse: {
     alignItems: 'center',
     justifyContent: 'space-between', 
-    backgroundColor: 'blue',
   },
 
-  boxAddress: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: '#9292FE',
-    backgroundColor: '#fff',
+  containerConfirm: {
+    justifyContent: 'space-between',  
+    alignItems: 'center',
   },
 
-    // --- MIDDLE SECTION --- 
-
-  bottom_boxSection: { 
-    height: '10%',
-    backgroundColor: 'red',
+  fullWidthInput: {
+  width: 300,
+  margin: 3,
+  borderBottomWidth: 1,  // Use borderBottomWidth instead of borderWidth
+  borderColor: '#9292FE',  // Set the border color
+  paddingVertical: 8,  // Adjust vertical padding for better appearance
+  paddingHorizontal: 0, 
   },
-  
-  bottom_box: {
-    height: 60, // Ajustez la hauteur selon vos besoins (ou toute autre valeur fixe)
+
+  confirmButton: {
+    backgroundColor: '#9292FE',
     marginTop: 10,
+    padding: 10,
+    borderRadius: 50,  // Makes it round
+    alignItems: 'center',
+    justifyContent: 'center', 
+  },
+
+  bottom_box: {
+    width:'100%',
+    height: '70%',
+    marginTop: 20,
     backgroundColor: 'rgba(146, 146, 254, 0.19)',
     borderWidth: 0.5,
     borderColor: 'rgba(189, 189, 189, 0.00)',
@@ -249,16 +298,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
   },
 
+    // --- MIDDLE SECTION --- 
 
-  section_box: {
-    marginTop: 20,
-    alignItems :  'center',
+  bottom_boxSection: { 
+    height: 80,
+    marginTop: 10,
   },
 
-  box_titre: {
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent: 'space-around'
+  section_box: {
+    alignItems: 'center',
+    paddingVertical: 20,
+    height: 230,
+  },
+
+  buttonText: {
+    color: '#9292FE',
+    fontSize: 16,
+    textAlign: 'center',
   },
 
   txt_h1: {
