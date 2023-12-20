@@ -15,16 +15,16 @@ export default function SearchScreen() {
 
   // Effectue une requête pour obtenir les recettes depuis le serveur au montage du composant
   useEffect(() => {
-    fetch('http://172.20.10.5:3000/recipes') // je recupere toutes les recette
+    fetch('https://chefs-backend-amber.vercel.app/recipes') // je recupere toutes les recette
       .then(response => response.json())
       .then(data => {
         // Utilisation de Promise.all pour attendre toutes les requêtes a fin de pouvoir mettre  a jour les élément 
         Promise.all(data.recipes.map((valeur) => {
           //
-          return fetch(`http://172.20.10.5:3000/users/chef/${valeur.userChef}`) // je recupere le profils de l'user pour avoir sont id et chercher sont nom
+          return fetch(`https://chefs-backend-amber.vercel.app/users/chef/${valeur.userChef}`) // je recupere le profils de l'user pour avoir sont id et chercher sont nom
             .then(response => response.json())
             .then(data1 => {
-              return fetch(`http://172.20.10.5:3000/users/profil/${data1.data.userProfil._id}`)// je recupre le profils user avec le nom et prenom du chef
+              return fetch(`https://chefs-backend-amber.vercel.app/users/profil/${data1.data.userProfil._id}`)// je recupre le profils user avec le nom et prenom du chef
                 .then(response => response.json())
                 .then(data3 => {
                   // Retourne l'objet modifié
@@ -56,7 +56,7 @@ export default function SearchScreen() {
       setRejected([...rejected, card._id]);
       loadNextCard();
     } else if (direction === 'right') {
-      fetch(`http://172.20.10.5:3000/users/profil/addRecipeWishList/${user.id}`, {
+      fetch(`https://chefs-backend-amber.vercel.app/users/profil/addRecipeWishList/${user.id}`, {
         method: 'PUT', // ou 'POST' selon votre implémentation côté serveur
         headers: {
           'Content-Type': 'application/json',

@@ -23,7 +23,7 @@ export default function OrderScreen() {
 
   // useEffect to upload the informations about the chefs when click on recipes when ordering 
   useEffect(() => {
-    fetch(`http://chefs-backend-amber.vercel.app/users/chef/${chefId}`)
+    fetch(`https://chefs-backend-amber.vercel.app/users/chef/${chefId}`)
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -220,18 +220,19 @@ txt_p_regular_small: {
         paddingLeft: 10
       },
 
-      box2 : {
-        width : '50%',
+      box2: {
+        width: '50%',
         borderBottomLeftRadius: 10,
-        borderBottomRightRadius : 10,
+        borderBottomRightRadius: 10,
         borderWidth: 1,
-        borderRadius: '15',
+        borderRadius: 15, // Au lieu de borderRadius: '15'
         borderColor: '#5959F0',
         backgroundColor: 'rgba(146, 146, 254, 0.19)',
         alignItems: 'center',
         justifyContent: 'flex-start',
         marginBottom: 20,
       },
+      
 
   photo:{
     width : "90%",
