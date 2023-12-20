@@ -4,26 +4,15 @@ import { CheckBox } from 'react-native-elements';
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-<<<<<<< HEAD
-
-=======
->>>>>>> christof
 export default function App() {
 
   const navigation = useNavigation();
 
   const [accepteConditions, setAccepteConditions] = useState(false);
-<<<<<<< HEAD
   
 
   const handleSubmit = () => {
     navigation.navigate('HomeTabs', { screen: 'Main' });
-=======
-  const navigation = useNavigation();
-
-  const handleSubmit = () => {
-    navigation.navigate('Main')
->>>>>>> christof
   }
   
   return (
@@ -74,7 +63,6 @@ export default function App() {
                 <Text style={styles.txt_p_bold}>Submit</Text>
               </View>
             </View>
-<<<<<<< HEAD
             
 
               <Text style={styles.txt_h1_big}>Quelques termes and conditons </Text>
@@ -92,8 +80,6 @@ export default function App() {
             <TouchableOpacity onPress={handleSubmit} style={[styles.button, styles.marginTop]}>
                       <Text style={{ color:'red'}}>Confirmer</Text>
             </TouchableOpacity>
-=======
->>>>>>> christof
           </View>
 
           <Text style={styles.txt_h1_big}>Quelques termes and conditons </Text>
