@@ -31,10 +31,6 @@ export default function OrderScreen() {
     setSelectedIds([...selectedIds, id_preferences]);
   }
 
-<<<<<<< HEAD
-  /*
-=======
->>>>>>> Toms
   // Import des REDUCER
   // const user = useSelector((state) => state.user.value);
   // const typeCuisine = useSelector((state) => state.typeCuisine.value);
@@ -46,19 +42,12 @@ export default function OrderScreen() {
 
  
 
-<<<<<<< HEAD
-  // Fonction pour soumettre les préférences sélectionnées
-  const handleSubmit = () => {
-    fetch(`https://chefs-backend-amber.vercel.app/users/profil/add-preference/${user.id}`, {
-  // ID utilisateur fictif (à remplacer par la logique d'authentification)
-=======
   // // Fonction pour soumettre les préférences sélectionnées
   // const handleSubmit = () => {
   //   fetch(`https://chefs-backend-amber.vercel.app/users/profil/add-preference/${user.id}`, {
   // // ID utilisateur fictif (à remplacer par la logique d'authentification)
->>>>>>> Toms
 
-*/
+
   // Fonction pour soumettre les préférences sélectionnées
   const handleSubmit = () => {
     console.log(selectedIds)
@@ -84,11 +73,7 @@ export default function OrderScreen() {
       });
   }
 
-<<<<<<< HEAD
-  /*
-=======
   
->>>>>>> Toms
 
 //   //tris des type par ordre alphabétique
 // const newlisteType = [... typeCuisine] 
