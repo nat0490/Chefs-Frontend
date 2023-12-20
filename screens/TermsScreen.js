@@ -1,51 +1,86 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View,TouchableOpacity, Image } from 'react-native'
+import { StyleSheet, Text, View,TouchableOpacity, Image, Alert } from 'react-native'
 import { CheckBox } from 'react-native-elements';
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector , useDispatch} from 'react-redux';
+
 export default function App() {
+  // Import des REDUCER
+  const user = useSelector((state) => state.user.value);
 
   const navigation = useNavigation();
 
   const [accepteConditions, setAccepteConditions] = useState(false);
-  
+  const [displayPage ,setDisplayPage] = useState(false)
+
+
+  const dispatch = useDispatch();
+
 
   const handleSubmit = () => {
-    navigation.navigate('HomeTabs', { screen: 'Main' });
+    if(accepteConditions){    
+      setDisplayPage(true)
+
+    }else{
+      Alert.alert('Veuillez accepter nos condition d\'utilisateur ');
+    }
+
   }
   
+  const handleReturnLastPage = () => {
+    navigation.navigate('Preference');
+  }
+  
+  const handleSubmitNavigateMain = () => {
+       fetch(`http://chefs-backend-amber.vercel.app/users/profil/add-preference/${user.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userPreference: [...user.userProfile.userPreference] }),
+       })
+         .then(response => response.json())
+         .then(data => {
+          Alert.alert('Parfait, nous avons ajouté vos informations à vos préférences');
+          navigation.navigate('HomeTabs', { screen: 'Main' });
+        })
+         .catch(error => {
+           console.error("Error:", error);
+         });
+}
+
+
+
   return (
     <View style={styles.container}>
       <View style={styles.nav_bar_color}></View>
-      
           <View style={styles.container_box_width}>
-            {/* Fleche revenir sur la page précédente  */}
-            <View style={styles.containeur_fleche}>
-              <FontAwesome name='arrow-left' size={22}  />
-            </View>
-  
-            {accepteConditions &&
-            <View style={{flex: 1 , backgroundColor:'red', flexDirection:'column', justifyContent:'space-around' , alignItems:'center'}}>
+
+      {/* Fleche revenir sur la page précédente  */}
+      <View style={styles.containeur_fleche}>
+        <FontAwesome onPress={handleReturnLastPage} name='arrow-left' size={22}  />
+      </View>
+            {displayPage &&
+            <View style={{flex: 1 , flexDirection:'column', justifyContent:'space-around' , alignItems:'center'}}>
                 <View style={{width: "100%" , alignItems:'center'}}> 
                      <Image source={require('../assets/validationImage.png')} style={styles.photo} />
                 </View>
 
                 <View style={{alignItems:'center', marginTop: 20}}>
                     <Text style={styles.txt_h2}>Verification Réussie !</Text>
-                    <Text style={styles.txt_p_regulard}>Tu as maintenant</Text> 
+                    <Text style={[styles.txt_p_regulard, { marginTop: 10 }]}>Tu as maintenant</Text> 
                     <Text style={styles.txt_p_regulard}>un accès </Text> 
                     <Text style={styles.txt_p_regulard}>total à notre app</Text>
                 </View>
                 <View>
-                <TouchableOpacity onPress={handleSubmit} style={[styles.button, styles.marginBottom]}>
+                <TouchableOpacity onPress={handleSubmitNavigateMain} style={[styles.button, styles.marginBottom]}>
                   <Text style={{ color: 'white' }}>Confirmer</Text>
                 </TouchableOpacity>
                 </View>
             </View>
           }
 
-{!accepteConditions && (
+{!displayPage && (
         <>
           {/* Box de navigation */}
           <View style={styles.containeur_navigation_view}>
@@ -78,24 +113,9 @@ export default function App() {
             </View>
 
             <TouchableOpacity onPress={handleSubmit} style={[styles.button, styles.marginTop]}>
-                      <Text style={{ color:'red'}}>Confirmer</Text>
+                      <Text style={{ color:'white'}}>Confirmer</Text>
             </TouchableOpacity>
           </View>
-
-          <Text style={styles.txt_h1_big}>Quelques termes and conditons </Text>
-          <Text style={[styles.txt_h2, styles.marginTop]}>Nous respectons votre vie privée. Consultez notre politique de confidentialité pour comprendre comment nous collectons, utilisons et protégeons vos informations.</Text>
-
-          <View style={{ margin: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-            <CheckBox
-              checked={accepteConditions}
-              onPress={() => setAccepteConditions(!accepteConditions)}
-            />
-            <Text>J'accepte les termes et conditions</Text>
-          </View>
-
-          <TouchableOpacity onPress={handleSubmit} style={[styles.button, styles.marginTop]}>
-            <Text style={{ color: 'white' }}>Confirmer</Text>
-          </TouchableOpacity>
         </>
       )}
           </View>
