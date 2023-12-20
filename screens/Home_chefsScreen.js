@@ -1,11 +1,34 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View , Image , TouchableOpacity} from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import React from 'react';
-
-
+import React, { useState, useEffect } from 'react';
+import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 export default function OrderScreen() {
+  const route = useRoute();
+  const chefId = route.params?.chefId;
 
+  const [chefData , setChefData ] = useState(null)
+  const [platsData , setPlatsData] = useState(null)
+  const navigation = useNavigation();
+  useEffect(() => {
+
+    (async () => {
+       try {
+         const response = await fetch(`http://172.20.10.5:3000/users/chef/${chefId}`);
+         const data = await response.json();
+         if(data.result) {
+          console.log(data)
+           setChefData(data.data);
+           setPlatsData(data.data.recipes)
+         }
+       } catch (error) {
+         console.error("Erreur lors du traitement des données :", error);
+       }
+     })()
+     }, []);
+
+   
   const stars = [];
   for (let i = 0; i < 5; i++) {
     // let style = {};
@@ -23,36 +46,42 @@ export default function OrderScreen() {
     // }
     Note_user.push(<FontAwesome key={i} name='star' size={10}/>);
   }
+
+
+  if(!platsData) return <View><Text>Loading...</Text></View>
+  const diplayPlats =  platsData.length > 0 ? platsData.slice( 0 , 3 ).map((data , i) => (
+    <TouchableOpacity activeOpacity={1} style={styles.box}>
+                  <Image source={require('../assets/chefNaima.jpg')} style={styles.photo_plats} />
+                    <Text style={styles.margin_rigth}>{data.title}</Text>
+                    <View style={styles.box_description }>
+                      <Image source={require('../assets/img_plats_categories.png')} style={styles.photo_preferences} />
+                      <Text style={styles.txt_preferences}>{data.type}</Text>
+                    </View>
+                    <View style={styles.box_description }>
+                      {stars}
+                  </View>
+      </TouchableOpacity>
+  )) : (
+    <TouchableOpacity activeOpacity={1} style={styles.box}>
+          <Text style={styles.margin_rigth}></Text>
+          <View style={{height: 80}}>
+            <Text style={styles.txt_preferences}>Le chef dois encore ajouter quelque plats</Text>
+          </View>
+          <View style={styles.box_description }>
+            {stars}
+        </View>
+  </TouchableOpacity>
+  )
+  
   return (
       <View style={styles.container}>
             <View style={styles.nav_bar_color}></View>
         <View style={styles.container_box_width}>
-             <Text style={[styles.txt_h2, styles.marginTop]}>Nom du Chefs</Text>
+             <Text style={[styles.txt_h2, styles.marginTop]}>{chefData.userProfil.nom}</Text>
              <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
               
             <View style={styles.containeur_box}>
-                <TouchableOpacity activeOpacity={1} style={styles.box}>
-                  <Image source={require('../assets/chefNaima.jpg')} style={styles.photo_plats} />
-                    <Text style={styles.margin_rigth}>Pizza</Text>
-                    <View style={styles.box_description }>
-                      <Image source={require('../assets/img_plats_categories.png')} style={styles.photo_preferences} />
-                      <Text style={styles.txt_preferences}>Italien</Text>
-                    </View>
-                    <View style={styles.box_description }>
-                      {stars}
-                  </View>
-              </TouchableOpacity>
-              <TouchableOpacity activeOpacity={1} style={styles.box}>
-                  <Image source={require('../assets/chefNaima.jpg')} style={styles.photo_plats} />
-                    <Text style={styles.margin_rigth}>Pizza</Text>
-                    <View style={styles.box_description }>
-                      <Image source={require('../assets/img_plats_categories.png')} style={styles.photo_preferences} />
-                      <Text style={styles.txt_preferences}>Italien</Text>
-                    </View>
-                    <View style={styles.box_description }>
-                      {stars}
-                  </View>
-              </TouchableOpacity>
+                {diplayPlats}
             </View>
             
               <View style={[styles.container_commentaire, {marginTop: 10}]}>

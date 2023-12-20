@@ -50,13 +50,11 @@ export default function SignInScreen() {
       }  
       const result = await response.json();
       //console.log(result);
-      console.log('données préférence chargé ')
-      dispatch(remove());
       result.data.forEach((item) => {
         dispatch(add({ id: item._id, typeCuisine: item.typeCuisine }));
       });
     } catch (error) {
-      console.error('Erreur lors du chargement des données préférence depuis la base de données', error);
+      console.error('Erreur lors du chargement des données depuis la base de données', error);
     }
   };
   useEffect(()=> {
@@ -74,7 +72,7 @@ export default function SignInScreen() {
     //console.log('handle connection');
     if(EMAIL_REGEX.test(emailInput)) {
       fetch('https://chefs-backend-amber.vercel.app/users/signin', {
-      //fetch('http://192.168.1.106:3000/users/signin', {
+      //fetch('http://172.20.10.5:3000/users/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: emailInput, password: passwordInput }),
@@ -101,14 +99,12 @@ export default function SignInScreen() {
             },
             tel : data.dataUserConnexion.userProfile.tel,
             chef : data.dataUserConnexion.userProfile.chef,
-            orders: data.dataUserConnexion.userProfile.orders,
-            userPreference: data.dataUserConnexion.userProfile.userPreference,
-            wishList: data.dataUserConnexion.userProfile.wishList,
+            orders: data.dataUserConnexion.userProfile.chef.orders,
+            userPreference: data.dataUserConnexion.userProfile.chef.userPreference,
             }
           };
-        //console.log(userInfo);
+        console.log(userInfo);
         dispatch(login(userInfo));
-        console.log('userProfil chargé');
         navigation.navigate('HomeTabs', { screen: 'Main' }) ;
       } 
     }) .catch(error => {
