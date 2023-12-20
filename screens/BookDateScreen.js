@@ -105,9 +105,7 @@ export default function BookDateScreen() {
       <View style={styles.container_reservationDetails}>
       <View style={styles.reservationDetails}>
         <Text style={styles.detailText}>Date réservée : {formattedDateTime}</Text>
-        
       </View>
-
       </View>
     );
   } 
