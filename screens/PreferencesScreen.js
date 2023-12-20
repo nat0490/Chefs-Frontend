@@ -39,7 +39,7 @@ export default function OrderScreen() {
 
   // Fonction pour soumettre les préférences sélectionnées
   const handleSubmit = () => {
-    fetch(`http://chefs-backend-amber.vercel.app/users/profil/add-preference/${user.id}`, {
+    fetch(`https://chefs-backend-amber.vercel.app/users/profil/add-preference/${user.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userPreference: [...selectedIds] }),

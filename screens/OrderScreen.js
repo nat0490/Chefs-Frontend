@@ -132,7 +132,7 @@ export default function OrderScreen() {
 //   // création signin connexion 
 //   const handleConnection = () => {
 //     if(EMAIL_REGEX.test(emailInput)) {
-//       fetch('http://192.168.0.127:3000/users/signin', {
+//       fetch('https://chefs-backend-amber.vercel.app/users/signin', {
 //       method: 'POST',
 //       headers: { 'Content-Type': 'application/json' },
 //       body: JSON.stringify({ email: emailInput, password: passwordInput }),

@@ -15,14 +15,14 @@ export default function OrderScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://172.20.10.5:3000/recipes/${platId}`);
+        const response = await fetch(`https://chefs-backend-amber.vercel.app/recipes/${platId}`);
         const data = await response.json();
   
 
-          const chefResponse = await fetch(`http://172.20.10.5:3000/users/chef/${data.recipe.userChef}`);
+          const chefResponse = await fetch(`https://chefs-backend-amber.vercel.app/users/chef/${data.recipe.userChef}`);
           const chefData = await chefResponse.json();
   
-          const profilResponse = await fetch(`http://172.20.10.5:3000/users/profil/${chefData.data.userProfil._id}`);
+          const profilResponse = await fetch(`https://chefs-backend-amber.vercel.app/users/profil/${chefData.data.userProfil._id}`);
           const profilData = await profilResponse.json();
 
           //dataAjouter le nom du chef à l'objet

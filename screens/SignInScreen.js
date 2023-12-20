@@ -75,8 +75,8 @@ export default function SignInScreen() {
   const handleConnection = () => {
     //console.log('handle connection');
     if(EMAIL_REGEX.test(emailInput)) {
+      // fetch('https://chefs-backend-amber.vercel.app/users/signin', {
       fetch('https://chefs-backend-amber.vercel.app/users/signin', {
-      //fetch('http://192.168.1.106:3000/users/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: emailInput, password: passwordInput }),

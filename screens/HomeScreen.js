@@ -36,7 +36,7 @@ export default function App() {
 
 
  useEffect(() => {
-  fetch('http://172.20.10.5:3000/recipes')
+  fetch('https://chefs-backend-amber.vercel.app/recipes')
     .then(response => response.json())
     .then(data => {
       setPlatsData([...data.recipes]);
@@ -166,7 +166,7 @@ const diplayPlats = platsData.slice( 0 , 3 ).map((data , i) => (
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('CheckProfile')}>
             <Text style={styles.buttonText_sign_up}>CheckProfile</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('BookDateScreen')}>
+          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('BookDate')}>
               <Text style={styles.buttonText_sign_up}>navigation</Text>
           {/* </TouchableOpacity> */}
           </TouchableOpacity>

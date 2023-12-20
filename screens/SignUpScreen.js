@@ -115,7 +115,7 @@ const handleSubmitRegister = () => {
 //VERIF MOTS DE PASSE MASQUE POUR FACILITER NOS TEST
 console.log('connection');
   if (verifierEmail() /*&& verifierMotDePasse()*/) {
-      //fetch('http://172.20.10.5:3000/users/signup', {
+      //fetch('https://chefs-backend-amber.vercel.app/users/signup', {
       fetch('https://chefs-backend-amber.vercel.app/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
