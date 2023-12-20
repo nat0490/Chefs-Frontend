@@ -6,7 +6,7 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {addDate} from '../reducers/infoPourCommande';
+import {addDate, addPrice} from '../reducers/infoPourCommande';
 
 export default function OrderScreen() {
   const navigation = useNavigation();
@@ -29,9 +29,6 @@ const [ totalAmount, setTotalAmount ] = useState([]);
 
   const handleAddressConfirmation = async () => {
     setConfirmedAddress(userAddress); // updating variables when confirm user's input
-
-    
-
 
     try { // code might throw exceptions 
       // make the function waits until we have a Promise
@@ -63,6 +60,7 @@ const [ totalAmount, setTotalAmount ] = useState([]);
 
     // managing button to confirm order handleConfirmation
     const handleConfirmation = () =>{
+      dispatch
       navigation.navigate('BookDate')
      };
 
@@ -162,13 +160,13 @@ const [ totalAmount, setTotalAmount ] = useState([]);
         </View>
 
         
-        <Text style={{ margin: 10}}>{confirmedAddress} à {addDate}</Text>
+        <Text style={{ margin: 10, fontWeight: 500, color: '#5959F0'}}>{confirmedAddress}à {addDate}</Text>
         <View style={styles.recap}>
-          <View style={styles.recapColumn}>
-            <Text>Total</Text>
+          <View style={styles.recapColumn1}>
+            <Text style={{ fontWeight: 300, color: '#5959F0'}}>Total : </Text>
         </View>
-      <View style={styles.recapColumn}>
-          <Text>{totalAmount.minimum} € pour 2 personnes</Text> 
+      <View style={styles.recapColumn2}>
+          <Text style={{ fontWeight: 500, color: '#5959F0'}}>{totalAmount.minimum} € pour 2 personnes</Text> 
       </View>
       </View>
 
@@ -332,10 +330,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 
-  recapColumn: {
+  recapColumn1: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    width: '30%',
+  },
+
+  recapColumn2: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '70%',
   },
 
 });

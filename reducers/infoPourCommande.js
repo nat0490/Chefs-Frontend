@@ -5,7 +5,8 @@ const initialState = {
     value: {
       dishId: null,
       chefId: null,
-      date: null
+      date: null,
+      price: null,
     }
 };
 
@@ -21,7 +22,9 @@ export const infoPourCommandeSlice = createSlice({
     addDate: (state, action) => {
       state.value.date = action.payload.date;
   },
-    
+  addPrice: (state, action) => {
+    state.value.date = action.payload.price;
+},
     removeInfo: (state) => {
       state.value.dishId = null;
       state.value.chefId = null
@@ -29,5 +32,5 @@ export const infoPourCommandeSlice = createSlice({
   },
 });
 
-export const { addInfo, removeInfo , addDate} = infoPourCommandeSlice.actions;
+export const { addInfo, removeInfo , addDate, addPrice} = infoPourCommandeSlice.actions;
 export default infoPourCommandeSlice.reducer;
