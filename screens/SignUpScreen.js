@@ -83,6 +83,7 @@ const handleSubmitRegister = () => {
 //VERIF MOTS DE PASSE MASQUE POUR FACILITER NOS TEST
 console.log('connection');
   if (verifierEmail() /*&& verifierMotDePasse()*/) {
+    console.log('connection');
       //fetch('http://172.20.10.5:3000/users/signup', {
       fetch('https://chefs-backend-amber.vercel.app/users/signup', {
         method: 'POST',
@@ -102,9 +103,7 @@ console.log('connection');
         .then(response => response.json())
         .then(data => {
           console.log(data);
-          
           if (data.result) {
-            
             setPasswordInput('');
             setEmailInput('');
             setNameInput('');
@@ -115,7 +114,6 @@ console.log('connection');
             setPostalInput('');
             setCityInput('');
             Alert.alert('Vous êtes connecté');
-            navigation.navigate('Preference');
              //navigation.navigate('EditProfil');
 //PARTIE REDUX: ENVOIE DANS LE REDUCER DES INFO USER
              const userInfo = {
@@ -137,9 +135,10 @@ console.log('connection');
               };
             console.log(userInfo)
             dispatch(login(userInfo));
+            navigation.navigate('Preference');
 //ENVOIE SUR LA PAGE MAIN ENSUITE (PAS DACCEUIL)
             //navigation.navigate('HomeTabs', { screen: 'Preference' }) ;
-            navigation.navigate('HomeTabs', { screen: 'Main' }) ;
+            //navigation.navigate('HomeTabs', { screen: 'Main' }) ;
           } 
         })
         .catch(error => {
@@ -161,7 +160,6 @@ console.log('connection');
       <View style={styles.containeur_fleche}>
         <FontAwesome name='arrow-left' size={22}  />
       </View>
-
       <View style={styles.containeur_navigation_view}> 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View style={styles.detailContainer}>

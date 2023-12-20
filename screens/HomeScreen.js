@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, Image , TouchableOpacity} from 'react-native';
 import React, { useState, useEffect } from 'react';
 //import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import {login, logout} from '../reducers/user';
+import { useDispatch , useSelector} from 'react-redux';
+
 //FONTAWESOME
 //import FontAwesome from 'react-native-vector-icons/FontAwesome';
 //import { FontAwesome } from '@expo/vector-icons';
@@ -16,33 +16,43 @@ export default function App() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [platsData , setPlatsData] = useState([])
-
+  const [chefData , setChefData] = useState([])
   const stars = [];
 
-  for (let i = 0; i < 5; i++) {
+
+for (let i = 0; i < 5; i++) {
     // let style = {};
     // if (i < props.voteAverage - 1) {
     //   style = { 'color': '#f1c40f' };
     // }
     //stars.push(<FontAwesome key={i} name='star' size={8}/>);
-  }
+}
 
   const handlePressPlats = (id) => {
     navigation.navigate('HomePlat', { platId: id });
   }
- const handlePressChefs = () =>{
-  navigation.navigate('HomeChefs')
+ const handlePressChefs = (id) =>{
+  navigation.navigate('HomeChefs', { chefId: id } )
  }
 
 
  useEffect(() => {
+  // Fetch pour récuperer les recette
   fetch('http://172.20.10.5:3000/recipes')
     .then(response => response.json())
     .then(data => {
       setPlatsData([...data.recipes]);
     });
+
+// Fetch pour récuperer les chef
+    fetch('http://172.20.10.5:3000/users/chef')
+    .then(response => response.json())
+    .then(data => {
+      setChefData([...data.data]);
+    });
 }, []);
 
+// Map pour afficher 3 plats 
 const diplayPlats = platsData.slice( 0 , 3 ).map((data , i) => (
   <TouchableOpacity key={i} onPress={() => handlePressPlats(data._id)}  activeOpacity={1} style={styles.box}>
     <Image source={{ uri: data.image }} style={styles.photo} />
@@ -53,6 +63,19 @@ const diplayPlats = platsData.slice( 0 , 3 ).map((data , i) => (
     </View>
   </TouchableOpacity>
 ));
+
+
+
+const diplayChefs = chefData ? chefData.slice( 0 , 3 ).map((data , i) => (
+  <TouchableOpacity key={i} onPress={() => handlePressChefs(data._id)} activeOpacity={1} style={styles.box}>
+  <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
+    <Text style={[styles.txt_preferences, styles.margin_rigth]}>Chef {data.userProfil.nom}</Text>
+    <View style={styles.box_description }>
+    <FontAwesomeIcon icon={faBowlFood}/>
+      <Text>{data.spécialisation}</Text>
+  </View>
+</TouchableOpacity>
+)):  <View><Text>Loading...</Text></View>
 
  return (
     <View style={styles.container}>
@@ -87,9 +110,12 @@ const diplayPlats = platsData.slice( 0 , 3 ).map((data , i) => (
             }}
           />
 
+
+
         {/* Conteneur des boîtes de recettes */}
         <View style={styles.containeur_box}>
           {diplayPlats}
+
         </View>
       </View>
 
@@ -123,30 +149,8 @@ const diplayPlats = platsData.slice( 0 , 3 ).map((data , i) => (
 
         {/* Conteneur des boîtes de recettes */}
         <View style={styles.containeur_box}>
-          <TouchableOpacity onPress={handlePressChefs} activeOpacity={1} style={styles.box}>
-            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
-              <Text style={[styles.txt_preferences, styles.margin_rigth]}>Preferences</Text>
-              <View style={styles.box_description }>
-              <FontAwesomeIcon icon={faBowlFood}/>
-                <Text >  Italien</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1} style={styles.box}>
-            <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
-              <Text style={[styles.txt_preferences, styles.margin_rigth]}>Preferences</Text>
-              <View style={styles.box_description }>
-              <FontAwesomeIcon icon={faBowlFood}/>
-                <Text>  Italien</Text>
-              </View>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1} style={styles.box}>
-              <Image source={require('../assets/chefNaima.jpg')} style={styles.photo} />
-              <Text style={styles.margin_rigth}>Pizza</Text>
-                <View style={styles.box_description }>
-                <FontAwesomeIcon icon={faBowlFood}/>
-                  <Text >  Italien</Text>
-                </View>
-          </TouchableOpacity>
+         {diplayChefs}
+
         </View>
       </View>
 
@@ -166,7 +170,7 @@ const diplayPlats = platsData.slice( 0 , 3 ).map((data , i) => (
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('CheckProfile')}>
             <Text style={styles.buttonText_sign_up}>CheckProfile</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('BookDateScreen')}>
+          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Terms')}>
               <Text style={styles.buttonText_sign_up}>navigation</Text>
           {/* </TouchableOpacity> */}
           </TouchableOpacity>

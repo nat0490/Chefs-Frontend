@@ -3,10 +3,12 @@ import { StyleSheet,ScrollView, Text, View ,TouchableOpacity, Alert} from 'react
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-
-
+import { useDispatch , useSelector} from 'react-redux';
+import { login, logout} from '../reducers/user';
 export default function OrderScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);
 
   // État pour suivre si le bouton a été cliqué
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -15,7 +17,8 @@ export default function OrderScreen() {
   const [preferenceData, setPreferenceData] = useState([]);
 
   // État pour suivre les couleurs actives des préférences
-  const [activeColors, setActiveColors] = useState(preferenceData.map(() => false));
+  // Cette ligne crée un tableau de la même longueur que preferenceData, où chaque élément est initialisé à false
+  const [activeColors, setActiveColors] = useState(preferenceData.map(() => false)); 
 
   // État pour stocker les ID sélectionnés
   const [selectedIds, setSelectedIds] = useState([]);
@@ -26,19 +29,25 @@ export default function OrderScreen() {
   }
 
   // ID utilisateur fictif (à remplacer par la logique d'authentification)
-  const user = '6578aabacc005455755192fa';
+
 
   // Fonction pour soumettre les préférences sélectionnées
   const handleSubmit = () => {
-    fetch(`http://chefs-backend-amber.vercel.app/users/profil/add-preference/${user}`, {
+    console.log(selectedIds)
+    const users = '6581ef0d794e6f6851a09cec';
+    fetch(`http://chefs-backend-amber.vercel.app/users/profil/add-preference/${users}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userPreference: [...selectedIds] }),
     })
       .then(response => response.json())
       .then(data => {
+        console.log(`ceci est la  data ${data}`)
+        dispatch(login({ userPreference : [...selectedIds]}))
         setSelectedIds([]);
-        setActiveColors([])
+        setActiveColors([]);
+        setPreferenceData([]);
+        console.log(`ceci est la  data ${data}`)
         Alert.alert('Parfait, nous avons ajouté vos informations à vos préférences');
         navigation.navigate('Terms');
       })
@@ -53,20 +62,46 @@ export default function OrderScreen() {
       .then(response => response.json())
       .then(data => {
         setPreferenceData([...data.data]);
+  
       });
   }, []);
 
-  // Créez des composants de préférences à partir des données
+  let preferences 
 
-  // REVOIR COMMENT SA FONCTIONNE 
-  const preferences = preferenceData.map((data, i) => (
+  const dataPreferences = user.userProfile.userPreference
+  console.log(dataPreferences.length)
+// Si déja des preferences sa veux dire qu'il revient sur la page alors je teste celle qui sont dans sont reducer pour y ajouter les couleur 
+useEffect(() => {
+  if (dataPreferences.length > 1) {
+  
+    // Utilisation de map pour obtenir un tableau d'indexes
+    const resultIndexes = dataPreferences.map((reducerItem) => {
+      // Utilisation de findIndex pour trouver l'index correspondant dans preferenceData
+      return preferenceData.findIndex((prefItem) => prefItem._id === reducerItem._id);
+    });
+
+    const updatedColors = [...activeColors]; // Je récupère mon tableau de false
+
+    for (let i = 0; i < resultIndexes.length; i++) {
+      updatedColors[resultIndexes[i]] = true; // Inverse la valeur sur l'index de ma préférence
+    }
+
+    setActiveColors(updatedColors);
+  }
+}, [dataPreferences, preferenceData]);
+
+
+
+if (dataPreferences.length > 1) {
+  preferences = preferenceData.map((data, i) => (
     <TouchableOpacity
       key={i}
       onPress={() => {
-        handlePress(data._id);
-        const updatedColors = [...activeColors];
-        updatedColors[i] = !updatedColors[i];
-        setActiveColors(updatedColors);
+        console.log("bitch")
+        const updatedColors = [...activeColors]; // Je recupere mon tableau de false 
+        updatedColors[i] = !updatedColors[i]; // Inverse la valeur sur l'index de ma preference
+        setActiveColors(updatedColors); // Je met a jour mon tableau modifier 
+        handlePress(data._id); // Recupere l'id de ma preference au clic 
       }}
       activeOpacity={1}
       style={[
@@ -85,7 +120,38 @@ export default function OrderScreen() {
       </Text>
     </TouchableOpacity>
   ));
+} else{
+   // Je map sur ma reponse pour afficher toutes les preferences de ma db 
+       preferences = preferenceData.map((data, i) => (
+        <TouchableOpacity
+          key={i}
+          onPress={() => {
+            handlePress(data._id); // Recupere l'id de ma preference au clic 
+            const updatedColors = [...activeColors]; // Je recupere mon tableau de false 
+            updatedColors[i] = !updatedColors[i]; // Inverse la valeur sur l'index de ma preferences
+            setActiveColors(updatedColors); // Je met a jour mon tableau modifier 
+          }}
+          activeOpacity={1}
+          style={[
+            styles.btn_sign_up,
+            { backgroundColor: activeColors[i] ? '#5959F0' : 'white' },
+          ]}
+        >
+          <FontAwesome name='arrow-left' size={22} />
+          <Text
+            style={[
+              styles.buttonText_sign_up,
+              { color: activeColors[i] ? 'white' : '#5959F0' },
+            ]}
+          >
+            {data.typeCuisine}
+          </Text>
+        </TouchableOpacity>
+      ));
+      
+    }
 
+ 
   // Rendu de l'écran de commande
 
     return (
