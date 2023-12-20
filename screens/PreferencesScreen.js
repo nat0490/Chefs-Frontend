@@ -27,8 +27,8 @@ export default function OrderScreen() {
     setSelectedIds([...selectedIds, id_preferences]);
   }
 
-
-
+  // Import des REDUCER
+  // const user = useSelector((state) => state.user.value);
   // const typeCuisine = useSelector((state) => state.typeCuisine.value);
   
   //console.log(typeCuisine);
