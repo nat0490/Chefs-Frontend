@@ -17,10 +17,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 
+import { useNavigation } from '@react-navigation/native';
+import { addComments } from  '../reducers/infoPourCommande';
 
 export default function OrderScreen() {
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
 //REDUCER INFO ORDER
   const infoPourCommande = useSelector((state) => state.infoPourCommande.value);
@@ -82,6 +85,11 @@ export default function OrderScreen() {
     }
   }
 
+  const handleSubmission = () => {
+    // Dispatch comments to the store
+    dispatch(addComments({ comments: commentaire }));
+    navigation.navigate('BookDate');
+  };
 
 
   return (
@@ -173,7 +181,7 @@ export default function OrderScreen() {
                  </View>
 
                   {/* Bouton de connexion */}
-                  <TouchableOpacity  onPress={()=> navigation.navigate('BookDate')} style={[styles.button, { marginTop: 20}]} >
+                  <TouchableOpacity  onPress={handleSubmission} style={[styles.button, { marginTop: 20}]} >
                     <Text style={styles.buttonText}>Je choisis ma date</Text>
                   </TouchableOpacity>
 
@@ -226,7 +234,7 @@ const styles = StyleSheet.create({
       fontSize: 20,
       paddingLeft: 20,
       paddingTop: 40,
-      // fontWeight: 700,
+      fontWeight: 700,
     },
 
    // Police 
@@ -244,19 +252,19 @@ const styles = StyleSheet.create({
   txt_p_regular: {
     color: '#5959F0',
     fontSize: 12,
-    // fontWeight: 'bold',
+    fontWeight: 700,
 },
 
 txt_p_regular_small: {
   color: 'black',
   fontSize: 12,
-  // fontWeight: 'lighter',
+  fontWeight: 300,
 },
 
 txt_p_regular_small_top: {
   color: '#5959F0',
   fontSize: 12,
-  // fontWeight: 'lighter',
+  fontWeight: 400,
 },
       // --- TOP SECTION --- 
 
@@ -301,7 +309,7 @@ txt_p_regular_small_top: {
         paddingBottom: 10,
         fontSize: 12,
         color: '#5959F0',
-        // fontWeight: 600,
+        fontWeight: 600,
       },
       
 
@@ -341,7 +349,7 @@ txt_p_regular_small_top: {
   txt_box : {
     color: '#5959F0',
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: 600,
     paddingTop: 5,
 },
 
