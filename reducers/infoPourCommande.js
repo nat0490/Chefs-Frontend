@@ -43,7 +43,7 @@ export const infoPourCommandeSlice = createSlice({
       state.value.chefId = null
     },
   },
-});
+);
 
 export const { addInfo, removeInfo , addDate, addPrice, addAddress, addComments, addTotalAmount } = infoPourCommandeSlice.actions;
 export default infoPourCommandeSlice.reducer;
