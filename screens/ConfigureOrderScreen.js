@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBowlFood } from '@fortawesome/free-solid-svg-icons'
 import { faStar, faPhone, faMessage } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -13,6 +14,7 @@ export default function ConfigureOrderScreen() {
 
   const infoPourCommande = useSelector((state) => state.infoPourCommande.value);
   //console.log(infoPourCommande);
+  const navigation = useNavigation();
 
       const [platsData , setPlatsData] = useState();
       const [ showOrderDetails, setShowOrderDetails ] = useState(false);
@@ -144,14 +146,21 @@ const newTime = (time) => {
                 </View>
             </View>
 
-            <View style={{width: "100%", flexDirection:'row', justifyContent:'center', marginTop: 20}}>
-              <View style={{justifyContent:'center'}}> 
-                <FontAwesomeIcon icon={faMessage} />
+            <View style={{width: "100%", flexDirection:'row', justifyContent:'space-between', alignItems: 'center', marginTop: 20}}>
+              <View style={{flexDirection: 'row'}}>  
+                <View style={{justifyContent:'center'}}> 
+                  <FontAwesomeIcon icon={faMessage} />
+                </View>
+                <View style={{flexDirection:'column', marginLeft: 20}}>
+                  <Text>Chat with</Text>
+                  <Text>Support</Text>
+                </View>
               </View>
-                  <View style={{flexDirection:'column', marginLeft: 20}}>
-                    <Text>Chat with</Text>
-                    <Text>Support</Text>
-                  </View>
+              
+              <TouchableOpacity style={{...styles.btn_sign_up, marginVertical: 30}} onPress={()=> navigation.navigate('Main')}>
+                <Text style={styles.buttonText_sign_up}>Retour au menu principal</Text>
+              </TouchableOpacity>
+              
             </View>
 
       </View>
@@ -229,5 +238,19 @@ OrderDetailsBloc: {
   borderWidth: 1, 
   padding: 20, 
   borderColor: '#5959F0', 
+},
+btn_sign_up : {
+  paddingVertical: 10, 
+  paddingHorizontal: 25, 
+  borderRadius: 5,
+  borderWidth: 2,
+  borderColor: '#9292FE',
+  backgroundColor: '#fff',
+  marginTop: 10,
+},
+buttonText_sign_up: {
+  fontSize : 15,
+  color : '#9292FE',
+  textAlign: 'center',
 },
 });
