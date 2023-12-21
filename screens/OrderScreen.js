@@ -70,7 +70,7 @@ const handleAddressConfirmation = async () => {
     const handleConfirmation = () =>{
       navigation.navigate('PaymentScreen')
       dispatch(addAddress({ address: confirmedAddress }));
-      navigation.navigate('BookDate')
+      // navigation.navigate('BookDate')
      };
 
      useEffect(() => {
