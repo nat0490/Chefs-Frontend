@@ -63,7 +63,7 @@ const [ totalAmount, setTotalAmount ] = useState([]);
 
     // managing button to confirm order handleConfirmation
     const handleConfirmation = () =>{
-      navigation.navigate('BookDate')
+      navigation.navigate('PaymentScreen')
      };
 
      useEffect(() => {

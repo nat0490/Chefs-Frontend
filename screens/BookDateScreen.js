@@ -6,6 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'; // Importat
 import { useNavigation } from '@react-navigation/native';
 import {addDate} from '../reducers/infoPourCommande';
 import { Feather } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
 
 export default function BookDateScreen() {
   // États pour gérer les données et l'interface
@@ -15,6 +16,7 @@ export default function BookDateScreen() {
   const [showTimePicker, setShowTimePicker] = useState(false); // Affichage du sélecteur d'heure
   const [selectedReservation, setSelectedReservation] = useState(null); // Réservation sélectionnée
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   
  // const chefId = useSelector((state) => state.infoPourCommande.value.chefId);
 
@@ -76,6 +78,7 @@ export default function BookDateScreen() {
         console.log('Réponse du serveur pour la réservation :', data); // Affichage de la réponse du serveur
         dispatch(addDate({date : formattedDate}))
         setSelectedReservation(selectedDate); // Mise à jour de la réservation sélectionnée
+        navigation.navigate('OrderDetails');
       }
     } catch (error) {
       console.error('Erreur lors de la réservation du chef :', error);
