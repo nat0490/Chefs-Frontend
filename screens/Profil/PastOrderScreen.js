@@ -102,7 +102,45 @@ export default function PastOrderScreen() {
         </View>
         <View style={styles.allOrder}> 
        
-          {myOrder}
+          {userOrdersDetails.length > 0? myOrder : <View> 
+            <View style={styles.oneOrder}>
+              <View style={styles.topBox}> 
+                  <View style={styles.textOrder}> 
+                    <Text>Date: 12/11/2023</Text>
+                    <Text>Recette: Burger</Text>
+                    {/*<Text>Chef: Robert</Text> */}
+                    <Text>Montant: 50 €</Text>
+                    <Text>Status: consommé</Text>
+                  </View>
+                  <Image source={{uri: 'https://res.cloudinary.com/dawkemcl5/image/upload/v1703169464/fausse_commande_1_fwxkes.png'}} style={styles.photo_plats} /> 
+                </View>
+                <View style={styles.btnContainer}> 
+                  <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} >
+                    <Text style={styles.buttonText_sign_up}>Recommander ce plat?</Text>
+                  </TouchableOpacity>
+              </View>
+              </View>
+
+              <View style={styles.oneOrder}>
+              <View style={styles.topBox}> 
+                  <View style={styles.textOrder}> 
+                    <Text>Date: 05/12/2023</Text>
+                    <Text>Recette: Couscous</Text>
+                    {/*<Text>Chef: Robert</Text> */}
+                    <Text>Montant: 80 €</Text>
+                    <Text>Status: consommé</Text>
+                  </View>
+                  <Image source={{uri: 'https://res.cloudinary.com/dawkemcl5/image/upload/v1703169660/fausse_commande_2_ewogwh.png'}} style={styles.photo_plats} />
+                </View>
+                <View style={styles.btnContainer}> 
+                  <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} >
+                    <Text style={styles.buttonText_sign_up}>Recommander ce plat?</Text>
+                  </TouchableOpacity>
+              </View>
+              </View>
+
+            </View>}
+              
 
         </View>
         <StatusBar style="auto" />

@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { addComments } from  '../reducers/infoPourCommande';
 import { Feather } from '@expo/vector-icons';
-import { addComments } from '../reducers/infoPourCommande'; 
+
 
 export default function OrderScreen() {
 
