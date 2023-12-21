@@ -16,8 +16,6 @@ import { faBowlFood } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
-
-import { useNavigation } from '@react-navigation/native';
 import { addComments } from  '../reducers/infoPourCommande';
 
 export default function OrderScreen() {
