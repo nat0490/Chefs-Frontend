@@ -25,8 +25,11 @@ export const infoPourCommandeSlice = createSlice({
     addDate: (state, action) => {
       state.value.date = action.payload.date;
 <<<<<<< HEAD
+<<<<<<< HEAD
   },
 =======
+=======
+>>>>>>> christofLast
     },
     
 >>>>>>> 0c0f37017e7a538b3212f7b2bc30fb3cd74412ff
@@ -45,8 +48,13 @@ export const infoPourCommandeSlice = createSlice({
     removeInfo: (state) => {
       state.value.dishId = null;
       state.value.chefId = null
+<<<<<<< HEAD
      },
   },
+=======
+    },
+  }
+>>>>>>> christofLast
 });
 
 export const { addInfo, removeInfo , addDate, addPrice, addAddress, addComments, addTotalAmount } = infoPourCommandeSlice.actions;
