@@ -6,10 +6,13 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {addDate, addPrice} from '../reducers/infoPourCommande';
+import {addDate, addPrice, addAddress } from '../reducers/infoPourCommande';
+import { useDispatch, useSelector } from 'react-redux'; 
+
 
 export default function OrderScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   // managing the comments 
   const [commentaireVisible, setCommentaireVisible] = useState(true); //
   const [commentaire, setCommentaire] = useState('');
@@ -26,9 +29,14 @@ export default function OrderScreen() {
   });
 // const [chefId, setChefId] = useState('658019be85ac5cd2de446d8e');
 const [ totalAmount, setTotalAmount ] = useState([]);
+const chosenDate = useSelector(state => state.infoPourCommande.value.date);
+const [nbPeople, setNbPeople] = useState(1); 
 
-  const handleAddressConfirmation = async () => {
-    setConfirmedAddress(userAddress); // updating variables when confirm user's input
+
+ 
+const handleAddressConfirmation = async () => {
+  setUserCoordinates(null); // Clear quand confirme again
+  setConfirmedAddress(userAddress);
 
     try { // code might throw exceptions 
       // make the function waits until we have a Promise
@@ -60,20 +68,38 @@ const [ totalAmount, setTotalAmount ] = useState([]);
 
     // managing button to confirm order handleConfirmation
     const handleConfirmation = () =>{
-      dispatch
+      dispatch(addAddress({ address: confirmedAddress }));
       navigation.navigate('BookDate')
      };
 
      useEffect(() => {
-      const chefId = '658019be85ac5cd2de446d8e'
-     fetch(`https://chefs-backend-amber.vercel.app/recipes/${chefId}`)
-       .then(response => response.json())
-       .then(data => {
-        console.log(data.recipe.prix)
-         setTotalAmount(data.recipe.prix);
-       })
-     }, []);
+      const fetchData = async () => {
+        try {
+          const chefId = '658019be85ac5cd2de446d8e';
+          const response = await fetch(`https://chefs-backend-amber.vercel.app/recipes/${chefId}`);
+          const data = await response.json();
+          console.log(data);
 
+          const basePrice = data.recipe.prix.minimum;
+          const additionalPricePerPerson = data.recipe.prix.personneSup;
+      
+            // Calcul du total en fonction du nombre de personnes
+      const calculatedTotal = basePrice + (additionalPricePerPerson * (nbPeople - 1));
+
+      // Met à jour le state totalAmount avec le résultat du calcul
+      setTotalAmount(calculatedTotal);
+
+      // Dispatch du total dans le reducer
+      dispatch(addPrice({ price: calculatedTotal }));
+      
+
+        } catch (error) {
+          console.error('Error fetching data:', error)
+        }
+      };
+  
+      fetchData();
+    }, [nbPeople, chosenDate]);
 
       
   return (
@@ -160,7 +186,7 @@ const [ totalAmount, setTotalAmount ] = useState([]);
         </View>
 
         
-        <Text style={{ margin: 10, fontWeight: 500, color: '#5959F0'}}>{confirmedAddress}à {addDate}</Text>
+        <Text style={{ margin: 10, fontWeight: 500, color: '#5959F0'}}>{confirmedAddress} à {chosenDate}</Text>
         <View style={styles.recap}>
           <View style={styles.recapColumn1}>
             <Text style={{ fontWeight: 300, color: '#5959F0'}}>Total : </Text>
@@ -219,7 +245,7 @@ const styles = StyleSheet.create({
     color: '#5959F0',
     fontSize: 20,
     paddingLeft: 60,
-    fontWeight: '700',
+    fontWeight: 700,
     marginBottom: 10,
   },
 
@@ -269,9 +295,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#9292FE',
     marginTop: 10,
     padding: 10,
-    borderRadius: 50,  // Makes it round
+    borderRadius: 50,
     alignItems: 'center',
-    justifyContent: 'center', 
+    justifyContent: 'center',
   },
 
   bottom_box: {
