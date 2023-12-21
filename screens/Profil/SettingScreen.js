@@ -113,7 +113,7 @@ export default function SettingScreen() {
     dispatch(logout());
     dispatch(removeUstensils());
     dispatch(remove());
-    navigation.navigate('Home' );
+    navigation.navigate('AcceuilLog' );
   }
 
   return (

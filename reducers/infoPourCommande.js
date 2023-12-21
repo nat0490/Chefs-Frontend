@@ -24,8 +24,12 @@ export const infoPourCommandeSlice = createSlice({
     },
     addDate: (state, action) => {
       state.value.date = action.payload.date;
+<<<<<<< HEAD
+  },
+=======
     },
     
+>>>>>>> 0c0f37017e7a538b3212f7b2bc30fb3cd74412ff
     addPrice: (state, action) => {
       state.value.price = action.payload.price;
     },
