@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert , Pressable ,Platform} from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert , Pressable ,Platform , KeyboardAvoidingView} from 'react-native';
 import React, { useState } from 'react';
 import { CheckBox } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
@@ -30,7 +30,6 @@ export default function SignUpScreen() {
   // date piker
   const [date , setDate] = useState(new Date());
   const [voirPikerData , setVoirPikerData] = useState(false);
-
 
 
 //REDUCER TYPE CUISINE : FETCH pour récuperer tous les type puis Dispatch pour les mettre dans le reducer
@@ -174,6 +173,8 @@ console.log('connection');
             //console.log(userInfo);
             console.log('userProfil chargé');
             dispatch(login(userInfo));
+
+            
 //NAVIGATION
             navigation.navigate('Preference');
              //navigation.navigate('EditProfil');
@@ -194,7 +195,11 @@ console.log('connection');
     <View style={styles.container}>
       <View style={styles.nav_bar_color}></View>
 
-      
+       <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.keyboardAvoidingContainer}
+
+    >
       {/* Fleche revenir sur la page précédente  */}
       <View style={styles.containeur_fleche}>
         <FontAwesome onPress={handleReturnLastPage} name='arrow-left' size={22}  />
@@ -357,7 +362,7 @@ console.log('connection');
           checked={accepteConditions}
           onPress={() => setAccepteConditions(!accepteConditions)}
         />
-        <Text >J'accepte les termes et conditions</Text>
+        <Text>J'accepte les termes et conditions</Text>
       </View>
 
       <Text>OR</Text>
@@ -371,6 +376,7 @@ console.log('connection');
               <FontAwesome name='facebook' size={40} />
             </View>
           </View>
+          </KeyboardAvoidingView>
       </View>
   );
 }
@@ -392,7 +398,7 @@ const styles = StyleSheet.create({
     // Arrow Container Styles
     containeur_fleche: {
       width: "80%",
-      marginTop: 20,
+      marginTop: 30,
       marginBottom: 10,
     },
   
@@ -499,5 +505,11 @@ const styles = StyleSheet.create({
       marginTop: 10,
       width: '100%',
       justifyContent: 'space-between',
+    },
+
+    keyboardAvoidingContainer: {
+      width:"100%",
+      justifyContent: 'center',
+      alignItems: 'center',
     },
 });

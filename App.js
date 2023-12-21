@@ -94,11 +94,9 @@ const HomeTabs = () => (
     headerShown: false,
   })}>
     {/* Associez chaque onglet à sa pile de navigation respective */}
-    <Tab.Screen name="Home" component={MainStack} />
-    <Tab.Screen name="Search" component={SearchScreen} />
     
-   
-    {/*<Tab.Screen name="Wishlist" component={WishlistScreen} /> */}
+    <Tab.Screen name="MainStack" component={MainStack} />
+    <Tab.Screen name="Search" component={SearchScreen} />
   </Tab.Navigator>
 );
 

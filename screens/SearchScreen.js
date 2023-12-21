@@ -21,7 +21,7 @@ export default function SearchScreen() {
         // Utilisation de Promise.all pour attendre toutes les requêtes a fin de pouvoir mettre  a jour les élément 
         Promise.all(data.recipes.map((valeur) => {
           //
-          return fetch(`https://chefs-backend-amber.vercel.app/users/chef/${valeur.userChef}`) // je recupere le profils de l'user pour avoir sont id et chercher sont nom
+          return fetch(`https://chefs-backend-amber.vercel.app/users/chef/${valeur.userChef._id}`) // je recupere le profils de l'user pour avoir sont id et chercher sont nom
             .then(response => response.json())
             .then(data1 => {
               return fetch(`https://chefs-backend-amber.vercel.app/users/profil/${data1.data.userProfil._id}`)// je recupre le profils user avec le nom et prenom du chef
