@@ -24,12 +24,7 @@ export const infoPourCommandeSlice = createSlice({
     },
     addDate: (state, action) => {
       state.value.date = action.payload.date;
-<<<<<<< HEAD
-    },
-    
-=======
   },
->>>>>>> Toms
     addPrice: (state, action) => {
       state.value.price = action.payload.price;
     },
@@ -47,12 +42,7 @@ export const infoPourCommandeSlice = createSlice({
       state.value.chefId = null
      },
   },
-<<<<<<< HEAD
-  },
-);
-=======
 });
->>>>>>> Toms
 
 export const { addInfo, removeInfo , addDate, addPrice, addAddress, addComments, addTotalAmount } = infoPourCommandeSlice.actions;
 export default infoPourCommandeSlice.reducer;
