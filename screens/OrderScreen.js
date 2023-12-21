@@ -68,6 +68,7 @@ const handleAddressConfirmation = async () => {
 
     // managing button to confirm order handleConfirmation
     const handleConfirmation = () =>{
+      navigation.navigate('PaymentScreen')
       dispatch(addAddress({ address: confirmedAddress }));
       navigation.navigate('BookDate')
      };

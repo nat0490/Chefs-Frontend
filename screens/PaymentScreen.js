@@ -8,6 +8,10 @@ import { useNavigation } from '@react-navigation/native';
 export default function PaymentScreen() {
   const navigation = useNavigation();
 
+  const reserverChef = () => {
+    console.log('Je réserve mon chef !');
+  }
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -48,9 +52,7 @@ export default function PaymentScreen() {
           <Text style={styles.total}>Total €37.51</Text>
           <TouchableOpacity
             style={styles.reserveButton}
-            onPress={() => {
-              console.log('Je réserve mon chef !');
-            }}
+            onPress={() => {reserverChef}}
           >
             <Text style={styles.reserveText}>Je réserve mon chef !</Text>
           </TouchableOpacity>
