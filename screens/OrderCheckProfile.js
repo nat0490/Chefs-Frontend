@@ -12,9 +12,10 @@ import { View,
 } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBowlFood } from '@fortawesome/free-solid-svg-icons';
+import { faBowlFood, faComment } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { addComments } from  '../reducers/infoPourCommande';
 import { Feather } from '@expo/vector-icons';
 import { addComments } from '../reducers/infoPourCommande'; 
 
@@ -25,6 +26,7 @@ export default function OrderScreen() {
 
 //REDUCER INFO ORDER
   const infoPourCommande = useSelector((state) => state.infoPourCommande.value);
+  console.log(infoPourCommande);
 
 
   // stock info du chef 
@@ -44,9 +46,11 @@ export default function OrderScreen() {
   const handleDisplayChef = () =>{
     navigation.navigate('HomeChefs')
    };
-   const handleDisplayRecette = () =>{
-    navigation.navigate('HomePlat')
-   };
+   const handleReturnLastPage = () => {
+    navigation.navigate('HomePlat');
+  }
+
+  
 
   // useEffect to upload the informations about the chefs when click on recipes when ordering 
   
@@ -98,11 +102,9 @@ export default function OrderScreen() {
         {/* Top of the page */}
           <View style={styles.topHead}>
             <View>
-            <TouchableOpacity onPress={() => navigation.navigate('HomePlat')} style={styles.backButton}>
-        <Feather name="chevron-left" size={24} color="black" />
-      </TouchableOpacity>
-          </View>
-            <View>
+            <FontAwesome onPress={handleReturnLastPage} name='arrow-left' size={22}  />
+            </View>
+          <View>
             {/* Ternary operator : if object is truthy, we access property name  */}
             {/* Loading...: if not truthy, provide feedback to user that data is being fetched   */}
             <Text style={styles.chefNameTitle}>Ton chef: {chefInfo.userProfil ? chefInfo.userProfil.prenom : 'Loading...'}
@@ -152,11 +154,14 @@ export default function OrderScreen() {
                       
                     {/*  right part  */}
                     <View style={styles.middleSection_right}>
-                      <Text style={[styles.txt_h2, { marginLeft: 15, marginBottom: 10 }]}>User's compliments</Text>
-                      <View style={styles.complimentsBox}>
+                      <Text style={[styles.txt_box, { marginLeft: 15, marginBottom: 10 }]}>User's compliments</Text>
+                      <View style={styles.complimentBox}>
                         {chefInfo && chefInfo.userCompliment
                           ? chefInfo.userCompliment.map((compliment, index) => (
-                              <Text key={index} style={{ fontSize: 12 }}>{compliment}</Text>
+                            <View key={index} style={styles.perCompliment}>
+                              <FontAwesomeIcon icon={faComment}/>
+                              <Text style={styles.complimentText}>{compliment}</Text>
+                            </View>
                             ))
                           : <Text> 'Loading...' </Text>}
                       </View>
@@ -172,13 +177,13 @@ export default function OrderScreen() {
                       style={styles.commentaire}
                       placeholder="Ajoute un commentaire pour ton chef (allergens, besoins spéciaux, etc"
                       value={commentaire}
-                      onChangeText={handleComment}
+                      onChangeText={(value) => setCommentaire(value)}
                     />
                     </View>
                  </View>
 
                   {/* Bouton de connexion */}
-                  <TouchableOpacity  onPress={handleSubmission} style={[styles.button, { marginTop: 20}]} >
+                  <TouchableOpacity  onPress={handleSubmission} style={styles.button} >
                     <Text style={styles.buttonText}>Je choisis ma date</Text>
                   </TouchableOpacity>
 
@@ -345,8 +350,8 @@ txt_p_regular_small_top: {
 
   txt_box : {
     color: '#5959F0',
-    fontSize: 12,
-    //fontWeight: 600,
+    fontSize: 14,
+    fontWeight: 600,
     paddingTop: 5,
 },
 
@@ -370,26 +375,38 @@ txt_p_regular_small_top: {
     fontSize: 15,
     // fontWeight: 600,
 },
-complimentsBox: {
-  width: '100%',
-  height: '100%',
-  textAlignVertical: 'center',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginLeft: 30,
-  marginRight: 10,
-  marginTop: 10,
-  borderBottomLeftRadius: 30,
-  borderBottomRightRadius: 30,
-  borderTopLeftRadius: 30,
-  borderTopRightRadius: 30,
-  backgroundColor: 'rgba(146, 146, 254, 0.15)',
-  height: 40,
-  width: '100%',
-  paddingHorizontal: 10,
+
+complimentBox: {
+  justifyContent: 'flex-start',
   
 },
 
+perCompliment: {
+  // define the styles for each compliment box
+    width: '100%',
+    height: '100%',
+    textAlignVertical: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    backgroundColor: 'rgba(146, 146, 254, 0.15)',
+    height: 40,
+    width: '100%',
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    marginLeft: 10,
+    marginBottom: 10,
+  },
+
+  complimentText: {
+    fontSize: 12,
+    marginLeft: 10, 
+    marginRight: 10,// adjust the margin as needed
+    textAlign: 'center',
+  },
 
 // --- BOTTOM SECTION ---
 
