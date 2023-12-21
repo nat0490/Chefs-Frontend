@@ -62,10 +62,7 @@ const Tab = createBottomTabNavigator();
 const MainStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Main" component={MainScreen} />
-    
-    
     <Stack.Screen name="Dish" component={DishScreen} options={{ tabBarVisible: true }}/>
-    
     <Stack.Screen name="ChefScreen" component={ChefScreen} options={{ tabBarVisible: true }}/>
   </Stack.Navigator>
 );
@@ -140,9 +137,6 @@ export default function App() {
           <Stack.Screen name="BookDate" component={BookDateScreen} />
           <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
            
-
-          <Stack.Screen name="ConfigureOrder" component={ConfigureOrderScreen} />
-          
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
