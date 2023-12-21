@@ -81,7 +81,7 @@ const besoinUstensils =
 const validerPlat = () => {
   try {
     //navigation.navigate();
-    navigation.navigate('CheckProfile')
+  navigation.navigate('CheckProfile')
   console.log('plat validé');
   dispatch(addInfo({
     dishId: _id,

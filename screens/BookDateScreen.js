@@ -4,11 +4,15 @@ import { Calendar } from 'react-native-calendars'; // Importation du composant d
 import DateTimePicker from '@react-native-community/datetimepicker'; // Importation du sélecteur de date/heure
 // import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import {addDate} from '../reducers/infoPourCommande';
+import { addDate} from '../reducers/infoPourCommande';
 import { Feather } from '@expo/vector-icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 export default function BookDateScreen() {
+
+  const infoPourCommande = useSelector((state) => state.infoPourCommande.value);
+  console.log(infoPourCommande);
   // États pour gérer les données et l'interface
   const [chefAvailability, setChefAvailability] = useState([]); // Disponibilités du chef
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Date sélectionnée
@@ -57,10 +61,10 @@ export default function BookDateScreen() {
 
   // Fonction pour réserver le chef
   const reserveChef = async () => {
+    console.log('reserver');
     try {
       if (!chefAvailability.find((availability) => availability.date === selectedDate)) {
         const formattedDate = selectedDate; // Formatage de la date sélectionnée
-
         // Envoi d'une requête POST pour réserver le chef à la date et l'heure sélectionnées
         const response = await fetch(`https://chefs-backend-amber.vercel.app/userChefAvailability/${chefId}/add`, {
           method: 'POST',
@@ -76,9 +80,11 @@ export default function BookDateScreen() {
 
         const data = await response.json(); // Récupération de la réponse
         console.log('Réponse du serveur pour la réservation :', data); // Affichage de la réponse du serveur
+        
         dispatch(addDate({date : formattedDate}))
-        setSelectedReservation(selectedDate); // Mise à jour de la réservation sélectionnée
+        //setSelectedReservation(selectedDate); // Mise à jour de la réservation sélectionnée
         navigation.navigate('OrderDetails');
+        //navigation.navigate('Main');
       }
     } catch (error) {
       console.error('Erreur lors de la réservation du chef :', error);

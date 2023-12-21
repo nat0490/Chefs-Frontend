@@ -310,6 +310,7 @@ const ajouterIngredient = () => {
               <Image source={require('../../assets/logo.png')} style={styles.photo_logo} />
               <View style={styles.msg}>
                 <Text style={styles.txt_h1}>Ta recette a bien été ajouté!</Text>
+                {/*<Image source={require('../../assets/configurateOrder.png')} style={styles.photo} />*/}
                 <Text style={styles.validationIcon}>  ✔  </Text>
               </View>
               <View> 

@@ -1,31 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View , Image, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View , Image, TouchableOpacity, ScrollView} from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBowlFood } from '@fortawesome/free-solid-svg-icons'
 import { faStar, faPhone, faMessage } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
+
+
+
+
 export default function ConfigureOrderScreen() {
 
-      const [platsData , setPlatsData] = useState()
-  // const noteMoyenne = platData && platData.notes
-  // ? (platData.notes.reduce((a, b) => a + b, 0) / platData.notes.length).toFixed(2)
-  // : "";
+  const infoPourCommande = useSelector((state) => state.infoPourCommande.value);
+  //console.log(infoPourCommande);
+
+      const [platsData , setPlatsData] = useState();
+      const [ showOrderDetails, setShowOrderDetails ] = useState(false);
+      const [ scrollOffset, setScrollOffset] = useState(0);
+
+  const noteMoyenne = platsData && platsData.notes ? (platsData.notes.reduce((a, b) => a + b, 0) / platsData.notes.length).toFixed(2) :  "";
+  //console.log(noteMoyenne);
+
          const stars = []
           for (let i = 0; i < 5; i++) {
             let style = {};
-            // console.log(noteMoyenne)
-            // if (i < noteMoyenne - 1) {
-            //   style = '#f1c40f' 
-            //  }else {
-            //   style = '#B8B8B8'
-            // }
-            stars.push(<FontAwesomeIcon key={i}  icon={faStar} name='star' size={10}/>);
+             //console.log(noteMoyenne)
+             if (i < noteMoyenne - 1) {
+               style = '#9292FE' 
+              }else {
+               style = '#B8B8B8'
+             }
+            stars.push(<FontAwesomeIcon key={i}  icon={faStar} name='star' size={10} color={style}/>);
           }
           useEffect(() => {
             (async () => {
               try {
-                const platId = '658016a2bded833448fc118a'
-                const response = await fetch(`https://chefs-backend-amber.vercel.app/recipes/displayRecipes/${platId}`);
+                //const platId = '658016a2bded833448fc118a'
+                const response = await fetch(`https://chefs-backend-amber.vercel.app/recipes/displayRecipes/${infoPourCommande.dishId}`);
                 const data = await response.json();
           
                 if (data.result) {
@@ -39,18 +50,36 @@ export default function ConfigureOrderScreen() {
 
   if(!platsData) return <View><Text>Loading...</Text></View>
 
+//CONVERSION TEMPS DE PREPARATION
+const newTime = (time) => {
+  const date = new Date(time);
+  const formattedTime = `${date.getHours()} H ${(date.getMinutes() < 10 ? '0' : '') + date.getMinutes()}`;
+  return formattedTime
+};
+
+
+//DETAILS DE LA COMMANDE
+  const watchOrderDetails = infoPourCommande? <View style={styles.OrderDetailsBloc}>
+    <View style={{width: '100%', marginBottom: 10, marginLeft: 20}}><Text style={{fontSize: 16}}>Récapitulatif de la commande</Text></View>
+    { infoPourCommande.price? <Text>Montant: {infoPourCommande.price} €</Text> : null }
+    { infoPourCommande.date? <Text>Date: {infoPourCommande.date}</Text> : null }
+    { infoPourCommande.addresse? <Text>Adresse: {infoPourCommande.addresse}</Text> : null }
+    { infoPourCommande.comments? <Text>Commentaire: {infoPourCommande.comments}</Text> : null }
+  </View> : null;
+
   return (
     <View style={styles.container}>
       <View style={styles.nav_bar_color}></View>
-      <View style={styles.container_box_width}>
+      
+      <View style={{...styles.container_box_width, marginTop: scrollOffset}}>
             {/* Il faut ecrire tous sont code ici la couleur rouge seras a enlever*/}
-            <View style={{width: "100%" , alignItems:'center', marginTop : 40 ,justifyContent:'space-around ', flexDirection: 'row'}}> 
-                <View>
+            <View style={{width: "100%" , alignItems:'center', marginTop : 40 , justifyContent:'space-between', flexDirection: 'row'}}> 
+                
                    <Image source={require('../assets/configurateOrder.png')} style={styles.photo} />
-                </View>
-                <View style={{alignItems:'center'}}>
+                
+                <View style={{alignItems:'center', marginRight: 30}}>
                     <Text style={styles.txt_h2}>Merci pour votre </Text>
-                    <Text style={styles.txt_h2}>commande</Text>
+                    <Text style={styles.txt_h2}>commande!</Text>
                 </View>
             </View>
 
@@ -61,7 +90,8 @@ export default function ConfigureOrderScreen() {
 
 
 
-            <View style={{width: "100%" , alignItems:'center', marginTop : 40 ,justifyContent:'space-between', flexDirection: 'row' }}> 
+            <View style={{width: "100%" , alignItems:'center', marginTop : 40 ,justifyContent:'center', flexDirection: 'row' }}> 
+            {/*
               <View style={{alignItems: 'center' ,width: "45%" }}>
                 <Image source={require('../assets/configurateOrder.png')} style={styles.photo} />
                 <View style={{alignItems: 'center' , height: 70, backgroundColor :'#9292FE47', marginTop: 10 , justifyContent: 'center', borderRadius: 15 , width:"100%"}}>
@@ -71,14 +101,16 @@ export default function ConfigureOrderScreen() {
                       <Text>{platsData.type}</Text>
                     </View>
                   </View>
-              </View>
+  </View> */}
+
+
               <View style={{alignItems: 'center', width: "45%"}}>
-                <Image source={{ uri: platsData.image }} style={styles.photo} />
+                <Image source={{ uri: platsData.image }} style={styles.photoDish} />
                 <View style={{alignItems: 'center' , height: 70, backgroundColor :'#9292FE47', marginTop: 10 , justifyContent: 'center', borderRadius: 15 ,width:"100%"}}>
 
                   <View style={{alignItems:'center'}}>
                       <Text style={{fontSize: 12}}>{platsData.title}</Text>
-                      <Text style={{fontSize: 8, marginTop : 10}}>Cuisson : 1h40</Text>      
+                      <Text style={{fontSize: 8, marginTop : 10}}>Temps de préparation : {newTime(platsData.time)}</Text>      
                   </View>
                   <View style={{ flexDirection: 'row', marginTop : 10}}>
                 
@@ -90,9 +122,11 @@ export default function ConfigureOrderScreen() {
               </View>
             </View>
 
-            <TouchableOpacity style={{marginTop: 40, marginBottom : 40}}>
-              <Text>Order details</Text>
+            <TouchableOpacity style={{marginVertical: 30}} onPress={()=> {setShowOrderDetails(!showOrderDetails), setScrollOffset(showOrderDetails ? 0 : -100)}}>
+              <Text style={{textDecorationLine:'underline', padding: 10}}>Order details</Text>
             </TouchableOpacity>
+
+            {showOrderDetails ? watchOrderDetails : null}
 
             <View style={{width: "100%", }}>
                 <Text>Votre cheffe</Text>
@@ -121,6 +155,7 @@ export default function ConfigureOrderScreen() {
             </View>
 
       </View>
+      
     </View>
   );
 }
@@ -142,6 +177,10 @@ const styles = StyleSheet.create({
   photo:{
     width : 100,
     height: 100
+  },
+  photoDish:{
+    width : 200,
+    height: 200
   },
   photoMini : {
     width : 50,
@@ -181,5 +220,14 @@ txt_p_bold : {
   color: 'black',
   fontSize: 12,
   fontWeight: 'bold',
+},
+//ORDERDETAILS BLOCK
+OrderDetailsBloc: {
+  marginTop: -10,
+  marginBottom: 40, 
+  borderRadius: 10, 
+  borderWidth: 1, 
+  padding: 20, 
+  borderColor: '#5959F0', 
 },
 });

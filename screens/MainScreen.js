@@ -377,7 +377,7 @@
               </View>
             )) : ( recipes && recipes.length > 0 ? (recipes) : (
                       <View>
-                        <Text style={{marginTop: 20}}>Chargement en cours</Text>
+                        <Text style={{marginTop: 20}}>Chargement en cours ...</Text>
                       </View>
                     )
                   )}

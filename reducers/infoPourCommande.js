@@ -22,15 +22,15 @@ export const infoPourCommandeSlice = createSlice({
         state.value.dishId = action.payload.dishId;
         state.value.chefId = action.payload.chefId
     },
-    addDate: (state, action) => {p
+    addDate: (state, action) => {
       state.value.date = action.payload.date;
-  },
     },
+    
     addPrice: (state, action) => {
       state.value.price = action.payload.price;
     },
     addAddress: (state, action) => {
-      state.value.address = action.payload.address;
+      state.value.addresse = action.payload.addresse;
     },
     addComments: (state, action) => {
       state.value.comments = action.payload.comments;
@@ -42,6 +42,7 @@ export const infoPourCommandeSlice = createSlice({
       state.value.dishId = null;
       state.value.chefId = null
     },
+  },
   },
 );
 

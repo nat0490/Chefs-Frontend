@@ -16,7 +16,7 @@ import { faBowlFood } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
-import { addComments } from  '../reducers/infoPourCommande';
+import { addComments } from '../reducers/infoPourCommande'; 
 
 export default function OrderScreen() {
 
@@ -26,14 +26,11 @@ export default function OrderScreen() {
 //REDUCER INFO ORDER
   const infoPourCommande = useSelector((state) => state.infoPourCommande.value);
 
- 
-
-
 
   // stock info du chef 
   const [chefInfo, setChefInfo] = useState({});
   const [chefId, setChefId] = useState(infoPourCommande.chefId);
-  console.log(chefId);
+  //console.log(chefId);
 
   // managing the comments 
   const [commentaireVisible, setCommentaireVisible] = useState(true); //
@@ -52,6 +49,7 @@ export default function OrderScreen() {
    };
 
   // useEffect to upload the informations about the chefs when click on recipes when ordering 
+  
   useEffect(() => {
     fetch(`https://chefs-backend-amber.vercel.app/users/chef/${chefId}`)
       .then(response => response.json())
@@ -67,12 +65,13 @@ export default function OrderScreen() {
             </View>
           </TouchableOpacity>
         ))
-        setRecipeList(recipes)
+        setRecipeList(recipes);
+        //console.log('info chef');
       });
   }, 
   [setChefId]);
 
-
+  //console.log('chefId');
     // managing the comments 
   const handleComment = (text) => { // calling the function when text input chages 
     setCommentaire(text);
@@ -232,7 +231,7 @@ const styles = StyleSheet.create({
       fontSize: 20,
       paddingLeft: 20,
       paddingTop: 40,
-      fontWeight: 700,
+      //fontWeight: 700,
     },
 
    // Police 
@@ -250,19 +249,19 @@ const styles = StyleSheet.create({
   txt_p_regular: {
     color: '#5959F0',
     fontSize: 12,
-    fontWeight: 700,
+    //fontWeight: 700,
 },
 
 txt_p_regular_small: {
   color: 'black',
   fontSize: 12,
-  fontWeight: 300,
+  //fontWeight: 300,
 },
 
 txt_p_regular_small_top: {
   color: '#5959F0',
   fontSize: 12,
-  fontWeight: 400,
+  //fontWeight: 400,
 },
       // --- TOP SECTION --- 
 
@@ -307,7 +306,7 @@ txt_p_regular_small_top: {
         paddingBottom: 10,
         fontSize: 12,
         color: '#5959F0',
-        fontWeight: 600,
+        //fontWeight: 600,
       },
       
 
@@ -347,7 +346,7 @@ txt_p_regular_small_top: {
   txt_box : {
     color: '#5959F0',
     fontSize: 12,
-    fontWeight: 600,
+    //fontWeight: 600,
     paddingTop: 5,
 },
 

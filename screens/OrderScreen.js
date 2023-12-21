@@ -11,8 +11,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function OrderScreen() {
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const infoPourCommande = useSelector((state) => state.infoPourCommande.value);
   // managing the comments 
   const [commentaireVisible, setCommentaireVisible] = useState(true); //
   const [commentaire, setCommentaire] = useState('');
@@ -32,7 +34,7 @@ const [ totalAmount, setTotalAmount ] = useState([]);
 const chosenDate = useSelector(state => state.infoPourCommande.value.date);
 const [nbPeople, setNbPeople] = useState(1); 
 
-
+console.log(infoPourCommande);
  
 const handleAddressConfirmation = async () => {
   setUserCoordinates(null); // Clear quand confirme again
@@ -69,10 +71,12 @@ const handleAddressConfirmation = async () => {
     // managing button to confirm order handleConfirmation
     const handleConfirmation = () =>{
       navigation.navigate('PaymentScreen')
-      dispatch(addAddress({ address: confirmedAddress }));
+      dispatch(addAddress({ addresse: confirmedAddress }));
       // navigation.navigate('BookDate')
      };
 
+
+     
      useEffect(() => {
       const fetchData = async () => {
         try {
@@ -187,13 +191,13 @@ const handleAddressConfirmation = async () => {
         </View>
 
         
-        <Text style={{ margin: 10, fontWeight: 500, color: '#5959F0'}}>{confirmedAddress} à {chosenDate}</Text>
+        <Text style={{ margin: 10, color: '#5959F0'}}>{confirmedAddress} à {chosenDate}</Text>
         <View style={styles.recap}>
           <View style={styles.recapColumn1}>
-            <Text style={{ fontWeight: 300, color: '#5959F0'}}>Total : </Text>
+            <Text style={{  color: '#5959F0'}}>Total : </Text>
         </View>
       <View style={styles.recapColumn2}>
-          <Text style={{ fontWeight: 500, color: '#5959F0'}}>{totalAmount.minimum} € pour 2 personnes</Text> 
+          <Text style={{ color: '#5959F0'}}>{totalAmount.minimum} € pour 2 personnes</Text> 
       </View>
       </View>
 
@@ -246,7 +250,7 @@ const styles = StyleSheet.create({
     color: '#5959F0',
     fontSize: 20,
     paddingLeft: 60,
-    fontWeight: 700,
+    //fontWeight: 700,
     marginBottom: 10,
   },
 

@@ -63,6 +63,7 @@ const MainStack = () => (
     <Stack.Screen name="Main" component={MainScreen} />
     <Stack.Screen name="Dish" component={DishScreen} options={{ tabBarVisible: true }}/>
     <Stack.Screen name="ChefScreen" component={ChefScreen} options={{ tabBarVisible: true }}/>
+    
   </Stack.Navigator>
 );
 
@@ -81,9 +82,9 @@ const HomeTabs = () => (
   <Tab.Navigator screenOptions={({ route }) => ({
     tabBarIcon: () => {
       let iconName = '';
-      if (route.name === 'MainStack') {
+      if (route.name === 'Home') {
         iconName = faHouseChimney;
-      } else if (route.name === 'Wishlist') {
+      } else if (route.name === 'Search') {
         iconName = faHeart;
       }
       return <FontAwesomeIcon icon={iconName} style={{ color: "#5959f0" }} />;
@@ -94,6 +95,9 @@ const HomeTabs = () => (
   })}>
     {/* Associez chaque onglet à sa pile de navigation respective */}
     <Tab.Screen name="Home" component={MainStack} />
+    <Tab.Screen name="Search" component={SearchScreen} />
+    
+   
     {/*<Tab.Screen name="Wishlist" component={WishlistScreen} /> */}
   </Tab.Navigator>
 );
@@ -123,7 +127,7 @@ export default function App() {
           <Stack.Screen name="Terms" component={TermsScreen}/>
           {/*ACCES APRES CONNECTION */}
           <Stack.Screen name="HomeTabs" component={HomeTabs} />
-          <Stack.Screen name="Search" component={SearchScreen} />
+         
           
           {/*PARTIE EDIT PROFIL */}
           <Stack.Screen name="Setting" component={SettingScreen} options={{ tabBarVisible: false }} />
@@ -133,8 +137,11 @@ export default function App() {
           <Stack.Screen name="PastOrder" component={PastOrderScreen} options={{ tabBarVisible: false }} />
           <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
           <Stack.Screen name="OrderDetails" component={OrderScreen}  />
+          
           <Stack.Screen name="BookDate" component={BookDateScreen} />
-          <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
+          <Stack.Screen name="CheckProfile" component={OrderCheckProfile} options={{ tabBarVisible: true }}/>
+         
+          <Stack.Screen name="ConfigureOrder" component={ConfigureOrderScreen} />
            
         </Stack.Navigator>
       </NavigationContainer>
