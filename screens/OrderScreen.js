@@ -30,10 +30,13 @@ export default function OrderScreen() {
 // const [chefId, setChefId] = useState('658019be85ac5cd2de446d8e');
 const [ totalAmount, setTotalAmount ] = useState([]);
 const chosenDate = useSelector(state => state.infoPourCommande.value.date);
+const commande =  useSelector(state => state.infoPourCommande.value);
 const [nbPeople, setNbPeople] = useState(1); 
 
+const handleReturnLastPage = () => {
+  navigation.navigate('BookDate');
+}
 
- 
 const handleAddressConfirmation = async () => {
   setUserCoordinates(null); // Clear quand confirme again
   setConfirmedAddress(userAddress);
@@ -111,7 +114,7 @@ const handleAddressConfirmation = async () => {
           {/* header section */}
         <View style={styles.topHead}>
           <View style={styles.containeur_fleche}>
-            <FontAwesome name='arrow-left' size={22} />
+          <FontAwesome onPress={handleReturnLastPage} name='arrow-left' size={22}  />
             <Text style={styles.orderTitle}>Order details</Text>
         </View>
       </View>
@@ -193,7 +196,7 @@ const handleAddressConfirmation = async () => {
             <Text style={{ fontWeight: 300, color: '#5959F0'}}>Total : </Text>
         </View>
       <View style={styles.recapColumn2}>
-          <Text style={{ fontWeight: 500, color: '#5959F0'}}>{totalAmount.minimum} € pour 2 personnes</Text> 
+          <Text style={{ fontWeight: 500, color: '#5959F0'}}>{commande.price}€ pour 2 personnes</Text> 
       </View>
       </View>
 
