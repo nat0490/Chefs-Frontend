@@ -1,9 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View , Image , TouchableOpacity} from 'react-native';
-import FontAwesome from '@expo/vector-icons/FontAwesome'
 import React, { useEffect,useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+
 export default function OrderScreen() {
 
   const navigation = useNavigation();
@@ -11,49 +13,47 @@ export default function OrderScreen() {
   const route = useRoute();
   const platId = route.params?.platId;
   const [platData , setPlatData] = useState(null)
-
   
   useEffect(() => {
-   (async () => {
+    (async () => {
       try {
-        const response = await fetch(`https://chefs-backend-amber.vercel.app/recipes/displayRecipes/${platId}`);
-        const data = await response.json();
-        if(data.result) {
-          console.log(data.recipe)
-          setPlatData(data.recipe);
-        }
-        const response = await fetch(`https://chefs-backend-amber.vercel.app/recipes/${platId}`);
-        const data = await response.json();
-         
-
-          const chefResponse = await fetch(`https://chefs-backend-amber.vercel.app/users/chef/${data.recipe.userChef}`);
-          const chefData = await chefResponse.json();
-          let b = console.log(chefData.data.userProfil._id)
-          const profilResponse = await fetch(`https://chefs-backend-amber.vercel.app/users/profil/${chefData.data.userProfil._id}`);
-          const profilData = await profilResponse.json();
-          console.log(profilData)
-          //dataAjouter le nom du chef à l'objet
-          data.recipe.nomDuChef = profilData.data.userProfil.nom;
-
+        // Fetch pour récupérer les données de la recette
+        const recipeResponse = await fetch(`https://chefs-backend-amber.vercel.app/recipes/displayRecipes/${platId}`);
+        const recipeData = await recipeResponse.json();
   
-        // Met à jour le state avec le tableau de recettes modifié
-        setPlatData(data);
-        console.log(data)
+        if (recipeData.result) {
+      
+          setPlatData(recipeData.recipe);
+        }
+       
+        
       } catch (error) {
         console.error("Erreur lors du traitement des données :", error);
       }
-    })()
-    }, []);
+    })();
+  }, []);
   
+
+   
   
-  const stars = [];
-  for (let i = 0; i < 5; i++) {
-    // let style = {};
-    // if (i < props.voteAverage - 1) {
-    //   style = { 'color': '#f1c40f' };
-    // }
-    stars.push(<FontAwesome key={i} name='star' size={20}/>);
-  }
+ 
+        //console.log(notes);
+        //ETOILES DE NOTES
+        const noteMoyenne = platData && platData.notes
+  ? (platData.notes.reduce((a, b) => a + b, 0) / platData.notes.length).toFixed(2)
+  : "";
+         const stars = []
+          for (let i = 0; i < 5; i++) {
+            let style = {};
+            console.log(noteMoyenne)
+            if (i < noteMoyenne - 1) {
+              style = '#f1c40f' 
+             }else {
+              style = '#B8B8B8'
+            }
+            stars.push(<FontAwesomeIcon key={i}  icon={faStar} name='star' color={style} size={10}/>);
+          }
+      
 
   const Note_user = [];
   for (let i = 0; i < 5; i++) {
@@ -61,8 +61,10 @@ export default function OrderScreen() {
     // if (i < props.voteAverage - 1) {
     //   style = { 'color': '#f1c40f' };
     // }
-    Note_user.push(<FontAwesome key={i} name='star' size={10}/>);
+    Note_user.push(<FontAwesomeIcon key={i}  icon={faStar} name='star' size={10}/>);
   }
+
+
 
   if (!platData) return <View><Text>Loading...</Text></View>
   
@@ -78,7 +80,7 @@ export default function OrderScreen() {
                          <Text>{platData.type}</Text>
                       </View>     
                       <View style={styles.box_description }>
-                        <Text>Chef {platData.userChef.userProfil.nom}</Text>
+                        <Text>Chef  {platData.userChef.userProfil.nom}</Text>
                       </View>
                 </View>
                 <View style={{flexDirection : 'row' , marginTop : 20}}>
