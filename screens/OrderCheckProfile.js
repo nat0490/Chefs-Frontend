@@ -3,7 +3,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { View,
     KeyboardAvoidingView,
     TextInput,
-    Image,  
+    Image,
     Text,
     StyleSheet, 
     TouchableOpacity,
@@ -28,7 +28,6 @@ export default function OrderScreen() {
   const infoPourCommande = useSelector((state) => state.infoPourCommande.value);
   console.log(infoPourCommande);
 
-
   // stock info du chef 
   const [chefInfo, setChefInfo] = useState({});
   const [chefId, setChefId] = useState(infoPourCommande.chefId);
@@ -52,6 +51,8 @@ export default function OrderScreen() {
 
   
 
+  
+
   // useEffect to upload the informations about the chefs when click on recipes when ordering 
   
   useEffect(() => {
@@ -62,21 +63,19 @@ export default function OrderScreen() {
         const info = data.data
         setChefInfo(info);
 
-        const recipes = info.recipes && info.recipes.map((recipes, index) => (
-          <TouchableOpacity key={index} activeOpacity={1}>
-            <View>
-              <Text>{recipes.title}</Text>
-            </View>
-          </TouchableOpacity>
-        ))
-        setRecipeList(recipes);
-        //console.log('info chef');
-      });
+    const recipes = info.recipes && info.recipes.map((recipes, index) => (
+      <TouchableOpacity key={index} activeOpacity={1}>
+        <View>
+          <Text>{recipes.title}</Text>
+        </View>
+      </TouchableOpacity>
+    ))
+    setRecipeList(recipes)
+  });
   }, 
   [setChefId]);
 
-  //console.log('chefId');
-    // managing the comments 
+// managing the comments 
   const handleComment = (text) => { // calling the function when text input chages 
     setCommentaire(text);
     if (text.length > 0) {
@@ -91,7 +90,6 @@ export default function OrderScreen() {
     dispatch(addComments({ comments: commentaire }));
     navigation.navigate('BookDate');
   };
-
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -190,10 +188,9 @@ export default function OrderScreen() {
               <StatusBar style="auto" />
       </View>
     </KeyboardAvoidingView>
+
   );
 }
-
-
 
 const styles = StyleSheet.create({
 
@@ -203,31 +200,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     },
 
-    nav_bar_color: {
-      backgroundColor : '#9292FE',
-      width: '100%',
-      height: '8%',
-      },
+nav_bar_color: {
+  backgroundColor : '#9292FE',
+  width: '100%',
+  height: '8%',
+  },
 
-    container_box_width:{
-      width: "85%",
-      flex:1,
-      alignItems: 'center',
-    },
+container_box_width:{
+  width: "85%",
+  flex:1,
+  alignItems: 'center',
+},
 
-    topHead: {
-      width: '100%',
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
+topHead: {
+  width: '100%',
+  flexDirection: 'row',
+  alignItems: 'center',
+},
 
-    backButton: {
-      borderWidth: 1,
-      borderColor: 'black',
-      padding: 10,
-      borderRadius: 5,
-      marginBottom: 10,
-      width: '10%',
+backButton: {
+  borderWidth: 1,
+  borderColor: 'black',
+  padding: 10,
+  borderRadius: 5,
+  marginBottom: 10,
+  width: '10%',
 
     },
 
@@ -239,6 +236,13 @@ const styles = StyleSheet.create({
       //fontWeight: 700,
     },
 
+chefNameTitle: {
+  color: '#5959F0',
+  fontSize: 20,
+  paddingLeft: 20,
+  paddingTop: 40,
+  fontWeight: 700,
+},
    // Police 
 
   txt_h1 : {
@@ -246,9 +250,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
 
-    txt_h2 : {
-      color: '#5959F0',
-      fontSize: 20,
+txt_h2 : {
+  color: '#5959F0',
+  fontSize: 20,
   },
 
   txt_p_regular: {
@@ -270,42 +274,49 @@ txt_p_regular_small_top: {
 },
       // --- TOP SECTION --- 
 
-      container_topSection: {
-        height : '30%',
-        flexDirection: 'row',
-        width: '100%',
-        justifyContent : 'space-around',
-        marginTop: 20,
-      },
+  container_topSection: {
+    height : '30%',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent : 'space-around',
+    marginTop: 20,
+  },
 
-      box1 : {
-        width : '40%',
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius : 10,
-        paddingBottom: 30,
-      },
+  box1 : {
+    width : '40%',
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius : 10,
+    paddingBottom: 30,
+  },
 
 
-      box_description: {
-        alignItems: 'flex-start',
-        paddingLeft: 10,
-        paddingTop: 0,
-      },
+  box_description: {
+    alignItems: 'flex-start',
+    paddingLeft: 10,
+    paddingTop: 0,
+  },
 
-      box2: {
-        width: '50%',
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        borderColor: '#5959F0',
-        backgroundColor: 'rgba(146, 146, 254, 0.25)',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        marginBottom: 20,
-        marginTop: 10,
-        padding: 10,
-      },
+  box2: {
+    width: '50%',
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderColor: '#5959F0',
+    backgroundColor: 'rgba(146, 146, 254, 0.25)',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginBottom: 20,
+    marginTop: 10,
+    padding: 10,
+  },
+  
+  boxDescp: {
+    paddingBottom: 10,
+    fontSize: 12,
+    color: '#5959F0',
+    fontWeight: 600,
+  },
   
       boxDescp: {
         paddingBottom: 10,
@@ -321,7 +332,6 @@ txt_p_regular_small_top: {
     height: '70%',
     borderRadius: 20,
   },
-
 
   // --- MIDDLE SECTION ---
 
@@ -345,7 +355,7 @@ txt_p_regular_small_top: {
     paddingLeft: 10,
     paddingTop: 5,
     flexDirection: 'row', 
-    alignItems: 'center',  
+    alignItems: 'center',
   },
 
   txt_box : {
@@ -362,10 +372,10 @@ txt_p_regular_small_top: {
     paddingRight: 10,
 },
 
-  
+
   middleSection_right: {
     width: '55%',
-    borderColor: '#5959F0',        
+    borderColor: '#5959F0',
     marginLeft: 10,
     alignItems: 'center', 
   },
@@ -451,6 +461,5 @@ buttonText: {
   fontSize: 16,
   textAlign: 'center',
 },
-
 
 });

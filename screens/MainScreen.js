@@ -41,7 +41,7 @@
     const [ scrollOffset, setScrollOffset] = useState(0);
     const [ randomValue, setRandomValue] = useState(Math.random())
 
-
+  
   //CONSTANTE CHARGER LES ADRESSES
   const fetchChefAddresses = async () => {
     try {

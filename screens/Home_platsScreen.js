@@ -87,8 +87,7 @@ export default function OrderScreen() {
                 {stars}
             </View>
           </View>
-
-
+          
               <View style={styles.container_commentaire}>
                 <Text style={[styles.txt_h2, styles.marginTop]}>Nos retours</Text>
                 <View style={{backgroundColor:'#9292FE47' , width: '100%'}}>
@@ -101,7 +100,7 @@ export default function OrderScreen() {
                           </View>
                           <View style={styles.item60}>
                             {/* Contenu de la deuxième View */}
-                            <Text> UserName</Text>
+                            <Text>Jon</Text>
                           </View>
                           <View style={styles.item30}>
                             {/* Contenu de la troisième View */}
@@ -110,7 +109,7 @@ export default function OrderScreen() {
                         </View>
                         <View style={styles.singleItem}>
                           {/* Contenu de la quatrième View */}
-                          <Text>zfef</Text>
+                          <Text>Mon plat préféré</Text>
                         </View>
                       </View>
                   </View> 
@@ -126,7 +125,7 @@ export default function OrderScreen() {
                           </View>
                           <View style={styles.item60}>
                             {/* Contenu de la deuxième View */}
-                            <Text> UserName</Text>
+                            <Text> RenaudDu77</Text>
                           </View>
                           <View style={styles.item30}>
                             {/* Contenu de la troisième View */}
@@ -135,7 +134,7 @@ export default function OrderScreen() {
                         </View>
                         <View style={styles.singleItem}>
                           {/* Contenu de la quatrième View */}
-                          <Text>zfef</Text>
+                          <Text>Alors, je suis tombé sur mes fesses. Ce poulet crémeux est vraiment un délice !</Text>
                         </View>
                       </View>
                   </View>
