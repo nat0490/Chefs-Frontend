@@ -19,7 +19,7 @@ export default function App() {
   {/* Permet d'avoir un régulariter de 20 margin au top -> Il faut ajouter deux style si vous en avez*/}
     <View style={[styles.QuetuChoisisPourTonStyle, styles.marginTop]}></View>
 
-    {/* Style Input */}
+  {/* Style Input */}
     <View style={styles.inputContainer}>
         <Text style={styles.label}>Mot de passe</Text>
         <TextInput style={styles.input}/>
