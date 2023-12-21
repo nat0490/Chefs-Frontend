@@ -117,7 +117,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           {/*PAGE DACCEUIL */}
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="AcceuilLog" component={HomeScreen} />
           {/* PARTIE LOGIN/ ACCES AVANT CONNECTION */}
           <Stack.Screen name="Sign_in" component={SignInScreen} />
           <Stack.Screen name="Sign_up" component={SignUpScreen} />
