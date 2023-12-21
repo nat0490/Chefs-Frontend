@@ -28,7 +28,7 @@ export default function OrderScreen() {
     longitudeDelta: 0.0421,
   });
 // const [chefId, setChefId] = useState('658019be85ac5cd2de446d8e');
-const [ totalAmount, setTotalAmount ] = useState([]);
+const [totalAmount, setTotalAmount ] = useState([]);
 const chosenDate = useSelector(state => state.infoPourCommande.value.date);
 const [nbPeople, setNbPeople] = useState(1); 
 
@@ -200,7 +200,7 @@ const handleAddressConfirmation = async () => {
           {/* Bouton de connexion */}
         <TouchableOpacity  onPress={handleConfirmation} style={[styles.button, { marginTop: 20}]} >
           <Text style={styles.buttonText}>Je valide !</Text>
-          </TouchableOpacity>
+        </TouchableOpacity>
     </View>
     </View>
       <StatusBar style="auto" />

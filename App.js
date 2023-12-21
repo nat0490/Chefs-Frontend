@@ -62,10 +62,7 @@ const Tab = createBottomTabNavigator();
 const MainStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Main" component={MainScreen} />
-    
-    
     <Stack.Screen name="Dish" component={DishScreen} options={{ tabBarVisible: true }}/>
-    
     <Stack.Screen name="ChefScreen" component={ChefScreen} options={{ tabBarVisible: true }}/>
   </Stack.Navigator>
 );
@@ -87,7 +84,7 @@ const HomeTabs = () => (
       let iconName = '';
       if (route.name === 'MainStack') {
         iconName = faHouseChimney;
-      } else if (route.name === 'Wishlist') {
+      }else if(route.name === 'Search'){
         iconName = faHeart;
       }
       return <FontAwesomeIcon icon={iconName} style={{ color: "#5959f0" }} />;
@@ -97,8 +94,9 @@ const HomeTabs = () => (
     headerShown: false,
   })}>
     {/* Associez chaque onglet à sa pile de navigation respective */}
+    
     <Tab.Screen name="MainStack" component={MainStack} />
-    <Tab.Screen name="Wishlist" component={WishlistScreen} />
+    <Tab.Screen name="Search" component={SearchScreen} />
   </Tab.Navigator>
 );
 
@@ -127,7 +125,7 @@ export default function App() {
           <Stack.Screen name="Terms" component={TermsScreen}/>
           {/*ACCES APRES CONNECTION */}
           <Stack.Screen name="HomeTabs" component={HomeTabs} />
-          <Stack.Screen name="Search" component={SearchScreen} />
+   
           
           {/*PARTIE EDIT PROFIL */}
           <Stack.Screen name="Setting" component={SettingScreen} options={{ tabBarVisible: false }} />
@@ -139,8 +137,7 @@ export default function App() {
           <Stack.Screen name="OrderDetails" component={OrderScreen}  />
           <Stack.Screen name="BookDate" component={BookDateScreen} />
           <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
-           
-
+     
           <Stack.Screen name="ConfigureOrder" component={ConfigureOrderScreen} />
           
         </Stack.Navigator>
