@@ -33,9 +33,6 @@ export default function OrderScreen() {
   
   //console.log(typeCuisine);
   
-
-
-
  
 
   // // Fonction pour soumettre les préférences sélectionnées
@@ -47,9 +44,9 @@ export default function OrderScreen() {
   // Fonction pour soumettre les préférences sélectionnées
   const handleSubmit = () => {
         dispatch(updatePreference({ userPreference : [...selectedIds]}))
-         setSelectedIds([]);
-         setActiveColors([]);
-         setPreferenceData([]);
+        setSelectedIds([]);
+        setActiveColors([]);
+        setPreferenceData([]);
         Alert.alert('Parfait, nous avons ajouté vos informations à vos préférences');
         navigation.navigate('Terms');
   }

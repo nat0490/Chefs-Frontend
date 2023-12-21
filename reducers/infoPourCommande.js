@@ -21,7 +21,6 @@ export const infoPourCommandeSlice = createSlice({
     addDate: (state, action) => {
       state.value.date = action.payload.date;
   },
-    
     removeInfo: (state) => {
       state.value.dishId = null;
       state.value.chefId = null

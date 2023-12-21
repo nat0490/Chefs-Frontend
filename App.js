@@ -140,6 +140,9 @@ export default function App() {
           <Stack.Screen name="BookDate" component={BookDateScreen} />
           <Stack.Screen name="CheckProfile" component={OrderCheckProfile} />
            
+
+          <Stack.Screen name="ConfigureOrder" component={ConfigureOrderScreen} />
+          
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
