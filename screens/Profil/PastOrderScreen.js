@@ -98,7 +98,7 @@ export default function PastOrderScreen() {
           <TouchableOpacity style={styles.backBtnAlone} onPress={()=> navigation.navigate('Setting')}>
             <Text style={styles.btnTextBack}>←</Text>
           </TouchableOpacity>
-          <Text style={styles.txt_h1}>Historique des commandes</Text>
+          <Text style={styles.txt_h1}>Historique de mes commandes</Text>
         </View>
         <View style={styles.allOrder}> 
        

@@ -24,7 +24,7 @@ export default function App() {
       setDisplayPage(true)
 
     }else{
-      Alert.alert('Veuillez accepter nos condition d\'utilisateur ');
+      Alert.alert('Tu dois accepter nos condition d\'utilisateur ');
     }
 
   }
@@ -41,7 +41,7 @@ export default function App() {
        })
          .then(response => response.json())
          .then(data => {
-          Alert.alert('Parfait, nous avons ajouté vos informations à vos préférences');
+          Alert.alert('Parfait, nous avons ajouté tes informations à tes préférences');
           navigation.navigate('HomeTabs', { screen: 'Main' });
         })
          .catch(error => {
@@ -101,7 +101,7 @@ export default function App() {
             
 
               <Text style={styles.txt_h1_big}>Quelques termes and conditons </Text>
-              <Text style={[styles.txt_h2, styles.marginTop]}>Nous respectons votre vie privée. Consultez notre politique de confidentialité pour comprendre comment nous collectons, utilisons et protégeons vos informations.</Text>
+              <Text style={[styles.txt_h2, styles.marginTop]}>Nous respectons ta vie privée. Consulte notre politique de confidentialité pour comprendre comment nous collectons, utilisons et protégeons tes informations.</Text>
 
 
               <View style={{ margin : 40,flexDirection: 'row', alignItems: 'center', justifyContent: 'center'  }}>

@@ -125,13 +125,13 @@ const newTime = (time) => {
             </View>
 
             <TouchableOpacity style={{marginVertical: 30}} onPress={()=> {setShowOrderDetails(!showOrderDetails), setScrollOffset(showOrderDetails ? 0 : -100)}}>
-              <Text style={{textDecorationLine:'underline', padding: 10}}>Order details</Text>
+              <Text style={{textDecorationLine:'underline', padding: 10}}>Détails de ta commande</Text>
             </TouchableOpacity>
 
             {showOrderDetails ? watchOrderDetails : null}
 
             <View style={{width: "100%", }}>
-                <Text>Votre cheffe</Text>
+                <Text>Ton chef.fe</Text>
                 <View style={{flexDirection: 'row' , marginTop: 20, }}>
                   <View style={[styles.subContainer, { flex: 0.2 ,justifyContent: 'center'}]}>
                   <Image source={require('../assets/chefNaima.jpg')} style={styles.photoMini} />

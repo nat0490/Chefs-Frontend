@@ -140,7 +140,7 @@ export default function OrderScreen() {
                     <View style={styles.middleSection_left}> 
                       <View style={styles.tendance}>
                         <FontAwesome name="fire" size={20} color="orange" />
-                        <Text style={[styles.txt_box, {paddingLeft: 10}]}>Tendance</Text>
+                        <Text style={[styles.txt_box, {paddingLeft: 10}]}>Tendances</Text>
                       </View>
 
                       <View style={styles.middleSectionBox}>
@@ -150,7 +150,7 @@ export default function OrderScreen() {
                       
                     {/*  right part  */}
                     <View style={styles.middleSection_right}>
-                      <Text style={[styles.txt_box, { marginLeft: 15, marginBottom: 10 }]}>User's compliments</Text>
+                      <Text style={[styles.txt_box, { marginLeft: 15, marginBottom: 10 }]}>Compliments</Text>
                       <View style={styles.complimentBox}>
                         {chefInfo && chefInfo.userCompliment
                           ? chefInfo.userCompliment.map((compliment, index) => (

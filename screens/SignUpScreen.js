@@ -92,7 +92,7 @@ const toogleDataPiker = () => {
     const verifierEmail = () => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(emailInput)) {
-        Alert.alert('Erreur', 'Veuillez entrer une adresse e-mail valide.');
+        Alert.alert('Erreur', 'Pense à entrer une adresse e-mail valide.');
         return false;
       }
       return true;
@@ -147,7 +147,7 @@ console.log('connection');
             setDateOfBirthInput('');
             setPostalInput('');
             setCityInput('');
-            Alert.alert('Vous êtes connecté');
+            Alert.alert('Tu es connecté');
             
 //PARTIE REDUX: ENVOIE DANS LE REDUCER DES INFO USER
              const userInfo = {
@@ -208,15 +208,15 @@ console.log('connection');
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View style={styles.detailContainer}>
             <View style={{height: 5,width: '100%',backgroundColor: '#9292FE',marginBottom: 5}}></View>
-            <Text style={styles.txt_p_bold}>Detail</Text>
+            <Text style={styles.txt_p_bold}>Détails</Text>
           </View>
           <View style={styles.detailContainer}>
           <View style={{height: 5,width: '100%',backgroundColor: '#E9EBEE',marginBottom: 5}}></View>
-            <Text style={styles.txt_p_bold}>Preferences</Text>
+            <Text style={styles.txt_p_bold}>Préférences</Text>
           </View>
           <View style={styles.detailContainer}>
           <View style={{height: 5,width: '100%',backgroundColor: '#E9EBEE',marginBottom: 5}}></View>
-            <Text style={styles.txt_p_bold}>Submit</Text>
+            <Text style={styles.txt_p_bold}>Envoyer</Text>
           </View>
         </View>
       </View>
@@ -224,7 +224,7 @@ console.log('connection');
        {/* Input Doublie prenom  nom*/}
           <View style={styles.view_double_input}>
             <View style={{flex: 1,}}>
-              <Text style={styles.label}>Name</Text>
+              <Text style={styles.label}>Nom</Text>
               <TextInput
                 style={[styles.input_double, { marginRight: 0}]}
                 placeholder="Name"
@@ -233,7 +233,7 @@ console.log('connection');
               />
             </View>
             <View style={{flex: 1,}}>
-              <Text style={[styles.label, { marginLeft: 16}]}>Prenom</Text>
+              <Text style={[styles.label, { marginLeft: 16}]}>Prénom</Text>
               <TextInput
                 placeholder="Prenom"
                 style={[styles.input_double, { marginLeft: 16}]}
@@ -268,7 +268,7 @@ console.log('connection');
           {/* Input Doublie prenom  nom*/}
           <View style={styles.view_double_input}>
             <View style={{flex: 1,}}>
-              <Text style={styles.label}>Phone</Text>
+              <Text style={styles.label}>Téléphone</Text>
               <TextInput
                 style={[styles.input_double, { marginRight: 0}]}
                 placeholder="Phone"
@@ -296,7 +296,7 @@ console.log('connection');
           </View> 
            {/* Zone de saisie pour le phone number */}
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Rue</Text>
+            <Text style={styles.label}>Nom</Text>
             <TextInput
               style={styles.input}
               placeholder="Le nom de votre rue"
@@ -319,7 +319,7 @@ console.log('connection');
                 // Le code spécifique à iOS que vous souhaitez inclure ici
                 <View style={{ width:'80%',flexDirection: 'row', justifyContent: 'space-around' }}>
                   <TouchableOpacity style={styles.button} onPress={toogleDataPiker}>
-                    <Text style={{ color:'white'}}>Cancel</Text>
+                    <Text style={{ color:'white'}}>Annuler</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.button} onPress={confirmeIosDate}>
                     <Text  style={{ color:'white'}}>Confirmer</Text>
@@ -332,16 +332,16 @@ console.log('connection');
         {/* Input Doublie city postale*/}
           <View style={styles.view_double_input}>
             <View style={{flex: 1,}}>
-              <Text style={styles.label}>City</Text>
+              <Text style={styles.label}>Ville</Text>
               <TextInput
-                placeholder="City"
+                placeholder="Ville"
                 style={[styles.input_double, { marginRight: 0}]}
                 onChangeText={(value) => setCityInput(value)}
                 value={cityInput}
               />
             </View>
             <View style={{flex: 1,}}>
-              <Text style={[styles.label, { marginLeft: 16}]}>Postale</Text>
+              <Text style={[styles.label, { marginLeft: 16}]}>Code postal</Text>
               <TextInput
                 placeholder="Code Postal"
                 style={[styles.input_double, { marginLeft: 16}]}
@@ -354,7 +354,7 @@ console.log('connection');
 
       {/* Bouton de connexion */}
       <TouchableOpacity  onPress={handleSubmitRegister} style={[styles.button, { marginTop: 40}]} >
-        <Text style={styles.buttonText}>Welcome!</Text>
+        <Text style={styles.buttonText}>Bienvenue !</Text>
       </TouchableOpacity>
 
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center'  }}>
@@ -365,10 +365,10 @@ console.log('connection');
         <Text>J'accepte les termes et conditions</Text>
       </View>
 
-      <Text>OR</Text>
+      <Text>OU</Text>
       <View style={styles.iconContainer}>
             <View style={{alignItems:'center'}}> 
-            <Text> ───────  Sign Up using   ────── </Text>
+            <Text>────── Se connecter avec ─────</Text>
             </View>
             <View style={styles.iconsSign}> 
               <FontAwesome name='apple' size={40} /> 

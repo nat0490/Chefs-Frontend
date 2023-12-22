@@ -88,7 +88,7 @@ const diplayChefs = chefData ? chefData.slice( 0 , 3 ).map((data , i) => (
       <View style={styles.section_box}>
         <View style={styles.box_titre}>
             {/*<FontAwesome name='heart' size={22}/> */}
-            <Text style={styles.txt_h1}>Our trendy recipes</Text>
+            <Text style={styles.txt_h1}>Nos plats tendances</Text>
         </View>
 
         {/* Barre en dessous du titre */}
@@ -123,7 +123,7 @@ const diplayChefs = chefData ? chefData.slice( 0 , 3 ).map((data , i) => (
       <View style={styles.section_box}>
         <View style={styles.box_titre}>
             {/*<FontAwesome name='heart' size={22} /> */}
-            <Text style={styles.txt_h1}>Our trendy recipes</Text>
+            <Text style={styles.txt_h1}>Nos chefs du moment</Text>
         </View>
 
 
@@ -156,13 +156,13 @@ const diplayChefs = chefData ? chefData.slice( 0 , 3 ).map((data , i) => (
 
        {/* Section avec boutons de connexion */}
       <View style={styles.section_btn_register}>
-        <Text style={styles.titre_register}>Do we know each other yet ?</Text>
+        <Text style={styles.titre_register}>On se connait déjà ?</Text>
         <View style={styles.container_btn}>
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in}  onPress={() => navigation.navigate('Sign_in')}>
-              <Text style={styles.buttonText_sign_in}>Sign in</Text>
+              <Text style={styles.buttonText_sign_in}>Se connecter</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Sign_up')}>
-              <Text style={styles.buttonText_sign_up}>Sign up</Text>
+              <Text style={styles.buttonText_sign_up}>S'inscrire</Text>
           </TouchableOpacity>
           
 

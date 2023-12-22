@@ -271,11 +271,11 @@ const removeRecipe = async (recipeId) => {
             <View style={styles.logoPosition}> 
             <Image source={require('../../assets/logo.png')} style={styles.photo_logo} />
             </View>
-            { userChef.spécialisation? <View style={styles.infoChef}><Text>Spécialisation: </Text><Text style={styles.inputText}>{userChef.spécialisation}</Text></View> : ""}
-            { userChef.experience? <View style={styles.infoChef}><Text>Expérience: </Text><Text style={styles.inputText}>{userChef.experience}</Text></View> : ""}
-            { userChef.passion? <View style={styles.infoChef}><Text>Passion: </Text><Text style={styles.inputText}>{userChef.passion}</Text></View>: ""}
-            { userChef.services? <View style={styles.infoChef}><Text>Service: </Text><Text style={styles.inputText}>{userChef.services}</Text></View>: ""}
-            { userChef.userCompliment.lenght > 0 ? <View style={styles.infoChef}><Text>Mes compliments: </Text><Text style={styles.inputText}> {userChef.userCompliment}</Text></View>: ""}
+            { userChef.spécialisation? <View style={styles.infoChef}><Text>Spécialisation : </Text><Text style={styles.inputText}>{userChef.spécialisation}</Text></View> : ""}
+            { userChef.experience? <View style={styles.infoChef}><Text>Expérience : </Text><Text style={styles.inputText}>{userChef.experience}</Text></View> : ""}
+            { userChef.passion? <View style={styles.infoChef}><Text>Passion(s): </Text><Text style={styles.inputText}>{userChef.passion}</Text></View>: ""}
+            { userChef.services? <View style={styles.infoChef}><Text>Service (en années) : </Text><Text style={styles.inputText}>{userChef.services}</Text></View>: ""}
+            { userChef.userCompliment.lenght > 0 ? <View style={styles.infoChef}><Text>Mes compliments : </Text><Text style={styles.inputText}> {userChef.userCompliment}</Text></View>: ""}
             { userChef.recipes.length > 0 ? <View style={styles.infoChef}>
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> setShowMyRecipe(!showMyRecipe)} >
                 <FontAwesomeIcon icon={faBowlFood} style={{color: "#5959f0",}} /><Text style={styles.buttonText_sign_up}>Voir mes plats</Text><Text style={styles.buttonText_sign_up}>➔</Text>
