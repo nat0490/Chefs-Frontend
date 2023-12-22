@@ -63,12 +63,7 @@ export default function SignInScreen() {
     fetchData();
   },[])
   
-
-
-
-
-
-
+  
   // création signin connexion 
   const handleConnection = () => {
     //console.log('handle connection');
@@ -152,7 +147,7 @@ export default function SignInScreen() {
                 <TextInput 
                 style={styles.input} 
                 placeholder= 'Saisis ton mot de passe' 
-                keyboardType='visible-password'  
+                secureTextEntry={true} // Pour masquer le texte du mot de passe  
                 value={passwordInput}  
                 onChangeText={(value) => setPasswordInput(value)}
             

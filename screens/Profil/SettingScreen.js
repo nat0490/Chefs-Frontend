@@ -25,7 +25,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function SettingScreen() {
-  
+
+
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const vercelURL = 'https://chefs-backend-amber.vercel.app';
@@ -130,7 +131,7 @@ export default function SettingScreen() {
             <Text style={styles.txt_h2}>Compte</Text>
               <View style={styles.bloc}> 
                 <TouchableOpacity onPress={() => navigation.navigate('EditProfil' )}>
-                  <Text style={styles.menuAccount}><FontAwesomeIcon icon={faUser} style={{color: "#5959f0",}} />  Profil</Text>
+                  <Text style={styles.menuAccount}><FontAwesomeIcon icon={faUser} style={{color: "#5959f0",}} /> Profil</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <Text style={styles.menuAccount}><FontAwesomeIcon icon={faShieldHalved} style={{color: "#5959f0",}}/>  Securité</Text>
@@ -225,12 +226,12 @@ btn_sign_up : {
     borderWidth: 2,
     borderColor: '#9292FE',
     backgroundColor: '#fff',
-    marginBottom: 50,
+    marginBottom: 30,
   },
   txt_h2 : {
     color: '#5959F0',
     fontSize: 20,
-    marginTop: 20,
+
 },
 bloc: {
   backgroundColor: "rgba(89,89,240, 0.2)",
