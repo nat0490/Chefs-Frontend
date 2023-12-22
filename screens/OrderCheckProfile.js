@@ -50,9 +50,7 @@ export default function OrderScreen() {
   }
 
   
-
-  
-
+ 
   // useEffect to upload the informations about the chefs when click on recipes when ordering 
   
   useEffect(() => {

@@ -346,6 +346,7 @@ console.log('connection');
                 placeholder="Code Postal"
                 style={[styles.input_double, { marginLeft: 16}]}
                 onChangeText={(value) => setPostalInput(value)}
+                keyboardType="numeric" 
                 value={postalInput}
               />
             </View>
