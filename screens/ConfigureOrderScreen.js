@@ -11,6 +11,18 @@ import { useNavigation } from '@react-navigation/native';
 
 
 export default function ConfigureOrderScreen() {
+  useEffect(() => {
+    // Utilisation de setTimeout pour déclencher la navigation après 5 secondes
+    const timeoutId = setTimeout(() => {
+      // Utilisation de navigation.navigate pour effectuer la navigation
+      navigation.navigate('Main'); // Remplacez 'VotreEcranCible' par le nom de votre écran cible
+    }, 10000); // Délai de 5000 millisecondes (5 secondes)
+
+    // Il est important de nettoyer le timer pour éviter les fuites de mémoire
+    return () => clearTimeout(timeoutId);
+  }, []); // Le tableau vide [] en tant que deuxième argument signifie que cela s'exécute une seule fois lors du montage du composant
+
+  
 
   const infoPourCommande = useSelector((state) => state.infoPourCommande.value);
   //console.log(infoPourCommande);
@@ -125,13 +137,13 @@ const newTime = (time) => {
             </View>
 
             <TouchableOpacity style={{marginVertical: 30}} onPress={()=> {setShowOrderDetails(!showOrderDetails), setScrollOffset(showOrderDetails ? 0 : -100)}}>
-              <Text style={{textDecorationLine:'underline', padding: 10}}>Order details</Text>
+              <Text style={{textDecorationLine:'underline', padding: 10}}>Détails de ta commande</Text>
             </TouchableOpacity>
 
             {showOrderDetails ? watchOrderDetails : null}
 
             <View style={{width: "100%", }}>
-                <Text>Votre cheffe</Text>
+                <Text>Ton chef.fe</Text>
                 <View style={{flexDirection: 'row' , marginTop: 20, }}>
                   <View style={[styles.subContainer, { flex: 0.2 ,justifyContent: 'center'}]}>
                   <Image source={require('../assets/chefNaima.jpg')} style={styles.photoMini} />

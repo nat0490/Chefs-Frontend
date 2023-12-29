@@ -65,7 +65,7 @@ export default function OrderScreen() {
     <TouchableOpacity activeOpacity={1} style={styles.box}>
           <Text style={styles.margin_rigth}></Text>
           <View style={{height: 80}}>
-            <Text style={styles.txt_preferences}>Le chef dois encore ajouter quelque plats</Text>
+            <Text style={styles.txt_preferences}>Le chef doit encore ajouter quelques plats</Text>
           </View>
           <View style={styles.box_description }>
             {stars}
@@ -96,7 +96,7 @@ export default function OrderScreen() {
                           </View>
                           <View style={styles.item60}>
                             {/* Contenu de la deuxième View */}
-                            <Text> UserName</Text>
+                            <Text> Nom</Text>
                           </View>
                           <View style={styles.item30}>
                             {/* Contenu de la troisième View */}
@@ -122,7 +122,7 @@ export default function OrderScreen() {
                           </View>
                           <View style={styles.item60}>
                             {/* Contenu de la deuxième View */}
-                            <Text> UserName</Text>
+                            <Text> Nom</Text>
                           </View>
                           <View style={styles.item30}>
                             {/* Contenu de la troisième View */}
@@ -140,14 +140,14 @@ export default function OrderScreen() {
 
 
               <View style={styles.section_btn_register}>
-                <Text style={styles.titre_register}>Do we know each other yet ?</Text>
+                <Text style={styles.titre_register}>On se connait déjà ?</Text>
                 <View style={styles.container_btn}>
                   <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in}  onPress={() => navigation.navigate('Sign_in')}>
-                      <Text style={styles.buttonText_sign_in}>Sign in</Text>
+                      <Text style={styles.buttonText_sign_in}>Se connecter</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Sign_up')}>
-                      <Text style={styles.buttonText_sign_up}>Sign up</Text>
+                      <Text style={styles.buttonText_sign_up}>S'inscrire</Text>
                   </TouchableOpacity>
                 </View>
               </View>

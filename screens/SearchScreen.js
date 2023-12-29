@@ -111,7 +111,7 @@ export default function SearchScreen() {
                       <Text>{currentCard.nomDuChef}</Text>
                     </View>
                     <View style={styles.box_description}>
-                      <Text>{currentCard.title}</Text>
+                      <Text>{currentCard.type}</Text>
                     </View>
                   </View>
                   <View style={{ flexDirection: 'row', marginTop: 20, marginLeft: 5 }}>
@@ -121,8 +121,8 @@ export default function SearchScreen() {
               </View>
             </TinderCard>
           ) : (
-            <View style={{width: "100%" , height: 500, backgroundColor:'red'}}>
-                <Text>Il faut crée du Contenu qui redirige vers notre whishlist ou autre chose a voir ensemble ou une pub ou quoi </Text>
+            <View style={{width: "100%" , height: 500 , justifyContent:'center'}}>
+                <Text>Loadin... </Text>
             </View>
           )}
           <View style={styles.container_btn}>

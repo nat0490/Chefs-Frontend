@@ -47,7 +47,7 @@ export default function OrderScreen() {
         setSelectedIds([]);
         setActiveColors([]);
         setPreferenceData([]);
-        Alert.alert('Parfait, nous avons ajouté vos informations à vos préférences');
+        Alert.alert('Parfait, nous avons ajouté tes informations à tes préférences');
         navigation.navigate('Terms');
   }
 
@@ -171,23 +171,23 @@ useEffect(() => {
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={styles.detailContainer}>
                   <View style={{height: 5,width: '100%',backgroundColor: '#E9EBEE',marginBottom: 5}}></View>
-                  <Text style={styles.txt_p_bold}>Detail</Text>
+                  <Text style={styles.txt_p_bold}>Détails</Text>
                 </View>
                 <View style={styles.detailContainer}>
                 <View style={{height: 5,width: '100%',backgroundColor: '#9292FE',marginBottom: 5}}></View>
-                  <Text style={styles.txt_p_bold}>Preferences</Text>
+                  <Text style={styles.txt_p_bold}>Préférences</Text>
                 </View>
                 <View style={styles.detailContainer}>
                 <View style={{height: 5,width: '100%',backgroundColor: '#E9EBEE',marginBottom: 5}}></View>
-                  <Text style={styles.txt_p_bold}>Submit</Text>
+                  <Text style={styles.txt_p_bold}>Envoyer</Text>
                 </View>
               </View>
             </View>
   
   
-            <Text style={styles.txt_h1}>Your interests</Text>
+            <Text style={styles.txt_h1}>Tes préférences</Text>
   
-            <Text style={[styles.txt_p_regulard, styles.marginTop]}>Select a few of your favorite kitchens and let us know about it</Text>
+            <Text style={[styles.txt_p_regulard, styles.marginTop]}> Sélectionne tes plats favoris et fais-le nous savoir</Text>
   
   
                   <ScrollView contentContainerStyle={styles.scrollViewContainer}    

@@ -25,7 +25,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function SettingScreen() {
-  
+
+
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const vercelURL = 'https://chefs-backend-amber.vercel.app';
@@ -123,20 +124,20 @@ export default function SettingScreen() {
                 <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('HomeTabs', { screen: 'Main' })}>
                     <Text style={styles.btnTextBack}>←</Text>
                 </TouchableOpacity>
-                <Text style={styles.txt_h1}>Setting</Text>
+                <Text style={styles.txt_h1}>Paramètres</Text>
             </View>
       
         <View style={styles.container_box_width}>
-            <Text style={styles.txt_h2}>Account</Text>
+            <Text style={styles.txt_h2}>Compte</Text>
               <View style={styles.bloc}> 
                 <TouchableOpacity onPress={() => navigation.navigate('EditProfil' )}>
-                  <Text style={styles.menuAccount}><FontAwesomeIcon icon={faUser} style={{color: "#5959f0",}} />  Profil</Text>
+                  <Text style={styles.menuAccount}><FontAwesomeIcon icon={faUser} style={{color: "#5959f0",}} /> Profil</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <Text style={styles.menuAccount}><FontAwesomeIcon icon={faShieldHalved} style={{color: "#5959f0",}}/>  Securité</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Text style={styles.menuAccount}><FontAwesomeIcon icon={faBell} style={{color: "#5959f0",}} />  Notification</Text>
+                    <Text style={styles.menuAccount}><FontAwesomeIcon icon={faBell} style={{color: "#5959f0",}} />  Notifications</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <Text style={styles.menuAccount}> <FontAwesomeIcon icon={faLock} style={{color: "#5959f0",}} />  Privé</Text>
@@ -145,13 +146,13 @@ export default function SettingScreen() {
                     <Text style={styles.menuAccount}><FontAwesomeIcon icon={faCreditCard} style={{color: "#5959f0",}} />  Commandes passées</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Text style={styles.menuAccount}> <FontAwesomeIcon icon={faCircleQuestion} style={{color: "#5959f0",}}/>  Help & Support</Text>
+                    <Text style={styles.menuAccount}> <FontAwesomeIcon icon={faCircleQuestion} style={{color: "#5959f0",}}/>  Aide & Support</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Text style={styles.menuAccount}><FontAwesomeIcon icon={faDiamond} style={{color: "#5959f0",}}/>  Terms & Policies</Text>
+                    <Text style={styles.menuAccount}><FontAwesomeIcon icon={faDiamond} style={{color: "#5959f0",}}/>  Termes & Conditions</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Text style={styles.menuAccount}><FontAwesomeIcon icon={faFlag} style={{color: "#5959f0",}} />  Rapporter un problème</Text>
+                    <Text style={styles.menuAccount}><FontAwesomeIcon icon={faFlag} style={{color: "#5959f0",}} />  Reporter un problème</Text>
                 </TouchableOpacity>
                 </View>
 
@@ -225,12 +226,12 @@ btn_sign_up : {
     borderWidth: 2,
     borderColor: '#9292FE',
     backgroundColor: '#fff',
-    marginBottom: 50,
+    marginBottom: 30,
   },
   txt_h2 : {
     color: '#5959F0',
     fontSize: 20,
-    marginTop: 20,
+
 },
 bloc: {
   backgroundColor: "rgba(89,89,240, 0.2)",

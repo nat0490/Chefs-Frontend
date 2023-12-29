@@ -188,7 +188,7 @@ const titreMenuUstensils = () => {
     if ( ustensils || isFocusU) {
       return (
         <Text style={[styles.label, isFocusU && { color: '#9292FE' , fontWeight: 'bold', fontSize: 20}]}>
-          Ustensils:
+          Ustensiles:
         </Text>
       );
     }
@@ -279,7 +279,7 @@ const creationRecette = () => {
       Alert.alert('titre déjà existant pour une recette');
     } 
   })} else {
-    Alert.alert('Veuillez saisir les ingredients');
+    Alert.alert('Pense à saisir les ingredients');
   }
 };
 
@@ -296,7 +296,7 @@ const ajouterIngredient = () => {
     setIngredientQty('');
     setIngredientUnit('');
   } else {
-    alert("Veuillez remplir toutes les informations de l'ingrédient.");
+    alert("N'oublie pas de remplir toutes les informations de l'ingrédient");
   }
 };
 
@@ -355,7 +355,7 @@ const ajouterIngredient = () => {
         <Text>Temps de préparation: </Text>
         <TouchableOpacity onPress={showTimePicker}>
           <Text style={[styles.input_double, { marginLeft: 16 }]}>
-          {timeSelectedByUser ? formatTime(selectedTime) : 'Sélectionnez le temps'}
+          {timeSelectedByUser ? formatTime(selectedTime) : 'Sélectionne le temps'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -386,7 +386,7 @@ const ajouterIngredient = () => {
             maxHeight={300}
             labelField="label"
             valueField="value"
-            placeholder={!isFocusT ? 'Selectionnez un type de cuisine' : '...'}
+            placeholder={!isFocusT ? 'Selectionne un type de cuisine' : '...'}
             searchPlaceholder="Search..."
             value={type}
             onFocus={() => setIsFocusT(true)}
@@ -431,7 +431,7 @@ const ajouterIngredient = () => {
 
 {/*SECTION USTENSIL */}
 <View style={styles.listeUstensils}>
-  <Text style={{marginTop: 15, marginLeft: 20, marginBottom: 5, fontSize: 18, textDecorationLine: 'underline'}}>Selectionné: {afficheUstensils}</Text>
+  <Text style={{marginTop: 15, marginLeft: 20, marginBottom: 5, fontSize: 18, textDecorationLine: 'underline'}}>Selectionné(s) : {afficheUstensils}</Text>
 </View>
   <View >
         {titreMenuUstensils()}
@@ -446,7 +446,7 @@ const ajouterIngredient = () => {
             maxHeight={300}
             labelField="label"
             valueField="value"
-            placeholder={!isFocusU ? 'Selectionnez les ustensils' : '...'}
+            placeholder={!isFocusU ? 'Selectionne les ustensils' : '...'}
             searchPlaceholder="Search..."
             value={ustensils}
             onFocus={() => setIsFocusU(true)}
@@ -467,7 +467,7 @@ const ajouterIngredient = () => {
     </View>
 
 {/*PARTIE INGREDIENT*/}
-        <Text style={{marginTop: 15, marginLeft: 20, marginBottom: 5, fontSize: 18, textDecorationLine: 'underline'}}>Ingredients:</Text>
+        <Text style={{marginTop: 15, marginLeft: 20, marginBottom: 5, fontSize: 18, textDecorationLine: 'underline'}}>Ingrédients :</Text>
         <View style={styles.ingredientInput}> 
         <TextInput 
             style={[styles.input, styles.ingredientInputItem]} 
@@ -482,7 +482,7 @@ const ajouterIngredient = () => {
             value={ingredientQty}/>
           <TextInput 
             style={[styles.input, styles.ingredientInputItem]} 
-            placeholder="Unit"
+            placeholder="Unité"
             onChangeText={(value) => setIngredientUnit(value)} 
             value={ingredientUnit}/>
         <TouchableOpacity style={styles.btn_sign_in} onPress={ajouterIngredient}>
@@ -503,7 +503,7 @@ const ajouterIngredient = () => {
 {/*VALIDER LA RECETTE */}
 
         <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={()=> creationRecette()}>
-            <Text style={styles.buttonText_sign_up}>Valider Ma recette </Text>
+            <Text style={styles.buttonText_sign_up}>Valider ma recette </Text>
         </TouchableOpacity>
 
       </>

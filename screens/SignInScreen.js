@@ -63,12 +63,7 @@ export default function SignInScreen() {
     fetchData();
   },[])
   
-
-
-
-
-
-
+  
   // création signin connexion 
   const handleConnection = () => {
     //console.log('handle connection');
@@ -130,7 +125,7 @@ export default function SignInScreen() {
           <View> 
             {/* Saisie titre */}
             <Text style={{ ...styles.txt_h1, marginLeft: 10 }}>Salut toi !</Text>
-            <Text style={{ ...styles.txt_h1_2, marginLeft: 20 }}>Prêt à passer a la casserole ?</Text>
+            <Text style={{ ...styles.txt_h1_2, marginLeft: 20 }}>Prêt à passer à la casserole ?</Text>
             <StatusBar style="auto" />
           </View>
 
@@ -152,7 +147,7 @@ export default function SignInScreen() {
                 <TextInput 
                 style={styles.input} 
                 placeholder= 'Saisis ton mot de passe' 
-                keyboardType='visible-password'  
+                secureTextEntry={true} // Pour masquer le texte du mot de passe  
                 value={passwordInput}  
                 onChangeText={(value) => setPasswordInput(value)}
             
@@ -200,7 +195,7 @@ export default function SignInScreen() {
             
               {/* connexion new user  */}
             <View style={styles.section_btn_register}>
-              <Text style={styles.titre_register}>New user?</Text>
+              <Text style={styles.titre_register}>On ne se connait pas ?</Text>
               <View style={styles.container_btn_bottom}> 
                 <TouchableOpacity
                 activeOpacity={1}

@@ -119,7 +119,7 @@ const handleAddressConfirmation = async () => {
         <View style={styles.topHead}>
           <View style={styles.containeur_fleche}>
           <FontAwesome onPress={handleReturnLastPage} name='arrow-left' size={22}  />
-            <Text style={styles.orderTitle}>Order details</Text>
+            <Text style={styles.orderTitle}>Détails de ta commande</Text>
         </View>
       </View>
 
@@ -149,7 +149,7 @@ const handleAddressConfirmation = async () => {
           <View style={styles.containerConfirm}>
             <View>
               <TextInput
-                placeholder="Entrez votre adresse"
+                placeholder="Entre ton adresse"
                 onChangeText={(address) => setUserAddress(address)}
                 value={userAddress}
                 style={styles.fullWidthInput}
@@ -161,7 +161,7 @@ const handleAddressConfirmation = async () => {
                 activeOpacity={1}
                 style={styles.confirmButton}
               >
-                <Text style={{ fontSize: 12, color: 'white' }} >Confirme ton addresse</Text>
+                <Text style={{ fontSize: 12, color: 'white' }}>Confirme ton addresse</Text>
               </TouchableOpacity>
               </View>
           </View>

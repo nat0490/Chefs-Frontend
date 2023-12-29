@@ -161,7 +161,7 @@ return (
           <View style={{alignItems: 'flex-end', marginRight: 10, marginTop: -20}}><Text>Temps de préparation: {newTime(time)}</Text></View>
 
             <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={()=> setShowIngedients(!showIngredients)}>
-              <Text style={styles.buttonText_sign_in}>Ingredients</Text>
+              <Text style={styles.buttonText_sign_in}>Ingrédients</Text>
             </TouchableOpacity>
             { showIngredients? <View style={{marginTop: 5}}><Text style={{fontSize: 16, textDecorationLine: 'underline'}}>Pour une personne:</Text>{allIngredients}</View> : "" }
 
@@ -179,7 +179,7 @@ return (
 
             <View style={{width: '100%', alignItems: 'flex-end'}}>
               <TouchableOpacity activeOpacity={1} style={styles.btn_sign_in} onPress={() => setShowUstensils(!showUstensils)}>
-                <Text style={styles.buttonText_sign_in}>Ustensils</Text>
+                <Text style={styles.buttonText_sign_in}>Ustensiles</Text>
               </TouchableOpacity>
             </View>  
             { showUstensils ? <View>{besoinUstensils}</View> : "" }
@@ -191,7 +191,7 @@ return (
           </View>
           </ScrollView>
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => validerPlat()} >
-            <Text style={styles.buttonText_sign_up}>Je réserve mon plat!</Text>
+            <Text style={styles.buttonText_sign_up}>Je réserve mon plat !</Text>
         </TouchableOpacity>
         </View>
         

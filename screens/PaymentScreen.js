@@ -46,7 +46,7 @@ export default function PaymentScreen() {
             <TouchableOpacity style={styles.backBtnAlone} onPress={()=> navigation.navigate('OrderDetails')}>
               <Text style={styles.btnTextBack}>←</Text>
             </TouchableOpacity>
-            <View style={{width:'100%', alignItems: 'center'}}><Text style={styles.txt_h1}>Selectionnez le moyen de paiement</Text></View>
+            <View style={{width:'100%', alignItems: 'center'}}><Text style={styles.txt_h1}>Choisis ton moyen de paiement</Text></View>
           
         </View>
 
