@@ -69,8 +69,8 @@ export default function ChefScreen(route) {
       }
 
     return (
-      <View key={dish.id}>
-        <TouchableOpacity key={i} activeOpacity={1} style={styles.box}>
+      <View key={i} >
+        <TouchableOpacity key={dish.id} activeOpacity={1} style={styles.box}>
         <Image source={{uri: dish.image}}  style={styles.photo_plats} />
             <Text style={styles.margin_rigth}>{dish.title}</Text>
             <View style={styles.box_description }>

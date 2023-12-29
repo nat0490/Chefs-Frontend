@@ -241,7 +241,7 @@ chefNameTitle: {
   fontSize: 20,
   paddingLeft: 20,
   paddingTop: 40,
-  fontWeight: 700,
+  //fontWeight: 700,
 },
    // Police 
 
@@ -315,7 +315,7 @@ txt_p_regular_small_top: {
     paddingBottom: 10,
     fontSize: 12,
     color: '#5959F0',
-    fontWeight: 600,
+    //fontWeight: 600,
   },
   
       boxDescp: {
@@ -361,7 +361,7 @@ txt_p_regular_small_top: {
   txt_box : {
     color: '#5959F0',
     fontSize: 14,
-    fontWeight: 600,
+    //fontWeight: 600,
     paddingTop: 5,
 },
 

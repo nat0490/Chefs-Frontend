@@ -52,6 +52,10 @@ import chef from './reducers/chef';
 import infoPourCommande from './reducers/infoPourCommande';
 
 
+import { LogBox } from 'react-native';
+
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
 //const navigation = useNavigation();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -95,7 +99,7 @@ const HomeTabs = () => (
   })}>
     {/* Associez chaque onglet à sa pile de navigation respective */}
     
-    <Tab.Screen name="MainStack" component={MainStack} />
+    <Tab.Screen name="Home" component={MainStack} />
     <Tab.Screen name="Search" component={SearchScreen} />
   </Tab.Navigator>
 );
