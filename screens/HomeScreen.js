@@ -166,13 +166,13 @@ const diplayChefs = chefData ? chefData.slice( 0 , 3 ).map((data , i) => (
           </TouchableOpacity>
           
 
-          <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('OrderDetails')}>
+          {/* <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('OrderDetails')}>
             <Text style={styles.buttonText_sign_up}>CheckProfile</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={1} style={styles.btn_sign_up} onPress={() => navigation.navigate('Search')}>
               <Text style={styles.buttonText_sign_up}>navigation</Text>
-          {/* </TouchableOpacity> */}
-          </TouchableOpacity>
+
+          </TouchableOpacity> */}
           
         </View>
       </View>
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   nav_bar_color: {
     backgroundColor : '#9292FE',
     width: '100%',
-    height: 65,
+    height: 30,
   },
   box_titre: {
     flexDirection:'row',
@@ -202,8 +202,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   container: {
-    flex: 1,
+    // flex: 1,
     alignItems: 'center',
+    height: '100vh',
+    width: '100%',
   },
   photo_logo : {
     width: 100,
@@ -216,7 +218,7 @@ const styles = StyleSheet.create({
   //---------- Recette Box ----------------
   section_box: {
     width: "100%",
-    marginTop: 20,
+    marginTop: 10,
     alignItems :  'center',
   },
   photo:{
@@ -224,7 +226,7 @@ const styles = StyleSheet.create({
     height: 100
   },
   containeur_box: {
-      height : 160,
+      height : 100,
       marginTop : 10,
       flexDirection: 'row',
       width: '100%',
@@ -259,7 +261,7 @@ const styles = StyleSheet.create({
 // --------- Btn Register --------------
   section_btn_register: {
     width: '100%',
-    marginTop: 30,
+    marginTop: 20,
     alignItems: 'center',
   },
   container_btn: {
@@ -267,6 +269,7 @@ const styles = StyleSheet.create({
     width :" 100%",
     flexDirection : 'row',
     justifyContent : 'space-around',
+  
   },
   
   titre_register: {
@@ -275,7 +278,8 @@ const styles = StyleSheet.create({
   },
   btn_sign_in : {
     paddingVertical: 10, // 10 units of padding at the top and bottom
-    paddingHorizontal: 25, // A
+    paddingHorizontal: 10, 
+    marginHorizontal: 5,
     borderRadius: 5,
     backgroundColor: '#9292FE',
   },
@@ -288,32 +292,16 @@ const styles = StyleSheet.create({
     color : '#9292FE'
   },
 
-  
-  // UIKIT POUR LES BTN 
-  btn_sign_in : {
-    paddingVertical: 10, // 10 units of padding at the top and bottom
-    paddingHorizontal: 25, // A
-    borderRadius: 5,
-    backgroundColor: '#9292FE',
-  },
+
   btn_sign_up : {
     paddingVertical: 10, // 10 units of padding at the top and bottom
-    paddingHorizontal: 25, // A
+    paddingHorizontal: 10, 
+    marginHorizontal: 5,
     borderRadius: 5,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#9292FE',
     backgroundColor: '#fff',
   },
-  buttonText_sign_in :  {
-    fontSize : 15,
-    color : '#fff'
-  },
-  buttonText_sign_up: {
-    fontSize : 15,
-    color : '#9292FE'
-  },
 
-
-  //----------------Box recette----------------
   
 });
